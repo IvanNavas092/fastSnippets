@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { Firebase } from '../../../../core/services/firebase';
-import { User, Snippet } from '../../../../core/interfaces/user';
+import { Firebase } from '@/app/core/services/firebase';
+import { Snippet } from '@/app/core/interfaces/user';
 @Component({
   selector: 'app-create-snippet',
   imports: [],
@@ -12,12 +12,10 @@ export class CreateSnippet {
     description: '',
     code: '',
   };
-  constructor(private firebase: Firebase) {
-    
-  }
+  constructor(private firebase: Firebase) {}
 
   createSnippet() {
-    this.firebase.createUser(this.snippet).then((res) => {
+    this.firebase.createSnippet(this.snippet).then((res) => {
       console.log('snippet creado con exito', res);
     });
   }

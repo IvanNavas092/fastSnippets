@@ -6,7 +6,7 @@ import { CreateSnippet } from './features/snippets/components/create-snippet/cre
   selector: 'app-root',
   imports: [RouterOutlet, CreateSnippet],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
 })
 export class App {
   protected readonly title = signal('fastSnippets');

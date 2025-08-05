@@ -1,12 +1,16 @@
 import { Component } from '@angular/core';
-import { Logo } from '../logo/logo';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-header',
-  imports: [Logo],
+  standalone: true,
+  imports: [RouterModule],
   templateUrl: './header.html',
-  styles: ``
 })
 export class Header {
+  constructor(private router: Router) {}
 
+  navigateToLogin() {
+    this.router.navigate(['login']);
+  }
 }

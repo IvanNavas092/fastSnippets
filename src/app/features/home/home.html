@@ -1,3 +1,12 @@
 <section class="m-6">
-  <app-header></app-header>
+  <app-header />
+
+  <div class="flex items-center gap-12 justify-center mt-4">
+    <ng-container *ngFor="let item of frameworkList">
+      <app-circle-frame
+        [title]="item.name"
+        [icon]="item.logo"
+      ></app-circle-frame>
+    </ng-container>
+  </div>
 </section>
