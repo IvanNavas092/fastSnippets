@@ -2,9 +2,11 @@ import { AuthService } from '@/app/core/services/auth';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
+import { AnimationLogin } from './components/animation-login/animation-login';
 import {
   FormBuilder,
   FormGroup,
+  FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -12,9 +14,10 @@ import {
 @Component({
   selector: 'app-auth',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, AnimationLogin, FormsModule],
+
+
   templateUrl: './form-login-register.html',
-  providers: [AuthService, Auth], // Añade esto
 })
 export class FormLoginRegisterComponent {
   form!: FormGroup;
@@ -27,15 +30,20 @@ export class FormLoginRegisterComponent {
     });
   }
 
-  login() {
-    // this.authService.signIn();
-  }
+  inputList: any[] = [
+    { label: 'email', type name: 'Email', placeholder: 'tu@email.com', value: '' },
+    { id: 'password', name: 'Contraseña', value: '' },
+  ];
 
-  signup() {
-    // this.authService.signup();
-  }
+login() {
+  // this.authService.signIn();
+}
 
-  handleLogin() {
-    this.handle = !this.handle;
-  }
+signup() {
+  // this.authService.signup();
+}
+
+handleLogin() {
+  this.handle = !this.handle;
+}
 }
