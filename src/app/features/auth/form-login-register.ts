@@ -10,11 +10,12 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { Header } from '@/app/shared/components/header/header';
 
 @Component({
   selector: 'app-auth',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, AnimationLogin, FormsModule],
+  imports: [ReactiveFormsModule, CommonModule, AnimationLogin, FormsModule, Header],
 
 
   templateUrl: './form-login-register.html',
@@ -30,10 +31,7 @@ export class FormLoginRegisterComponent {
     });
   }
 
-  inputList: any[] = [
-    { label: 'email', type name: 'Email', placeholder: 'tu@email.com', value: '' },
-    { id: 'password', name: 'Contraseña', value: '' },
-  ];
+
 
 login() {
   // this.authService.signIn();

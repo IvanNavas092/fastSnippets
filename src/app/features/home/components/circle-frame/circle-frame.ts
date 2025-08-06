@@ -8,4 +8,5 @@ import { Component, Input } from '@angular/core';
 export class CircleFrame {
   @Input() title: string = '';
   @Input() icon: string | undefined = undefined;
+  @Input() description: string = '';
 }
