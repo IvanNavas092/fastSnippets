@@ -25,7 +25,7 @@ export class Home {
     },
     {
       id: '3',
-      name: 'Vue',
+      name: 'Vue.js',
       logo: 'vue.svg',
       description: 'Composition API, componentes, directivas',
     },
