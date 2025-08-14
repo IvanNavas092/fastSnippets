@@ -1,0 +1,47 @@
+<section>
+  <div
+    class="relative overflow-hidden flex flex-col backdrop-blur-sm rounded-lg bg-purple-600/10  transition-colors duration-50 shadow-sm hover:shadow-md p-6 cursor-pointer"
+  >
+    <!-- glow background -->
+    <div class="absolute -inset-20 opacity-60 pointer-events-none z-0">
+      <div
+        class="absolute inset-0 bg-purple-500/30 rounded-full blur-3xl"
+      ></div>
+      <div
+        class="absolute top-0 left-1/4 w-1/2 h-1/2 bg-indigo-600/20 rounded-full blur-2xl"
+      ></div>
+    </div>
+
+    <!-- white glows -->
+    <div
+      class="absolute top-0 left-0 w-20 h-20 bg-white rounded-full opacity-10 blur-lg pointer-events-none z-0"
+    ></div>
+    <div
+      class="absolute bottom-1/4 right-10 w-16 h-16 bg-white rounded-full opacity-5 blur-md pointer-events-none z-0"
+    ></div>
+
+    <!-- content -->
+    <div class="relative z-10 text-center space-y-8">
+      <div class="space-y-2">
+        <h2 class="text-4xl font-bold text-white drop-shadow-lg">
+          ¿Tienes un snippet útil?
+        </h2>
+        <span class="text-sm text-gray-300">Comparte tu conocimiento con la comunidad y ayuda a otros<br> desarrolladores a ahorrar tiempo.</span>
+      </div>
+
+      <div class="flex justify-center gap-4">
+        <button
+          class="bg-white/90 hover:bg-white cursor-pointer text-purple-600 font-semibold py-3 px-8 rounded-xl transition-all  shadow-lg"
+        >
+          <span class="text-xl">Regístrate</span>
+        </button>
+
+        <button
+          class="bg-transparent border-2 border-white/30 hover:border-white/50 text-white font-semibold py-3 px-8 rounded-xl transition-all cursor-pointer backdrop-blur-sm"
+        >
+          <span class="text-xl">Iniciar Sesión</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

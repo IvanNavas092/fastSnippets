@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { popularSnippet } from '@/app/core/interfaces/PopularSnippet';
 import { CommonModule } from '@angular/common';
 
@@ -10,16 +10,17 @@ import { CommonModule } from '@angular/common';
 
 export class CardPopularSnippet {
   @Input() item!: popularSnippet;
-
   copied: boolean = false;
 
-  copyCode(code: string): void {
+  constructor(private cdr: ChangeDetectorRef) {}
+  
+  copyCode(code: string) {
     navigator.clipboard.writeText(code);
     this.copied = true;
     console.log(this.copied);
-
     setTimeout(() => {
       this.copied = false;
-    }, 1000);
+      this.cdr.detectChanges();
+    }, 3000);
   }
 }

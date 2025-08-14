@@ -1,4 +1,4 @@
-import { popularSnippet } from "../core/interfaces/PopularSnippet";
+import { aboutItem, popularSnippet } from "../core/interfaces/PopularSnippet";
 import { framework } from "../core/interfaces/user";
 
 export const frameworkList: framework[] = [
@@ -54,3 +54,22 @@ export const popularSnippetList: popularSnippet[] = [
     action: 'Instala Tailwind CSS con sus dependencias y genera el archivo de configuración',
   }
 ];
+
+// about section
+export const aboutList: aboutItem[] = [
+  {
+    icon: '/check.svg',
+    title: 'Código probado',
+    description: 'Todos nuestros snippets son verificados y funcionan con las últimas versiones de cada framework.'
+  },
+  {
+    icon: '/eye.svg',
+    title: 'Claridad ante todo',
+    description: 'Explicaciones concisas de cada snippet para que entiendas qué hace y cómo usarlo.'
+  },
+  {
+    icon: '/thunderbolt.svg',
+    title: 'Ahorra tiempo',
+    description: 'Deja de buscar en múltiples fuentes. Tenemos lo que necesitas en un solo lugar.'
+  }
+]
