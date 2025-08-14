@@ -10,12 +10,18 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { Logo } from '@/app/shared/components/logo/logo';
 
 @Component({
   selector: 'app-auth',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, AnimationLogin, FormsModule],
-
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    AnimationLogin,
+    FormsModule,
+    Logo,
+  ],
 
   templateUrl: './form-login-register.html',
 })
@@ -31,19 +37,31 @@ export class FormLoginRegisterComponent {
   }
 
   inputList: any[] = [
-    { label: 'email', type name: 'Email', placeholder: 'tu@email.com', value: '' },
-    { id: 'password', name: 'Contraseña', value: '' },
+    {
+      label: 'email',
+      type: 'email',
+      name: 'Email',
+      placeholder: 'tu@email.com',
+      value: '',
+    },
+    {
+      label: 'password',
+      type: 'password',
+      name: 'Password',
+      placeholder: '******',
+      value: '',
+    },
   ];
 
-login() {
-  // this.authService.signIn();
-}
+  login() {
+    // this.authService.signIn();
+  }
 
-signup() {
-  // this.authService.signup();
-}
+  signup() {
+    // this.authService.signup();
+  }
 
-handleLogin() {
-  this.handle = !this.handle;
-}
+  handleLogin() {
+    this.handle = !this.handle;
+  }
 }
