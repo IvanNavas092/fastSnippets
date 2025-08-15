@@ -14,4 +14,7 @@ export class Header {
   navigateToLogin() {
     this.router.navigate(['login']);
   }
+  backToHome() {
+    this.router.navigate(['/']);
+  }
 }

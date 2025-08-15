@@ -7,6 +7,7 @@ import {
   createUserWithEmailAndPassword,
   signOut,
   User,
+  updateProfile,
 } from '@angular/fire/auth';
 import { onAuthStateChanged } from 'firebase/auth'; // O usa 'user' de @angular/fire/auth
 
@@ -37,17 +38,37 @@ export class AuthService {
   async signIn(email: string, password: string) {
     if (!this.auth) {
       console.warn('Auth service not available in this environment.');
-      throw new Error('Authentication service not available.'); // O maneja como prefieras
+      throw new Error('Authentication service not available.');
     }
-    return signInWithEmailAndPassword(this.auth, email, password);
+    try {
+      const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
+      console.log('Usuario ha iniciado sesión correctamente');
+      return userCredential;
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
+      throw error;
+    }
   }
 
-  async signup(email: string, password: string) {
+  async signup(email: string, password: string, username?: string) {
     if (!this.auth) {
       console.warn('Auth service not available in this environment.');
       throw new Error('Authentication service not available.');
     }
-    return createUserWithEmailAndPassword(this.auth, email, password);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
+      // Si se proporciona un nombre de usuario, podríamos actualizar el perfil del usuario
+      // o almacenarlo en Firestore si es necesario
+      if (username && userCredential.user) {
+        console.log(`Usuario creado con nombre: ${username}`);
+        // Actualizar el perfil del usuario con el nombre de usuario
+        await updateProfile(userCredential.user, { displayName: username });
+      }
+      return userCredential;
+    } catch (error) {
+      console.error('Error al registrar usuario:', error);
+      throw error;
+    }
   }
 
   async signOut() {

@@ -1,116 +1,107 @@
-<div class="flex">
+<div class="min-h-[80vh] flex">
+  <div class="w-full lg:w-1/2 flex items-center justify-center">
+    <div class="w-full max-w-md">
+      <div class="p-10">
+        <div class="flex flex-col items-center">
+          <h2 class="text-4xl font-semibold text-gray-100 mb-2 text-center">
+            {{ isRegisterMode ? "Crea tu cuenta" : "Bienvenido de vuelta" }}
+          </h2>
+          <p class="text-gray-400 text-sm">
+            {{
+              isRegisterMode
+                ? "Comienza tu experiencia"
+                : "Ingresa tus credenciales"
+            }}
+          </p>
+        </div>
+
+        <!-- form -->
+        <form
+          [formGroup]="form"
+          (ngSubmit)="isRegisterMode ? signup() : login()"
+          class="space-y-5 mt-2"
+        >
+          @for (input of inputList; track input.name) {
+
+          <div>
+            @if (isRegisterMode || input.label !== 'username') {
+            <ng-container>
+              <label
+                for="email"
+                class="text-sm font-medium text-gray-200 block mb-1"
+                >{{ input.label }}</label
+              >
+              <div class="relative">
+                <div
+                  class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+                >
+                  <svg
+                    class="h-5 w-5 text-gray-400"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"
+                    ></path>
+                    <path
+                      d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"
+                    ></path>
+                  </svg>
+                </div>
+                <input
+                  class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg  placeholder:text-gray-400 text-sm text-white"
+                  type="{{ input.type }}"
+                  [formControlName]="input.label"
+                  name="{{ input.name }}"
+                  placeholder="{{ input.placeholder }}"
+                  required
+                />
+              </div>
+            </ng-container>
+            }
+          </div>
+
+          <!-- validations -->
+          @if (form.get(input.label)?.touched) {
+            @for (validator of input.validators; track validator.type) {
+              @if (form.get(input.label)?.errors?.[validator.type]) {
+                <span class="text-xs text-red-600 font-medium">
+                  {{ validator.message }}
+                </span>
+              }
+            }
+          }
+          }
+
+          <button
+            type="submit"
+            class="w-full py-3 mt-3 px-4 bg-purple-600 cursor-pointer hover:bg-purple-700 text-white font-medium rounded-lg shadow-md transition-all duration-200 transform hover:scale-[1.01] focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-50"
+          >
+            {{ isRegisterMode ? "Registrarse" : "Iniciar sesión" }}
+          </button>
+
+          <div class="text-center text-sm text-gray-500 mt-4">
+            {{
+              isRegisterMode
+                ? "¿Ya tienes una cuenta?"
+                : "¿No tienes una cuenta?"
+            }}
+            <span
+              class="text-purple-600 hover:text-purple-800 font-medium cursor-pointer"
+              (click)="changeMode(!isRegisterMode)"
+            >
+              {{ isRegisterMode ? "Inicia sesión" : "Regístrate" }}
+            </span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
   <div class="hidden lg:flex w-1/2 items-center justify-center relative">
     <div
       class="relative z-10 w-full h-full flex items-center justify-center p-12"
     >
       <app-animation-login></app-animation-login>
-    </div>
-  </div>
-
-  <!-- form -->
-  <div class="w-full lg:w-1/2 flex items-center justify-center">
-    <div class="w-full max-w-md">
-      <div class="p-10">
-        <div class="flex flex-col items-center">
-          <h2 class="text-3xl font-semibold text-gray-100 mb-2">
-            {{ handle ? "Bienvenido de vuelta" : "Crea tu cuenta" }}
-          </h2>
-          <p class="text-gray-400 text-sm">
-            {{
-              handle ? "Ingresa tus credenciales" : "Comienza tu experiencia"
-            }}
-          </p>
-        </div>
-
-        <form
-          [formGroup]="form"
-          (ngSubmit)="handle ? login() : signup()"
-          class="space-y-5"
-        >
-          <div *ngFor="let input of inputList">
-            <label
-              for="email"
-              class="text-sm font-medium text-gray-600 block mb-1"
-              >{{ input.label }}</label
-            >
-            <div class="relative">
-              <div
-                class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
-              >
-                <svg
-                  class="h-5 w-5 text-gray-400"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"
-                  ></path>
-                  <path
-                    d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"
-                  ></path>
-                </svg>
-              </div>
-              <input
-                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all duration-200 placeholder:text-gray-400 text-sm"
-                type="{{ input.type }}"
-                formControlName="{{ input.label }}"
-                name="{{ input.name }}"
-                placeholder="{{ input.placeholder }}"
-                required
-              />
-            </div>
-          </div>
-
-          <!-- validations -->
-          <div class="" *ngIf="form.get('email')?.touched">
-            <span
-              class="text-xs text-red-600 font-medium"
-              *ngIf="form.get('email')?.errors?.['required']"
-            >
-              Email es requerido
-            </span>
-            <span
-              class="text-xs text-red-600 font-medium"
-              *ngIf="form.get('email')?.errors?.['email']"
-            >
-              Por favor ingresa un email válido
-            </span>
-          </div>
-
-          <div class="" *ngIf="form.get('password')?.touched">
-            <span
-              class="text-xs text-red-600 font-medium"
-              *ngIf="form.get('password')?.errors?.['required']"
-            >
-              Contraseña es requerida
-            </span>
-            <span
-              class="text-xs text-red-600 font-medium"
-              *ngIf="form.get('password')?.errors?.['minlength']"
-            >
-              La contraseña debe tener al menos 6 caracteres
-            </span>
-          </div>
-
-          <button
-            type="submit"
-            class="w-full py-3 px-4 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg shadow-md transition-all duration-200 transform hover:scale-[1.01] focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-50"
-          >
-            {{ handle ? "Iniciar sesión" : "Registrarse" }}
-          </button>
-
-          <div class="text-center text-sm text-gray-500 mt-4">
-            {{ handle ? "¿No tienes una cuenta?" : "¿Ya tienes una cuenta?" }}
-            <a
-              href="#"
-              class="text-purple-600 hover:text-purple-800 font-medium"
-              (click)="handle = !handle"
-            >
-              {{ handle ? "Regístrate" : "Inicia sesión" }}
-            </a>
-          </div>
-        </form>
-      </div>
     </div>
   </div>
 </div>
