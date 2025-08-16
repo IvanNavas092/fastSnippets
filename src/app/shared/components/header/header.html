@@ -1,13 +1,13 @@
 <section class="fixed top-0 left-0 w-full p-6 backdrop-blur-2xl z-20">
   <nav class="flex items-center justify-between">
-    <div class="flex items-center">
+    <div class="flex items-center cursor-pointer" (click)="backToHome()">
       <app-logo></app-logo>
     </div>
 
     <div class="flex items-center gap-4">
       <a
         (click)="navigateToLogin()"
-        class="text-gray-100 hover:underline transition-colors"
+        class="text-gray-100 hover:underline transition-colors  cursor-pointer"
       >
         Login
       </a>
