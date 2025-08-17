@@ -1,27 +1,9 @@
-export interface User {
-  name: string;
-  email: string;
-  password: string;
-  avatar: string;
-  favourites: Favourite[];
-}
-
-export interface Favourite {
-  id: string;
-  snippet_id: string;
-  date_saved: Date;
-  note: string;
-}
-
-export interface Snippet {
-  name: string;
-  description: string;
-  code: string;
-}
-
-export interface framework {
-  id: string;
-  name: string;
-  logo?: string;
-  description: string;
+import { Favourite } from "./Snippet";
+export interface AuthUser {
+  uid: string;
+  username: string | null;
+  email: string | null;
+  password: string | null;
+  avatar: string | null;
+  favourites_id: Favourite[];
 }

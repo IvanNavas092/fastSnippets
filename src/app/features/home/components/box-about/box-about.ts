@@ -1,4 +1,4 @@
-import { aboutItem } from '@/app/core/interfaces/PopularSnippet';
+import { aboutItem } from '@/app/core/interfaces/ItemAbout';
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 

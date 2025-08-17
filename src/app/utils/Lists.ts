@@ -1,5 +1,6 @@
-import { aboutItem, popularSnippet } from "../core/interfaces/PopularSnippet";
-import { framework } from "../core/interfaces/user";
+import { aboutItem } from "../core/interfaces/ItemAbout";
+import { popularSnippet } from "../core/interfaces/Snippet";
+import { framework } from "../core/interfaces/Framework";
 
 export const frameworkList: framework[] = [
   {
@@ -73,3 +74,40 @@ export const aboutList: aboutItem[] = [
     description: 'Deja de buscar en múltiples fuentes. Tenemos lo que necesitas en un solo lugar.'
   }
 ]
+
+// login
+export const inputList: any[] = [
+    {
+      label: 'email',
+      type: 'email',
+      name: 'Email',
+      placeholder: 'tu@email.com',
+      value: '',
+      validators: [
+        { type: 'required', message: 'Email es requerido' },
+        { type: 'email', message: 'Por favor ingresa un email válido' }
+      ]
+    },
+    {
+      label: 'username',
+      type: 'text',
+      name: 'Username',
+      placeholder: 'Yourname',
+      value: '',
+      validators: [
+        { type: 'required', message: 'El nombre de usuario es requerido' },
+        { type: 'minlength', message: 'El nombre de usuario debe tener al menos 6 caracteres' }
+      ]
+    },
+    {
+      label: 'password',
+      type: 'password',
+      name: 'Password',
+      placeholder: '******',
+      value: '',
+      validators: [
+        { type: 'required', message: 'La contraseña es requerida' },
+        { type: 'minlength', message: 'La contraseña debe tener al menos 6 caracteres' }
+      ]
+    },
+  ];

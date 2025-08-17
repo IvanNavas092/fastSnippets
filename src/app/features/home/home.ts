@@ -5,12 +5,13 @@ import { CircleFrame } from './components/circle-frame/circle-frame';
 import { Hero } from './components/hero/hero';
 import { CardPopularSnippet } from './components/card-popular-snippet/card-popular-snippet';
 // interfaces
-import { aboutItem, popularSnippet } from '@/app/core/interfaces/PopularSnippet';
-import { framework } from '@/app/core/interfaces/user';
+import { aboutItem } from '@/app/core/interfaces/ItemAbout';
+import { framework } from '@/app/core/interfaces/Framework';
 // listas de snippets
 import { frameworkList, popularSnippetList, aboutList } from '@/app/utils/Lists';
 import { BoxAbout } from './components/box-about/box-about';
 import { Cta } from './components/cta/cta';
+import { popularSnippet } from '@/app/core/interfaces/Snippet';
 @Component({
   selector: 'app-home',
   imports: [Header, CircleFrame, CommonModule, Hero, CardPopularSnippet, BoxAbout, Cta],
