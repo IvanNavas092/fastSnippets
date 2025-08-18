@@ -8,9 +8,7 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
   templateUrl: './box-about.html',
 })
-export class BoxAbout implements OnInit {
+export class BoxAbout {
   @Input() item!: aboutItem;
-  ngOnInit(): void {
-    console.log(this.item);
-  }
+
 }

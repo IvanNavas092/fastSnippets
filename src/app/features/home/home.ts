@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Header } from '@/app/shared/components/header/header';
 import { CircleFrame } from './components/circle-frame/circle-frame';
 import { Hero } from './components/hero/hero';
 import { CardPopularSnippet } from './components/card-popular-snippet/card-popular-snippet';
@@ -14,7 +13,7 @@ import { Cta } from './components/cta/cta';
 import { popularSnippet } from '@/app/core/interfaces/Snippet';
 @Component({
   selector: 'app-home',
-  imports: [Header, CircleFrame, CommonModule, Hero, CardPopularSnippet, BoxAbout, Cta],
+  imports: [CircleFrame, CommonModule, Hero, CardPopularSnippet, BoxAbout, Cta],
   templateUrl: './home.html',
 })
 export class Home  {

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { Logo } from '../logo/logo';
+import { AuthService } from '@/app/core/services/authService';
+import { AuthUser } from '@/app/core/interfaces/user';
 
 @Component({
   selector: 'app-header',
@@ -9,12 +11,33 @@ import { Logo } from '../logo/logo';
   templateUrl: './header.html',
 })
 export class Header {
-  constructor(private router: Router) {}
+navigateToCreateSnippet() {
+    this.router.navigate(['/snippets']);
+  }
+  currentUser: AuthUser | null = null;
+  isLoggedIn: boolean = false;
+
+  constructor(private router: Router, private authService: AuthService) {
+    this.authService.currentUser$.subscribe((user) => {
+      this.currentUser = user;
+      this.isLoggedIn = !!user;
+    });
+  }
 
   navigateToLogin() {
     this.router.navigate(['login']);
   }
   backToHome() {
     this.router.navigate(['/']);
+  }
+
+  async logout() {
+    console.log('Logout');
+    try {
+      await this.authService.logout();
+      this.backToHome();
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
   }
 }

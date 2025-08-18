@@ -16,11 +16,9 @@ export class CardPopularSnippet {
   copyCode(code: string): void {
     navigator.clipboard.writeText(code);
     this.copied = true;
-    console.log(this.copied);
 
     setTimeout(() => {
       this.copied = false;
-      console.log(this.copied);
     }, 3000);
   }
 }

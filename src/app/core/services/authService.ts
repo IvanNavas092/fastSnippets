@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
 import {
   Auth,
   signInWithEmailAndPassword,
@@ -8,7 +7,7 @@ import {
   User,
   updateProfile,
 } from '@angular/fire/auth';
-import { onAuthStateChanged } from 'firebase/auth'; // O usa 'user' de @angular/fire/auth
+import { onAuthStateChanged } from 'firebase/auth';
 import { BehaviorSubject } from 'rxjs';
 import { AuthUser } from '../interfaces/user';
 import { FirebaseService } from './firebaseService';
@@ -21,22 +20,25 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<AuthUser | null>(null);
   currentUser$ = this.currentUserSubject.asObservable();
 
-
-  constructor(private firebaseService: FirebaseService,  private afAuth: Auth) {
-    
-      onAuthStateChanged(this.afAuth, (user) => {
-        const mappedUser = user ? this.mapAuthUser(user) : null;
-        this.currentUserSubject.next(mappedUser);
-      });
-      console.log('AuthService: Running in browser, Auth initialized.');
-    }
+  constructor(private firebaseService: FirebaseService, private afAuth: Auth) {
+    onAuthStateChanged(this.afAuth, (user) => {
+      console.log('ONAUTHSTATECHANGED: User:', user);
+      const mappedUser = user ? this.mapAuthUser(user) : null;
+      this.currentUserSubject.next(mappedUser);
+    });
+    console.log('AuthService: Running in browser, Auth initialized.');
+  }
 
   // Asegura que todas tus funciones de Auth manejen el caso de que 'this.auth' sea null
   async signIn(email: string, password: string) {
     try {
-      const userCredential = await signInWithEmailAndPassword(this.afAuth, email, password);
-      console.log('Usuario ha iniciado sesión correctamente');
+      const userCredential = await signInWithEmailAndPassword(
+        this.afAuth,
+        email,
+        password
+      );
       this.currentUserSubject.next(this.mapAuthUser(userCredential.user));
+      console.log('Usuario ha iniciado sesión correctamente');
       console.log('Usuario:', this.currentUserSubject.value);
       return userCredential;
     } catch (error) {
@@ -47,7 +49,11 @@ export class AuthService {
 
   async signup(email: string, password: string, username?: string) {
     try {
-      const userCredential = await createUserWithEmailAndPassword(this.afAuth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(
+        this.afAuth,
+        email,
+        password
+      );
       // Si se proporciona un nombre de usuario, podríamos actualizar el perfil del usuario
       // o almacenarlo en Firestore si es necesario
       if (username && userCredential.user) {
@@ -62,8 +68,10 @@ export class AuthService {
     }
   }
 
-  async signOut() {
-    return signOut(this.afAuth);
+  async logout() {
+    await signOut(this.afAuth);
+    this.currentUserSubject.next(null);
+    console.log('Usuario desconectado');
   }
 
   getCurrentUser() {
@@ -78,10 +86,11 @@ export class AuthService {
     return {
       uid: user.uid,
       email: user.email,
-      username: user.displayName,
-      avatar: user.photoURL,
-      password: null,
-      favourites_id: [],
+      displayName: user.displayName,
+      photoURL: user.photoURL,
+      phoneNumber: user.phoneNumber,
+      isAnonymous: user.isAnonymous,
+      creationTime: user.metadata.creationTime,
     };
   }
 }
