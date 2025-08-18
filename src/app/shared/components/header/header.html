@@ -3,16 +3,26 @@
     <div class="flex items-center cursor-pointer" (click)="backToHome()">
       <app-logo></app-logo>
     </div>
+    <div class="flex items-center cursor-pointer gap-6" (click)="backToHome()">
+      <a class="text-white" href="">Explorar</a>
+      <a class="text-white" href="">Tus snippets</a>
+    </div>
 
-    <div class="flex items-center gap-4">
-      <a
-        (click)="navigateToLogin()"
-        class="text-gray-100 hover:underline transition-colors  cursor-pointer"
+    <div class="flex items-center gap-6">
+      <!-- Login -->
+      <button
+        (click)="isLoggedIn ? logout() : navigateToLogin()"
+        class="relative text-white py-1 font-semibold overflow-hidden group cursor-pointer"
       >
-        Login
-      </a>
-      <a
-        href="Create Snippet"
+        <span class="relative z-10">{{ isLoggedIn ? "Logout" : "Login" }}</span>
+        <span
+          class="absolute left-0 bottom-0 h-[2px] w-0 bg-purple-600 transition-all duration-100 group-hover:w-full"
+        ></span>
+      </button>
+
+      <!-- Create Snippet -->
+      <button
+        (click)="navigateToCreateSnippet()"
         class="flex items-center justify-center w-10 h-10 rounded-full bg-purple-600 hover:bg-purple-700 transition-colors"
       >
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -23,7 +33,7 @@
             stroke-linecap="round"
           />
         </svg>
-      </a>
+      </button>
     </div>
   </nav>
 </section>

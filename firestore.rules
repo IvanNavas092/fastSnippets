@@ -1,19 +1,18 @@
 rules_version = '2';
-
 service cloud.firestore {
   match /databases/{database}/documents {
+    // Regla para la colección de usuarios
+    match /users/{userId} {
+      // Un usuario solo puede leer y escribir su propio documento
+      allow read, update, delete: if request.auth.uid == userId;
+      // Cualquier usuario autenticado puede crear su propio documento de usuario
+      allow create: if request.auth.uid != null;
 
-    // This rule allows anyone with your Firestore database reference to view, edit,
-    // and delete all data in your Firestore database. It is useful for getting
-    // started, but it is configured to expire after 30 days because it
-    // leaves your app open to attackers. At that time, all client
-    // requests to your Firestore database will be denied.
-    //
-    // Make sure to write security rules for your app before that time, or else
-    // all client requests to your Firestore database will be denied until you Update
-    // your rules
-    match /{document=**} {
-      allow read, write: if request.time < timestamp.date(2025, 8, 30);
+      // Si usas una subcolección para favoritos:
+      match /favourites_snippets/{snippetId} {
+        // Un usuario solo puede leer y escribir sus propios snippets favoritos
+        allow read, write: if request.auth.uid == userId;
+      }
     }
   }
 }

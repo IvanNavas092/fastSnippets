@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { popularSnippet } from '@/app/core/interfaces/PopularSnippet';
+import { popularSnippet } from '@/app/core/interfaces/Snippet';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -16,11 +16,9 @@ export class CardPopularSnippet {
   copyCode(code: string): void {
     navigator.clipboard.writeText(code);
     this.copied = true;
-    console.log(this.copied);
 
     setTimeout(() => {
       this.copied = false;
-      console.log(this.copied);
     }, 3000);
   }
 }

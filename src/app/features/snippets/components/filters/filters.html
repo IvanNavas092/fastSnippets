@@ -1,0 +1,35 @@
+<div class="flex flex-col space-y-4">
+  <div class="relative">
+    <input
+      class="px-10 py-3 text-white w-full bg-neutral-700 rounded-lg"
+      type="text"
+      placeholder="Buscar snippet por titulo, tag o framework..."
+    />
+    <svg
+      class="w-6 h-6 text-purple-600 absolute left-2 top-1/2 -translate-y-1/2"
+      aria-hidden="true"
+      width="24"
+      height="24"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-width="2"
+        d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
+      />
+    </svg>
+  </div>
+
+  <div class="flex gap-4">
+    @for (item of filtersList; track item.id) {
+    <app-bubble-framework
+      [title]="item.name"
+      [selected]="selectedFramework === item.name"
+      (onSelect)="onFrameworkSelected($event)"
+    >
+    </app-bubble-framework>
+    }
+  </div>
+</div>
