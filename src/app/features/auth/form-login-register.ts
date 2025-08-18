@@ -1,4 +1,4 @@
-import { AuthService } from '@/app/core/services/auth';
+import { AuthService } from '@/app/core/services/authService';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
@@ -10,6 +10,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { inputList } from '@/app/utils/Lists';
 
 @Component({
   selector: 'app-auth',
@@ -26,6 +27,7 @@ import {
 export class FormLoginRegisterComponent implements OnInit {
   form!: FormGroup;
   isRegisterMode: boolean = false;
+  inputList = inputList;
 
   constructor(
     private fb: FormBuilder,
@@ -40,42 +42,6 @@ export class FormLoginRegisterComponent implements OnInit {
     // Aplicar el modo actual después de inicializar el formulario
     this.changeMode(this.isRegisterMode);
   }
-
-  inputList: any[] = [
-    {
-      label: 'email',
-      type: 'email',
-      name: 'Email',
-      placeholder: 'tu@email.com',
-      value: '',
-      validators: [
-        { type: 'required', message: 'Email es requerido' },
-        { type: 'email', message: 'Por favor ingresa un email válido' }
-      ]
-    },
-    {
-      label: 'username',
-      type: 'text',
-      name: 'Username',
-      placeholder: 'Yourname',
-      value: '',
-      validators: [
-        { type: 'required', message: 'El nombre de usuario es requerido' },
-        { type: 'minlength', message: 'El nombre de usuario debe tener al menos 6 caracteres' }
-      ]
-    },
-    {
-      label: 'password',
-      type: 'password',
-      name: 'Password',
-      placeholder: '******',
-      value: '',
-      validators: [
-        { type: 'required', message: 'La contraseña es requerida' },
-        { type: 'minlength', message: 'La contraseña debe tener al menos 6 caracteres' }
-      ]
-    },
-  ];
 
   login() {
     // Siempre marcar los campos como tocados para mostrar validaciones

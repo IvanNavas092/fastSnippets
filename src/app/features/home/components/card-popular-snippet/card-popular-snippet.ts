@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { popularSnippet } from '@/app/core/interfaces/ItemAbout';
+import { popularSnippet } from '@/app/core/interfaces/Snippet';
 import { CommonModule } from '@angular/common';
 
 @Component({

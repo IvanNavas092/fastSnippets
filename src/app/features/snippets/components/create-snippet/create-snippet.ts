@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Firebase } from '@/app/core/services/firebaseService';
+import { FirebaseService } from '@/app/core/services/firebaseService';
 import { Snippet } from '@/app/core/interfaces/Snippet';
 @Component({
   selector: 'app-create-snippet',
@@ -12,7 +12,7 @@ export class CreateSnippet {
     description: '',
     code: '',
   };
-  constructor(private firebase: Firebase) {}
+  constructor(private firebase: FirebaseService) {}
 
   createSnippet() {
     this.firebase.createSnippet(this.snippet).then((res) => {
