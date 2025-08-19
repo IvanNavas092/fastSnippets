@@ -1,14 +1,15 @@
 export interface Snippet {
-  name: string;
-  description: string;
-  code: string;
+  icon: number;
+  framework: string;
+  code: string[];
+  actions: string[];
 }
 
-export interface popularSnippet {
+export interface PopularSnippet {
   icon: string;
   framework: string;
-  code: string;
-  action: string;
+  code: string[];
+  actions: string[];
 }
 
 export interface Favourite {

@@ -7,18 +7,21 @@ import { CardPopularSnippet } from './components/card-popular-snippet/card-popul
 import { aboutItem } from '@/app/core/interfaces/ItemAbout';
 import { framework } from '@/app/core/interfaces/Framework';
 // listas de snippets
-import { frameworkList, popularSnippetList, aboutList } from '@/app/utils/Lists';
+import {
+  frameworkList,
+  popularSnippetList,
+  aboutList,
+} from '@/app/utils/Lists';
 import { BoxAbout } from './components/box-about/box-about';
 import { Cta } from './components/cta/cta';
-import { popularSnippet } from '@/app/core/interfaces/Snippet';
+import { PopularSnippet } from '@/app/core/interfaces/Snippet';
 @Component({
   selector: 'app-home',
   imports: [CircleFrame, CommonModule, Hero, CardPopularSnippet, BoxAbout, Cta],
   templateUrl: './home.html',
 })
-export class Home  {
+export class Home {
   frameworkList: framework[] = frameworkList;
-  popularSnippetList: popularSnippet[] = popularSnippetList;
+  popularSnippetList: PopularSnippet[] = popularSnippetList;
   aboutList: aboutItem[] = aboutList;
 }
-

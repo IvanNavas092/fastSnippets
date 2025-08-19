@@ -1,24 +1,13 @@
 import { Component, Input } from '@angular/core';
-import { popularSnippet } from '@/app/core/interfaces/Snippet';
+import { PopularSnippet } from '@/app/core/interfaces/Snippet';
 import { CommonModule } from '@angular/common';
+import { CopyButton } from '@/app/shared/components/copy-button/copy-button';
 
 @Component({
   selector: 'app-card-popular-snippet',
-  imports: [CommonModule],
+  imports: [CommonModule, CopyButton],
   templateUrl: './card-popular-snippet.html',
 })
-
 export class CardPopularSnippet {
-  @Input() item!: popularSnippet;
-
-  copied: boolean = false;
-
-  copyCode(code: string): void {
-    navigator.clipboard.writeText(code);
-    this.copied = true;
-
-    setTimeout(() => {
-      this.copied = false;
-    }, 3000);
-  }
+  @Input() item!: PopularSnippet;
 }

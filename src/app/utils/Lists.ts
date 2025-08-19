@@ -1,5 +1,5 @@
 import { aboutItem } from '../core/interfaces/ItemAbout';
-import { popularSnippet } from '../core/interfaces/Snippet';
+import { PopularSnippet, Snippet } from '../core/interfaces/Snippet';
 import { framework } from '../core/interfaces/Framework';
 
 export const frameworkList: framework[] = [
@@ -29,33 +29,42 @@ export const frameworkList: framework[] = [
   },
 ];
 
-export const popularSnippetList: popularSnippet[] = [
+export const popularSnippetList: PopularSnippet[] = [
   {
     icon: 'angular.svg',
     framework: 'Angular',
-    code: 'ng generate component nombre-componente --skip-tests --inline-style',
-    action:
+    code: [
+      'ng generate component nombre-componente --skip-tests --inline-style',
+    ],
+    actions: [
       'Genera un componente Angular sin archivos de prueba, con template y estilos inline',
+    ],
   },
   {
     icon: 'react.svg',
     framework: 'React',
-    code: 'npx create-react-app my-app --template typescript',
-    action: 'Crea una nueva aplicación React con TypeScript configurado',
+    code: ['npx create-react-app my-app --template typescript'],
+    actions: ['Crea una nueva aplicación React con TypeScript configurado'],
   },
   {
     icon: 'vue.svg',
     framework: 'Vue.js',
-    code: 'npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init',
-    action:
+    code: [
+      'npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init',
+    ],
+    actions: [
       'Instala Tailwind CSS con sus dependencias y genera el archivo de configuración',
+    ],
   },
   {
     icon: 'svelte.svg',
     framework: 'Svelte',
-    code: 'npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init',
-    action:
+    code: [
+      'npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init',
+    ],
+    actions: [
       'Instala Tailwind CSS con sus dependencias y genera el archivo de configuración',
+    ],
   },
 ];
 

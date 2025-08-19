@@ -1,0 +1,64 @@
+<article
+  class="p-4 space-y-3 flex flex-col bg-[#18181b] rounded-lg hover:shadow-sm hover:shadow-purple-100 transition-shadow duration-200"
+>
+  <!-- header -> icon + framework + favourite -->
+  <header class="flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <img
+        src="./{{ detectIcon(snippet.icon) }}"
+        class="w-12 h-12 drop-shadow-xl/90"
+        [ngClass]="{
+          'drop-shadow-red-600': snippet.framework === 'Angular',
+          'drop-shadow-blue-600': snippet.framework === 'React',
+          'drop-shadow-green-600': snippet.framework === 'Vue',
+          'drop-shadow-orange-600': snippet.framework === 'Svelte'
+        }"
+        alt="snippet.framework"
+      />
+      <span class="text-xl font-semibold text-white">
+        {{ snippet.framework }}
+      </span>
+    </div>
+    <button (click)="emitFavourite(snippet)">
+      <svg
+        class="w-6 h-6 duration-200 transition-all"
+        [ngClass]="{
+          'text-red-500': toggleFavourite,
+          'text-gray-400': !toggleFavourite
+        }"
+        aria-hidden="true"
+        width="24"
+        height="24"
+        [attr.fill]="toggleFavourite ? 'currentColor' : 'none'"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z"
+        />
+      </svg>
+    </button>
+  </header>
+
+  <!-- code -->
+  <div class="p-3 relative bg-white rounded-lg overflow-x-auto">
+    @if (snippet.code && snippet.code.length > 0) {
+    <pre><code class="text-purple-600 font-mono" [innerHTML]="snippet.code[0] | highlight"></code></pre>
+    } @else {
+    <pre><code class="bg-gray-100 text-black">No hay código disponible</code></pre>
+    }
+    <app-copy-button [code]="snippet.code"></app-copy-button>
+  </div>
+
+  <!-- actions -->
+  <div class="mt">
+    @if (snippet.actions && snippet.actions.length > 0) {
+    <p class="text-sm text-gray-400">{{ snippet.actions[0] }}</p>
+    } @else {
+    <p class="text-sm text-gray-400 italic">No hay descripción disponible</p>
+    }
+  </div>
+</article>
