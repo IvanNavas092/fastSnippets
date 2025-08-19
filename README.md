@@ -23,12 +23,12 @@ Soporta frameworks como **Angular, React, Vue y Svelte**, mostrando fragmentos d
 ## 🖼️ Screenshots
 
 ### 🔹 Home
-![Dashboard Screenshot](<img width="1893" height="946" alt="image" src="https://github.com/user-attachments/assets/bd8eee53-5321-4d73-84f6-dfb02e3a93ab" />
-)
+<img width="1893" height="946" alt="image" src="https://github.com/user-attachments/assets/2a7831f8-00a5-45ca-bdf6-ec663de8b33a" />
+
 
 ### 🔹 Home_1
-![Snippet Modal Screenshot](<img width="1894" height="951" alt="image" src="https://github.com/user-attachments/assets/89d11030-788d-4def-b70e-c34174a6f4b3" />
-)
+<img width="1894" height="951" alt="image" src="https://github.com/user-attachments/assets/9f6f90c7-14e3-4b23-8912-cbcd5f67be75" />
+
 
 
 ---
