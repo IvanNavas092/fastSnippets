@@ -62,4 +62,11 @@ export class Snippets implements OnInit {
   favouriteSnippet(snippet: Snippet) {
     console.log('Favorito:', snippet);
   }
+
+  onSearch(search: string) {
+    console.log('onSearch', search);
+    this.AuxSnippetList = this.allSnippets.filter((s) =>
+      s.title.toLowerCase().includes(search.toLowerCase())
+    );
+  }
 }
