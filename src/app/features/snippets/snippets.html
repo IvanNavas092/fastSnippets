@@ -17,6 +17,7 @@
       <app-box-snippet
         [snippet]="item"
         (favourite)="favouriteSnippet($event)"
+        (showModal)="openModal($event)"
       ></app-box-snippet>
       }
     </div>
@@ -32,4 +33,11 @@
     </div>
     }
   </div>
+
+  @if (showModal) {
+  <app-modal-snippet
+    [snippet]="selectedSnippet"
+    (disabledModal)="closeModal()"
+  ></app-modal-snippet>
+  }
 </div>

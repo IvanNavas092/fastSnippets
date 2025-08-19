@@ -1,0 +1,13 @@
+<div class="grid grid-cols-2 gap-4">
+  @for (code of snippet.code; track $index; let i = $index) {
+  <div>
+    <span class="text-2xl font-semibold text-white mt-1"
+      >Paso: {{ i + 1 }}</span
+    >
+    <article class="bg-white rounded-lg overflow-x-auto p-3 relative">
+      <pre><code class="text-purple-600 font-mono" [innerHTML]="snippet.code[i] | highlight"></code></pre>
+      <app-copy-button [code]="snippet.code[i]"></app-copy-button>
+    </article>
+  </div>
+  }
+</div>

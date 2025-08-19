@@ -5,10 +5,11 @@ import { popularSnippetList } from '@/app/utils/Lists';
 import { BoxSnippet } from './components/box-snippet/box-snippet';
 import { FirebaseService } from '@/app/core/services/firebaseService';
 import { Snippet } from '@/app/core/interfaces/Snippet';
+import { ModalSnippet } from './components/modal-snippet/modal-snippet';
 @Component({
   selector: 'app-snippets',
   standalone: true,
-  imports: [Filters, CommonModule, BoxSnippet],
+  imports: [Filters, CommonModule, BoxSnippet, ModalSnippet],
   templateUrl: './snippets.html',
 })
 export class Snippets implements OnInit {
@@ -16,6 +17,8 @@ export class Snippets implements OnInit {
   allSnippets: Snippet[] = [];
   selectedFramework: string = 'Todos';
   isLoading: boolean = true;
+  showModal: boolean = false;
+  selectedSnippet!: Snippet;
 
   constructor(
     private firebaseService: FirebaseService,
@@ -68,5 +71,15 @@ export class Snippets implements OnInit {
     this.AuxSnippetList = this.allSnippets.filter((s) =>
       s.title.toLowerCase().includes(search.toLowerCase())
     );
+  }
+
+  openModal(selected: Snippet) {
+    this.selectedSnippet = selected;
+    this.showModal = true;
+    document.body.classList.add('no-scroll');
+  }
+
+  closeModal(): void {
+    this.showModal = false;
   }
 }
