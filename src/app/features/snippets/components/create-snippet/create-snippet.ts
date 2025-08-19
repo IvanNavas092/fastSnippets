@@ -8,9 +8,10 @@ import { Snippet } from '@/app/core/interfaces/Snippet';
 })
 export class CreateSnippet {
   snippet: Snippet = {
-    name: '',
-    description: '',
-    code: '',
+    icon: 0,
+    framework: '',
+    actions: [''],
+    code: [''],
   };
   constructor(private firebase: FirebaseService) {}
 

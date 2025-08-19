@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { filtersList } from '@/app/utils/Lists';
 import { BubbleFramework } from '../bubble-framework/bubble-framework';
 @Component({
@@ -10,10 +10,14 @@ import { BubbleFramework } from '../bubble-framework/bubble-framework';
 })
 export class Filters {
   filtersList = filtersList;
-  selectedFramework: string = '';
+  @Input() selectedFramework: string = 'Todos';
+
+  @Output() frameworkSelected = new EventEmitter<string>();
 
   onFrameworkSelected(frameworkName: string) {
     this.selectedFramework = frameworkName;
-    console.log('Framework seleccionado:', frameworkName);
+
+    // emit for parent component
+    this.frameworkSelected.emit(frameworkName);
   }
 }

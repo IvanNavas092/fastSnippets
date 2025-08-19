@@ -17,40 +17,10 @@
       class="relative flex flex-col px-4 py-3 rounded mb-2 bg-white transition-all duration-50"
     >
       <code class="font-mono text-sm text-gray-800">{{ item.code }}</code>
-      <button
-        (click)="copyCode(item.code)"
-        class="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer w-8 h-8 flex items-center justify-center"
-      >
-        @if (!copied) {
-        <svg
-          class="w-6 h-6 text-gray-800"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke="currentColor"
-            stroke-linejoin="round"
-            stroke-width="1"
-            d="M9 8v3a1 1 0 0 1-1 1H5m11 4h2a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1h-7a1 1 0 0 0-1 1v1m4 3v10a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-7.13a1 1 0 0 1 .24-.65L7.7 8.35A1 1 0 0 1 8.46 8H13a1 1 0 0 1 1 1Z"
-          />
-        </svg>
-        } @else {
-        <video
-          src="/check.mp4"
-          class="w-7 h-7"
-          autoplay
-          muted
-          playsinline
-        ></video>
-        }
-      </button>
+      <app-copy-button [code]="item.code"></app-copy-button>
     </div>
     <div>
-      <span class="text-sm text-gray-100">{{ item.action }}</span>
+      <span class="text-sm text-gray-100">{{ item.actions[0] }}</span>
     </div>
   </div>
 </article>
