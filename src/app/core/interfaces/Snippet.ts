@@ -1,4 +1,5 @@
 export interface Snippet {
+  title: string;
   icon: number;
   framework: string;
   code: string[];
