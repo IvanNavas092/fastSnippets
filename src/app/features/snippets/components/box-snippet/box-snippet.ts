@@ -12,6 +12,7 @@ import { CopyButton } from '@/app/shared/components/copy-button/copy-button';
 export class BoxSnippet {
   @Input() snippet!: Snippet;
   @Output() favourite = new EventEmitter<Snippet>();
+  @Output() showModal = new EventEmitter<Snippet>();
   toggleFavourite: boolean = false;
 
   emitFavourite(snippet: Snippet) {
@@ -31,5 +32,9 @@ export class BoxSnippet {
     } else {
       return 'unkown.svg';
     }
+  }
+
+  openModal() {
+    this.showModal.emit(this.snippet);
   }
 }

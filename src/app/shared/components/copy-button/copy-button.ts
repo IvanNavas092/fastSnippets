@@ -8,7 +8,7 @@ import { Component, Input } from '@angular/core';
 })
 export class CopyButton {
   // code to copy
-  @Input() code!: string[];
+  @Input() code!: string;
   copied: boolean = false;
 
   copyCode(code: string): void {
