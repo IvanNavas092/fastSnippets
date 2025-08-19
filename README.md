@@ -1,59 +1,57 @@
-# FastSnippets
+# 🚀 FastSnippets En proceso
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.4.
+![FastSnippets Logo](<img width="188" height="33" alt="image" src="https://github.com/user-attachments/assets/526cdde8-e358-44d9-85da-ea8f734a9f24" />
+)
 
-## Development server
+**FastSnippets** es una plataforma web para **buscar, filtrar y guardar snippets de código** de manera rápida y sencilla.  
+Soporta frameworks como **Angular, React, Vue y Svelte**, mostrando fragmentos de código con **resaltado de sintaxis** y la posibilidad de guardarlos en favoritos ❤️.
 
-To start a local development server, run:
+---
 
-```bash
-ng serve
-```
+## ✨ Características
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- 🔍 **Buscador avanzado**: encuentra snippets por nombre, framework o descripción.  
+- 🎨 **Resaltado de código** con [Highlight.js](https://highlightjs.org/).  
+- 📂 **Organización por frameworks**: Angular, React, Vue y Svelte.  
+- ❤️ **Favoritos**: marca tus snippets más usados.  
+- 📱 **Diseño responsive** con TailwindCSS.  
+- ⚡ **Firebase** como base de datos para guardar y cargar snippets.  
+- 🎬 **Animaciones modernas** al abrir snippets en modal.  
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 🖼️ Screenshots
 
-```bash
-ng generate component component-name
-```
+### 🔹 Home
+![Dashboard Screenshot](<img width="1893" height="946" alt="image" src="https://github.com/user-attachments/assets/bd8eee53-5321-4d73-84f6-dfb02e3a93ab" />
+)
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### 🔹 Home_1
+![Snippet Modal Screenshot](<img width="1894" height="951" alt="image" src="https://github.com/user-attachments/assets/89d11030-788d-4def-b70e-c34174a6f4b3" />
+)
 
-```bash
-ng generate --help
-```
 
-## Building
+---
 
-To build the project run:
+## 🛠️ Tecnologías utilizadas
 
-```bash
-ng build
-```
+- [Angular 20](https://angular.dev/)  
+- [TailwindCSS](https://tailwindcss.com/)  
+- [Highlight.js](https://highlightjs.org/)  
+- [Firebase](https://firebase.google.com/)  
+- [Angular CDK Overlay](https://material.angular.io/cdk/overlay/overview) para modales animados  
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+---
 
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+## 📦 Instalación
 
 ```bash
-ng e2e
-```
+# Clonar repositorio
+git clone https://github.com/tuusuario/fastsnippets.git
+cd fastsnippets
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+# Instalar dependencias
+npm install
 
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+# Iniciar servidor
+ng serve -o
