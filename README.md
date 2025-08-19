@@ -1,7 +1,7 @@
 # 🚀 FastSnippets En proceso
 
-![FastSnippets Logo](<img width="188" height="33" alt="image" src="https://github.com/user-attachments/assets/526cdde8-e358-44d9-85da-ea8f734a9f24" />
-)
+<img width="188" height="33" alt="image" src="https://github.com/user-attachments/assets/bbdb97ce-9416-44d3-affe-e23468253063" />
+
 
 **FastSnippets** es una plataforma web para **buscar, filtrar y guardar snippets de código** de manera rápida y sencilla.  
 Soporta frameworks como **Angular, React, Vue y Svelte**, mostrando fragmentos de código con **resaltado de sintaxis** y la posibilidad de guardarlos en favoritos ❤️.
