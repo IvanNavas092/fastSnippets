@@ -8,6 +8,7 @@ import { Snippet } from '@/app/core/interfaces/Snippet';
 })
 export class CreateSnippet {
   snippet: Snippet = {
+    uid: '',
     title: '',
     icon: 0,
     framework: '',

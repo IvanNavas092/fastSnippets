@@ -23,13 +23,13 @@
       <svg
         class="w-6 h-6 duration-200 transition-all"
         [ngClass]="{
-          'text-red-500': toggleFavourite,
-          'text-gray-400': !toggleFavourite
+          'text-red-500': toggleFavourite || isFavourite,
+          'text-gray-400': !toggleFavourite && !isFavourite
         }"
         aria-hidden="true"
         width="24"
         height="24"
-        [attr.fill]="toggleFavourite ? 'currentColor' : 'none'"
+        [attr.fill]="toggleFavourite || isFavourite ? 'currentColor' : 'none'"
         viewBox="0 0 24 24"
       >
         <path
@@ -43,7 +43,7 @@
     </button>
   </header>
   <div>
-    <p class="text-xl font-semibold text-gray-100">{{ snippet.title }}</p>
+    <p class="text-xl font-semibold  text-gray-100">{{ snippet.title }}</p>
   </div>
 
   <!-- code -->
