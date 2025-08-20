@@ -1,11 +1,17 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  HostListener,
+  OnInit,
+} from '@angular/core';
 import { Filters } from './components/filters/filters';
 import { CommonModule } from '@angular/common';
-import { popularSnippetList } from '@/app/utils/Lists';
 import { BoxSnippet } from './components/box-snippet/box-snippet';
 import { FirebaseService } from '@/app/core/services/firebaseService';
+import { AuthService } from '@/app/core/services/authService';
 import { Snippet } from '@/app/core/interfaces/Snippet';
 import { ModalSnippet } from './components/modal-snippet/modal-snippet';
+import { AuthUser } from '@/app/core/interfaces/user';
 @Component({
   selector: 'app-snippets',
   standalone: true,
@@ -19,14 +25,20 @@ export class Snippets implements OnInit {
   isLoading: boolean = true;
   showModal: boolean = false;
   selectedSnippet!: Snippet;
-
+  currentUser: AuthUser | null = null;
   constructor(
     private firebaseService: FirebaseService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
     this.loadSnippets();
+    this.authService.currentUser$.subscribe((user) => {
+      this.currentUser = user;
+      console.log('currentUser:', this.currentUser);
+    });
+    // this.firebaseService.getUserSnippets(this.currentUser?.uid);
   }
 
   async loadSnippets() {
@@ -81,5 +93,12 @@ export class Snippets implements OnInit {
 
   closeModal(): void {
     this.showModal = false;
+    document.body.classList.remove('no-scroll');
+  }
+
+  @HostListener('document:keydown.escape', ['$event'])
+  onEsc(event: any) {
+    console.log('ESC KEY PRESSED');
+    this.closeModal();
   }
 }

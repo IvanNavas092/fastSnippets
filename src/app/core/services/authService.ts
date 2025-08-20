@@ -74,13 +74,6 @@ export class AuthService {
     console.log('Usuario desconectado');
   }
 
-  getCurrentUser() {
-    this.firebaseService.getUserByUID(this.user!.uid).then((user) => {
-      this.currentUserSubject.next(this.user);
-      console.log('Usuario:', this.currentUserSubject.value);
-    });
-  }
-
   // === Helpers ===
   private mapAuthUser(user: User): AuthUser {
     return {

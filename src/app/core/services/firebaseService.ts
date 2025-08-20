@@ -57,20 +57,35 @@ export class FirebaseService {
     }
   }
 
-  // --------- users collection ----------
-  async getUserByUID(uid: string) {
-    try {
-      const userRef = doc(this.usersCollection, uid);
-      const userSnap = await getDoc(userRef);
-      if (userSnap.exists()) {
-        return userSnap.data() as User;
-      } else {
-        console.log('No se encontró el usuario con UID:', uid);
-        return null;
-      }
-    } catch (err: any) {
-      console.error('Error al obtener usuario por UID:', err);
-      throw err;
-    }
-  }
+  // --------- relation users snippets collection ----------
+  // async getUserSnippets(userId: string | undefined) {
+  //   if (!userId) {
+  //     console.error('No se proporcionó un ID de usuario');
+  //     return;
+  //   }
+  //   const snippetsRef = collection(
+  //     doc(this.fireStore, 'users', userId),
+  //     'snippets'
+  //   );
+  //   const snapshot = await getDocs(snippetsRef);
+
+  //   // Mapear los documentos
+  //   return snapshot.docs.map((doc) => doc.data() as Snippet);
+  // }
+
+  // async createFavourite(snippetId: string, userId: string) {
+
+  //   try {
+  //     const favouriteRef = await addDoc(this.usersCollection
+  //       {
+  //         snippetId: snippetId,
+  //       }
+  //     );
+  //     console.log('Favourite creado con éxito', favouriteRef.id);
+  //     return favouriteRef;
+  //   } catch (err: any) {
+  //     console.error('Error al crear favourite:', err);
+  //     throw err;
+  //   }
+  // }
 }
