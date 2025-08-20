@@ -7,6 +7,7 @@
     <article class="bg-white rounded-lg overflow-x-auto p-3 relative">
       <pre><code class="text-purple-600 font-mono" [innerHTML]="snippet.code[i] | highlight"></code></pre>
       <app-copy-button [code]="snippet.code[i]"></app-copy-button>
+      <p class="text-sm text-green-500">// {{ snippet.actions[i] }}</p>
     </article>
   </div>
   }

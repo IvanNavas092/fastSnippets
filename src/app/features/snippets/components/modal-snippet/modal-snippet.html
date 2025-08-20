@@ -1,23 +1,27 @@
 <section class="z-20 fixed inset-0 flex items-center justify-center">
   <div
-    class="fixed inset-4 bg-gray-900/20 backdrop-blur-xl rounded-2xl p-6 py-24 overflow-auto"
+    class="fixed inset-4 bg-gray-900/20 backdrop-blur-xl rounded-2xl p-6 py-12 overflow-auto"
   >
+    <h2 class="text-4xl font-semibold text-white mb-6 text-center md:text-left">
+      {{ snippet.title }}
+    </h2>
     <app-view-snippet-modal [snippet]="snippet"></app-view-snippet-modal>
     <div class="absolute top-0 right-0 p-4">
-      <button (click)="disabledModal.emit()">
+      <button
+        (click)="disabledModal.emit()"
+        class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-700/50 hover:bg-gray-600/70 transition-colors"
+      >
         <svg
-          class="w-8 h-8 text-gray-800 dark:text-white cursor-pointer"
-          width="24"
-          height="24"
+          class="w-6 h-6 text-white"
           fill="none"
+          stroke="currentColor"
           viewBox="0 0 24 24"
         >
           <path
-            stroke="currentColor"
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="2"
-            d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+            d="M6 18L18 6M6 6l12 12"
           />
         </svg>
       </button>
