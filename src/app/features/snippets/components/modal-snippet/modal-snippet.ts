@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  Output,
+} from '@angular/core';
 import { ViewSnippetModal } from '../view-snippet-modal/view-snippet-modal';
 import { Snippet } from '@/app/core/interfaces/Snippet';
 

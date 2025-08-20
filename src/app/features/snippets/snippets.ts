@@ -1,4 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  HostListener,
+  OnInit,
+} from '@angular/core';
 import { Filters } from './components/filters/filters';
 import { CommonModule } from '@angular/common';
 import { BoxSnippet } from './components/box-snippet/box-snippet';
