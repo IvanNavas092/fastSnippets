@@ -1,4 +1,5 @@
 export interface Snippet {
+  uid: string;
   title: string;
   icon: number;
   framework: string;
@@ -13,9 +14,9 @@ export interface PopularSnippet {
   actions: string[];
 }
 
-export interface Favourite {
-  id: string;
-  snippet_id: string;
-  date_saved: Date;
-  note: string;
+export interface UserSnippet {
+  uid: string;
+  user_uid: string;
+  snippet_uid: string;
+  created_at: Date;
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 // interfaces
 import { User } from '@angular/fire/auth';
-import { Snippet } from '../interfaces/Snippet';
+import { Snippet, UserSnippet } from '../interfaces/Snippet';
 // firebase
 import {
   Firestore,
@@ -12,6 +12,8 @@ import {
   CollectionReference,
   DocumentData,
   getDocs,
+  query,
+  where,
 } from '@angular/fire/firestore';
 
 @Injectable({
@@ -19,12 +21,12 @@ import {
 })
 export class FirebaseService {
   private snippetsCollection: CollectionReference<DocumentData>;
-  private usersCollection: CollectionReference<DocumentData>;
+  private userSnippetsCollection: CollectionReference<DocumentData>;
 
   constructor(private fireStore: Firestore) {
     try {
       this.snippetsCollection = collection(this.fireStore, 'Snippets');
-      this.usersCollection = collection(this.fireStore, 'Users');
+      this.userSnippetsCollection = collection(this.fireStore, 'UsersSnippet');
     } catch (error) {
       console.error('Error al inicializar las colecciones de Firebase:', error);
       throw error;
@@ -43,12 +45,13 @@ export class FirebaseService {
     }
   }
 
+  // --------- get public snippets ---------
   async getSnippets(): Promise<Snippet[]> {
     try {
       const querySnapshot = await getDocs(this.snippetsCollection);
       const snippets: Snippet[] = [];
       querySnapshot.forEach((doc) => {
-        snippets.push(doc.data() as Snippet);
+        snippets.push({ uid: doc.id, ...doc.data() } as Snippet);
       });
       return snippets;
     } catch (err: any) {
@@ -57,19 +60,16 @@ export class FirebaseService {
     }
   }
 
-  // --------- users collection ----------
-  async getUserByUID(uid: string) {
+  // --------- users collection favourites ----------
+  async getSavedSnippetsByUser(user_uid: string): Promise<UserSnippet[]> {
     try {
-      const userRef = doc(this.usersCollection, uid);
-      const userSnap = await getDoc(userRef);
-      if (userSnap.exists()) {
-        return userSnap.data() as User;
-      } else {
-        console.log('No se encontró el usuario con UID:', uid);
-        return null;
-      }
+      const q = query(this.userSnippetsCollection, where('user_uid', "==", user_uid));
+      const querySnapshot = await getDocs(q);
+      const saved: UserSnippet[] = [];
+      querySnapshot.forEach(doc => saved.push(doc.data() as UserSnippet));
+      return saved;
     } catch (err: any) {
-      console.error('Error al obtener usuario por UID:', err);
+      console.error('Error al obtener snippets del usuario:', err);
       throw err;
     }
   }

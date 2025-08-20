@@ -11,6 +11,8 @@ import { CopyButton } from '@/app/shared/components/copy-button/copy-button';
 })
 export class BoxSnippet {
   @Input() snippet!: Snippet;
+  // flag for know if user has favourite snippet
+  @Input() isFavourite!: boolean;
   @Output() favourite = new EventEmitter<Snippet>();
   @Output() showModal = new EventEmitter<Snippet>();
   toggleFavourite: boolean = false;
