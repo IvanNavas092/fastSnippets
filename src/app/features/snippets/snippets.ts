@@ -27,49 +27,51 @@ export class Snippets implements OnInit {
   showModal: boolean = false;
   selectedSnippet!: Snippet;
   CurrentUser: AuthUser | null = null;
+  snippetsLoaded: boolean = false; // Nuevo flag para controlar carga completa
+
 
   constructor(
     private firebaseService: FirebaseService,
     private authService: AuthService,
-    private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.loadSnippets();
-    
+
+    // obtain the user
+    this.authService.currentUser$.subscribe((user) => {
+      this.CurrentUser = user;
+      if (user) {
+        this.loadSavedSnippets(user.uid);
+      }
+    });
+
   }
-
-  async loadSnippets() {
-    try {
-      this.isLoading = true;
-      const data = await this.firebaseService.getSnippets();
-      this.isLoading = false;
-      this.allSnippets = data;
-      // apply filter === 'Todos'
-      this.isLoading = false;
-      this.cdr.detectChanges();
-
-      // obtain snippets user
-      this.authService.currentUser$.subscribe((user) => {
-        this.CurrentUser = user;
-        if (user) {
-          this.loadSavedSnippets();
-        }
-      });
-      
-      
-    } catch (error) {
-      console.error('Error al cargar snippets:', error);
-      this.isLoading = false;
-      this.cdr.detectChanges();
-    }
+  // load snippets publics
+  loadSnippets() {
+    this.isLoading = true;
+    this.firebaseService.getSnippets().subscribe({
+      next: (data) => {
+        console.log('datos',data);
+        this.allSnippets = data; 
+        this.snippetsLoaded = true;
+        this.isLoading = false;
+        // apply filter
+        this.onFrameworkFilter('Todos');
+      },
+      error: (err) => {
+        console.error('Error al cargar snippets:', err);
+        this.snippetsLoaded = true;
+        this.isLoading = false;
+      },
+    });
   }
 
   onFrameworkFilter(framework: string) {
     this.selectedFramework = framework;
 
     if (framework === 'Todos') {
-      this.AuxSnippetList = this.allSnippets;
+      this.AuxSnippetList = [...this.allSnippets];
     } else {
       this.AuxSnippetList = this.allSnippets.filter(
         (snippet) => snippet.framework.toLowerCase() === framework.toLowerCase()
@@ -78,7 +80,24 @@ export class Snippets implements OnInit {
   }
 
   favouriteSnippet(snippet: Snippet) {
-    console.log('Favorito:', snippet);
+    if (!this.CurrentUser) return;
+    console.log(snippet);
+    const alreadySaved = this.detectIfUserSavedSnippet(snippet);
+    console.log('alreadySaved:', alreadySaved);
+    if (alreadySaved) {
+      this.firebaseService.deleteSnippetForUser(this.CurrentUser.uid, snippet.uid).then(() => {
+        this.auxSnippetUser = this.auxSnippetUser.filter((s) => s.snippet_uid !== snippet.uid);
+      });
+    } else {
+      this.firebaseService.saveSnippetForUser(this.CurrentUser.uid, snippet).then(() => {
+        this.auxSnippetUser.push({
+          uid: snippet.uid,
+          user_uid: this.CurrentUser?.uid,
+          snippet_uid: snippet.uid,
+          created_at: new Date(),
+        });
+      });
+    }
   }
 
   onSearch(search: string) {
@@ -95,22 +114,23 @@ export class Snippets implements OnInit {
 
   closeModal(): void {
     this.showModal = false;
+    document.body.classList.remove('no-scroll');
   }
 
-  loadSavedSnippets(): void {
-    this.firebaseService.getSavedSnippetsByUser('vrxNXgu37YWPwZAEhwGTq82grSW2').then((saved) => {
-      this.auxSnippetUser = saved;
-      console.log('saved:', saved);
-      this.cdr.detectChanges();
+  // load snippets saved by user
+  loadSavedSnippets(userId: string): void {
+    this.firebaseService.getSavedSnippetsByUser(userId).subscribe({
+      next: (saved) => {
+        this.auxSnippetUser = saved;
+        console.log('saved:', saved);
+      },
+      error: (err) => console.error('Error al cargar favoritos:', err),
     });
   }
 
   // detect if user has saved snippet
   detectIfUserSavedSnippet(snippet: Snippet): boolean {
-    if (!this.auxSnippetUser || this.auxSnippetUser.length === 0) {
-      return false;
-    }
     return this.auxSnippetUser.some((s) => s.snippet_uid === snippet.uid);
   }
-  
+
 }

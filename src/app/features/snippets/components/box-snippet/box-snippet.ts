@@ -15,11 +15,9 @@ export class BoxSnippet {
   @Input() isFavourite!: boolean;
   @Output() favourite = new EventEmitter<Snippet>();
   @Output() showModal = new EventEmitter<Snippet>();
-  toggleFavourite: boolean = false;
 
   emitFavourite(snippet: Snippet) {
     this.favourite.emit(snippet);
-    this.toggleFavourite = !this.toggleFavourite;
   }
 
   detectIcon(icon: number): string {
@@ -35,7 +33,7 @@ export class BoxSnippet {
       return 'unkown.svg';
     }
   }
-
+  
   openModal() {
     this.showModal.emit(this.snippet);
   }

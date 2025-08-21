@@ -23,13 +23,13 @@
       <svg
         class="w-6 h-6 duration-200 transition-all"
         [ngClass]="{
-          'text-red-500': toggleFavourite || isFavourite,
-          'text-gray-400': !toggleFavourite && !isFavourite
+          'text-red-500':  isFavourite,
+          'text-gray-400': !isFavourite
         }"
         aria-hidden="true"
         width="24"
         height="24"
-        [attr.fill]="toggleFavourite || isFavourite ? 'currentColor' : 'none'"
+        [attr.fill]="isFavourite ? 'currentColor' : 'none'"
         viewBox="0 0 24 24"
       >
         <path
@@ -98,4 +98,5 @@
       />
     </svg>
   </div>
+  <p class="text-2xl ">{{isFavourite}}</p>
 </article>

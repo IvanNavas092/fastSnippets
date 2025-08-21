@@ -6,14 +6,30 @@
       (search)="onSearch($event)"
     >
     </app-filters>
+
     <div>
       <p class="text-xl text-white mt-4">
         {{ AuxSnippetList.length }} snippets disponibles
       </p>
     </div>
-    @if (AuxSnippetList.length > 0) {
+
+    <!-- Estado de carga -->
+    @if (isLoading) {
+    <div class="flex justify-center items-center h-64">
+      <p class="text-gray-500 text-lg">Cargando snippets...</p>
+    </div>
+    }
+
+    <!-- Snippets cargados pero sin resultados -->
+    @else if (!isLoading && snippetsLoaded && AuxSnippetList.length === 0) {
+    <div class="flex justify-center items-center h-64">
+      <p class="text-gray-500 text-lg">
+        No hay snippets para el framework "{{ selectedFramework }}"
+      </p>
+    </div>
+    } @else if (!isLoading && snippetsLoaded && AuxSnippetList.length > 0) {
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-      @for (item of AuxSnippetList; track item.code) {
+      @for (item of AuxSnippetList; track item.uid) {
       <app-box-snippet
         [isFavourite]="detectIfUserSavedSnippet(item)"
         [snippet]="item"
@@ -21,16 +37,6 @@
         (showModal)="openModal($event)"
       ></app-box-snippet>
       }
-    </div>
-    } @else if (isLoading) {
-    <div class="flex justify-center items-center h-64">
-      <p class="text-gray-500 text-lg">Cargando snippets...</p>
-    </div>
-    } @else {
-    <div class="flex justify-center items-center h-64">
-      <p class="text-gray-500 text-lg">
-        No hay snippets para el framework "{{ selectedFramework }}"
-      </p>
     </div>
     }
   </div>
