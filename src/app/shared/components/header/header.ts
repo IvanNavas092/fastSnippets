@@ -1,8 +1,7 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { Logo } from '../logo/logo';
 import { AuthService } from '@/app/core/services/authService';
-import { AuthUser } from '@/app/core/interfaces/user';
 
 @Component({
   selector: 'app-header',
@@ -11,16 +10,17 @@ import { AuthUser } from '@/app/core/interfaces/user';
   templateUrl: './header.html',
 })
 export class Header {
-navigateToCreateSnippet() {
+  navigateToCreateSnippet() {
     this.router.navigate(['/snippets']);
   }
-  currentUser: AuthUser | null = null;
+  // currentUser: AuthUser | null = null;
   isLoggedIn: boolean = false;
 
-  constructor(private router: Router, private authService: AuthService) {
-    this.authService.currentUser$.subscribe((user) => {
-      this.currentUser = user;
-      this.isLoggedIn = !!user;
+  constructor(private router: Router, private authService: AuthService, private cdr: ChangeDetectorRef) {
+    this.authService.tokenUser$.subscribe((token) => {
+      this.isLoggedIn = !!token;
+      // this.cdr.detectChanges();
+      // this.currentUser = token;
     });
   }
 
@@ -28,7 +28,7 @@ navigateToCreateSnippet() {
     this.router.navigate(['login']);
   }
   backToHome() {
-    this.router.navigate(['/']);
+    this.router.navigate(['/login']);
   }
 
   async logout() {

@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import {
   Auth,
   signInWithEmailAndPassword,
@@ -10,7 +11,6 @@ import {
 import { onAuthStateChanged } from 'firebase/auth';
 import { BehaviorSubject } from 'rxjs';
 import { AuthUser } from '../interfaces/user';
-import { FirebaseService } from './firebaseService';
 
 @Injectable({
   providedIn: 'root',
@@ -20,9 +20,17 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<AuthUser | null>(null);
   currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(private firebaseService: FirebaseService, private afAuth: Auth) {
-    onAuthStateChanged(this.afAuth, (user) => {
-      console.log('ONAUTHSTATECHANGED: User:', user);
+  private tokenUserSubject = new BehaviorSubject<string | null>(null);
+  tokenUser$ = this.tokenUserSubject.asObservable();
+
+  constructor(private afAuth: Auth, @Inject(PLATFORM_ID) private platformId: Object) {
+    onAuthStateChanged(this.afAuth, (user: any) => {
+      console.log('USUARIO CAMBIADO: User:', user);
+      this.tokenUserSubject.next(user?.accessToken);
+      console.log('TOKEN CAMBIADO: Token:', user?.accessToken);
+      if (isPlatformBrowser(this.platformId)) {
+        localStorage.setItem('token', user?.accessToken ? user?.accessToken : '');
+      }
       const mappedUser = user ? this.mapAuthUser(user) : null;
       this.currentUserSubject.next(mappedUser);
     });
@@ -71,8 +79,14 @@ export class AuthService {
   async logout() {
     await signOut(this.afAuth);
     this.currentUserSubject.next(null);
+    this.tokenUserSubject.next(null);
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('token');
+    }
     console.log('Usuario desconectado');
   }
+
+
 
   // === Helpers ===
   private mapAuthUser(user: User): AuthUser {
@@ -86,6 +100,4 @@ export class AuthService {
       creationTime: user.metadata.creationTime,
     };
   }
-
-
 }

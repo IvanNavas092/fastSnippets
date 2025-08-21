@@ -15,8 +15,8 @@ export interface PopularSnippet {
 }
 
 export interface UserSnippet {
-  uid: string;
-  user_uid: string;
+  uid?: string;
+  user_uid?: string;
   snippet_uid: string;
   created_at: Date;
 }
