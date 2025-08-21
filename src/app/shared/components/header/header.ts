@@ -1,8 +1,7 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { Logo } from '../logo/logo';
 import { AuthService } from '@/app/core/services/authService';
-import { AuthUser } from '@/app/core/interfaces/user';
 
 @Component({
   selector: 'app-header',
@@ -17,9 +16,10 @@ export class Header {
   // currentUser: AuthUser | null = null;
   isLoggedIn: boolean = false;
 
-  constructor(private router: Router, private authService: AuthService) {
+  constructor(private router: Router, private authService: AuthService, private cdr: ChangeDetectorRef) {
     this.authService.tokenUser$.subscribe((token) => {
       this.isLoggedIn = !!token;
+      this.cdr.detectChanges();
       // this.currentUser = token;
     });
   }

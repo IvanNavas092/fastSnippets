@@ -81,6 +81,8 @@ export class AuthService {
     console.log('Usuario desconectado');
   }
 
+
+
   // === Helpers ===
   private mapAuthUser(user: User): AuthUser {
     return {
