@@ -11,16 +11,16 @@ import { AuthUser } from '@/app/core/interfaces/user';
   templateUrl: './header.html',
 })
 export class Header {
-navigateToCreateSnippet() {
+  navigateToCreateSnippet() {
     this.router.navigate(['/snippets']);
   }
-  currentUser: AuthUser | null = null;
+  // currentUser: AuthUser | null = null;
   isLoggedIn: boolean = false;
 
   constructor(private router: Router, private authService: AuthService) {
-    this.authService.currentUser$.subscribe((user) => {
-      this.currentUser = user;
-      this.isLoggedIn = !!user;
+    this.authService.tokenUser$.subscribe((token) => {
+      this.isLoggedIn = !!token;
+      // this.currentUser = token;
     });
   }
 

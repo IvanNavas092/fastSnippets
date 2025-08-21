@@ -10,7 +10,6 @@ import {
 import { onAuthStateChanged } from 'firebase/auth';
 import { BehaviorSubject } from 'rxjs';
 import { AuthUser } from '../interfaces/user';
-import { FirebaseService } from './firebaseService';
 
 @Injectable({
   providedIn: 'root',
@@ -20,9 +19,15 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<AuthUser | null>(null);
   currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(private firebaseService: FirebaseService, private afAuth: Auth) {
-    onAuthStateChanged(this.afAuth, (user) => {
+  private tokenUserSubject = new BehaviorSubject<string | null>(null);
+  tokenUser$ = this.tokenUserSubject.asObservable();
+
+  constructor(private afAuth: Auth) {
+    onAuthStateChanged(this.afAuth, (user: any) => {
       console.log('ONAUTHSTATECHANGED: User:', user);
+      this.tokenUserSubject.next(user?.accessToken);
+      console.log('ONAUTHSTATECHANGED: Token:', user?.accessToken);
+      localStorage.setItem('token', user?.accessToken);
       const mappedUser = user ? this.mapAuthUser(user) : null;
       this.currentUserSubject.next(mappedUser);
     });
@@ -71,6 +76,8 @@ export class AuthService {
   async logout() {
     await signOut(this.afAuth);
     this.currentUserSubject.next(null);
+    this.tokenUserSubject.next(null);
+    localStorage.removeItem('token');
     console.log('Usuario desconectado');
   }
 
@@ -86,6 +93,4 @@ export class AuthService {
       creationTime: user.metadata.creationTime,
     };
   }
-
-
 }
