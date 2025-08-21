@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import {
   Auth,
   signInWithEmailAndPassword,
@@ -22,12 +23,14 @@ export class AuthService {
   private tokenUserSubject = new BehaviorSubject<string | null>(null);
   tokenUser$ = this.tokenUserSubject.asObservable();
 
-  constructor(private afAuth: Auth) {
+  constructor(private afAuth: Auth, @Inject(PLATFORM_ID) private platformId: Object) {
     onAuthStateChanged(this.afAuth, (user: any) => {
-      console.log('ONAUTHSTATECHANGED: User:', user);
+      console.log('USUARIO CAMBIADO: User:', user);
       this.tokenUserSubject.next(user?.accessToken);
-      console.log('ONAUTHSTATECHANGED: Token:', user?.accessToken);
-      localStorage.setItem('token', user?.accessToken);
+      console.log('TOKEN CAMBIADO: Token:', user?.accessToken);
+      if (isPlatformBrowser(this.platformId)) {
+        localStorage.setItem('token', user?.accessToken ? user?.accessToken : '');
+      }
       const mappedUser = user ? this.mapAuthUser(user) : null;
       this.currentUserSubject.next(mappedUser);
     });
@@ -77,7 +80,9 @@ export class AuthService {
     await signOut(this.afAuth);
     this.currentUserSubject.next(null);
     this.tokenUserSubject.next(null);
-    localStorage.removeItem('token');
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('token');
+    }
     console.log('Usuario desconectado');
   }
 

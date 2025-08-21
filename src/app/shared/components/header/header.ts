@@ -19,7 +19,7 @@ export class Header {
   constructor(private router: Router, private authService: AuthService, private cdr: ChangeDetectorRef) {
     this.authService.tokenUser$.subscribe((token) => {
       this.isLoggedIn = !!token;
-      this.cdr.detectChanges();
+      // this.cdr.detectChanges();
       // this.currentUser = token;
     });
   }
@@ -28,7 +28,7 @@ export class Header {
     this.router.navigate(['login']);
   }
   backToHome() {
-    this.router.navigate(['/']);
+    this.router.navigate(['/login']);
   }
 
   async logout() {
