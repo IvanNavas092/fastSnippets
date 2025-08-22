@@ -1,4 +1,4 @@
-<div class="m-6 mt-36 mx-26">
+<div class="m-6 mt-36">
   <div class="flex flex-col space-y-2 min-h-[90vh]">
     <app-filters
       [selectedFramework]="selectedFramework"
@@ -28,7 +28,7 @@
       </p>
     </div>
     } @else if (!isLoading && AuxSnippetList.length > 0) {
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 ">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
       @for (item of AuxSnippetList; track item.uid) {
       <app-box-snippet
         [isFavourite]="detectIfUserSavedSnippet(item)"

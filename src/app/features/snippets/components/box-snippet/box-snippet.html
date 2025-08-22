@@ -23,7 +23,7 @@
       <svg
         class="w-6 h-6 duration-200 transition-all"
         [ngClass]="{
-          'text-red-500':  isFavourite,
+          'text-red-500': isFavourite,
           'text-gray-400': !isFavourite
         }"
         aria-hidden="true"
@@ -42,18 +42,27 @@
       </svg>
     </button>
   </header>
-  <div>
-    <p class=" text-md md:text-lg lg:text-xl font-semibold  text-gray-100">{{ snippet.title }}</p>
+  <div class="flex items-center justify-between relative">
+    <div>
+      <p class="md:text-lg lg:text-xl font-semibold text-gray-100">
+        {{ snippet.title }}
+      </p>
+    </div>
+    <div class="">
+      <app-copy-button
+        [code]="snippet.code[0]"
+        [black]="false"
+      ></app-copy-button>
+    </div>
   </div>
 
   <!-- code -->
   <div class="p-3 relative bg-white rounded-lg overflow-x-auto">
     @if (snippet.code && snippet.code.length > 0) {
-    <pre><code class="text-purple-600 font-mono lg:text-sm" [innerHTML]="snippet.code[0] | highlight"></code></pre>
+    <pre><code class="text-purple-600 font-mono text-xl md:text-sm lg:text-base" [innerHTML]="snippet.code[0] | highlight"></code></pre>
     } @else {
     <pre><code class="bg-gray-100 text-black">No hay código disponible</code></pre>
     }
-    <app-copy-button [code]="snippet.code[0]"></app-copy-button>
   </div>
 
   <!-- actions -->
@@ -98,5 +107,4 @@
       />
     </svg>
   </div>
-  <p class="text-2xl ">{{isFavourite}}</p>
 </article>

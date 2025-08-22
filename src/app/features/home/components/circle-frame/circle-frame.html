@@ -1,31 +1,19 @@
 <div
-  class="relative h-full overflow-hidden flex flex-col backdrop-blur-sm rounded-lg bg-purple-600/10 hover:bg-gray-700 transition-colors duration-50 shadow-sm hover:shadow-md p-6 cursor-pointer"
+  class="relative h-full overflow-hidden flex flex-col backdrop-blur-sm rounded-lg hover:bg-gray-700 transition-colors duration-50 shadow-sm hover:shadow-md p-6 cursor-pointer"
 >
   <!-- glow background -->
-  <div class="absolute -inset-20 opacity-60 pointer-events-none z-0">
+  <div class="absolute -inset-0 opacity-60 pointer-events-none z-0">
     <div class="absolute inset-0 bg-purple-500/30 rounded-full blur-3xl"></div>
     <div
       class="absolute top-0 left-1/4 w-1/2 h-1/2 bg-indigo-600/20 rounded-full blur-2xl"
     ></div>
   </div>
 
-  <!-- white glows -->
-  <div
-    class="absolute top-0 left-0 w-20 h-20 bg-white rounded-full opacity-10 blur-lg pointer-events-none z-0"
-  ></div>
-  <div
-    class="absolute bottom-1/4 right-10 w-16 h-16 bg-white rounded-full opacity-5 blur-md pointer-events-none z-0"
-  ></div>
-
   <!-- content -->
   <div class="relative">
     <div class="flex flex-col justify-between">
       <div class="space-y-2">
-        <img
-          [src]="icon"
-          class="w-13 h-13 object-contain"
-          alt="icon"
-        />
+        <img [src]="icon" class="w-13 h-13 object-contain" alt="icon" />
         <span class="text-white text-lg font-bold mt-1">{{ title }}</span>
         <p class="text-gray-400 text-sm mt-1">{{ description }}</p>
       </div>
