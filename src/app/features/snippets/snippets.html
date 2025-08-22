@@ -21,13 +21,13 @@
     }
 
     <!-- Snippets cargados pero sin resultados -->
-    @else if (!isLoading && snippetsLoaded && AuxSnippetList.length === 0) {
+    @else if (!isLoading && AuxSnippetList.length === 0) {
     <div class="flex justify-center items-center h-64">
       <p class="text-gray-500 text-lg">
         No hay snippets para el framework "{{ selectedFramework }}"
       </p>
     </div>
-    } @else if (!isLoading && snippetsLoaded && AuxSnippetList.length > 0) {
+    } @else if (!isLoading && AuxSnippetList.length > 0) {
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
       @for (item of AuxSnippetList; track item.uid) {
       <app-box-snippet
