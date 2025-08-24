@@ -1,14 +1,25 @@
 <section class="m-6 mt-28">
   <div class="flex flex-col space-y-2 min-h-[90vh]">
+    <h1 class="text-3xl font-bold text-gray-100 mb-10">Lista de favoritos</h1>
+    @if (loading) {
+    <p class="text-gray-500 text-center text-lg">Cargando snippets...</p>
+    } @else {
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       @for (item of snippetsUser; track item.uid) {
       <app-box-snippet
         [isFavourite]="true"
         [snippet]="item"
-        (favourite)="favouriteSnippet($event)"
+        (favourite)="(true)"
         (showModal)="openModal($event)"
       ></app-box-snippet>
       }
     </div>
+
+    @if (showModal) {
+    <app-modal-snippet
+      [snippet]="selectedSnippet"
+      (disabledModal)="closeModal()"
+    ></app-modal-snippet>
+    } }
   </div>
 </section>

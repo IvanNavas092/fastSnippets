@@ -23,13 +23,19 @@ export class AuthService {
   private tokenUserSubject = new BehaviorSubject<string | null>(null);
   tokenUser$ = this.tokenUserSubject.asObservable();
 
-  constructor(private afAuth: Auth, @Inject(PLATFORM_ID) private platformId: Object) {
+  constructor(
+    private afAuth: Auth,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
     onAuthStateChanged(this.afAuth, (user: any) => {
       console.log('USUARIO CAMBIADO: User:', user);
       this.tokenUserSubject.next(user?.accessToken);
       console.log('TOKEN CAMBIADO: Token:', user?.accessToken);
       if (isPlatformBrowser(this.platformId)) {
-        localStorage.setItem('token', user?.accessToken ? user?.accessToken : '');
+        localStorage.setItem(
+          'token',
+          user?.accessToken ? user?.accessToken : ''
+        );
       }
       const mappedUser = user ? this.mapAuthUser(user) : null;
       this.currentUserSubject.next(mappedUser);
@@ -86,8 +92,6 @@ export class AuthService {
     console.log('Usuario desconectado');
   }
 
-
-
   // === Helpers ===
   private mapAuthUser(user: User): AuthUser {
     return {
@@ -99,5 +103,9 @@ export class AuthService {
       isAnonymous: user.isAnonymous,
       creationTime: user.metadata.creationTime,
     };
+  }
+
+  hasToken(): boolean {
+    return !!localStorage.getItem('token');
   }
 }

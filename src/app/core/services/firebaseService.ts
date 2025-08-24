@@ -14,9 +14,10 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  docData,
 } from '@angular/fire/firestore';
 import { collectionData } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -42,9 +43,13 @@ export class FirebaseService {
     }) as Observable<Snippet[]>;
   }
 
-  getSnippetsById(uid: string): Observable<Snippet[]> {
-    const q = query(this.snippetsCollection, where('uid', '==', uid));
-    return collectionData(q, { idField: 'uid' }) as Observable<Snippet[]>;
+  getSnippetById(snippetId: string): Observable<Snippet> {
+    // 1. Crea una referencia al documento específico usando su ID
+    const snippetDocRef = doc(this.fireStore, 'Snippets', snippetId);
+
+    // 2. Usa docData() para obtener los datos de ese documento como un Observable.
+    //    Mantén idField: 'uid' para que el ID del documento de Firestore se mapee a tu propiedad 'uid'.
+    return docData(snippetDocRef, { idField: 'uid' }) as Observable<Snippet>;
   }
 
   // --------- Obtener snippets guardados por usuario ----------
