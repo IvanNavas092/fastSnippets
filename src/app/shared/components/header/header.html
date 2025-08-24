@@ -3,9 +3,9 @@
     <div class="flex items-center cursor-pointer" (click)="backToHome()">
       <app-logo></app-logo>
     </div>
-    <div class="flex items-center cursor-pointer gap-6" (click)="backToHome()">
+    <div class="flex items-center cursor-pointer gap-6">
       <a class="text-white" href="">Explorar</a>
-      <a class="text-white" href="">Tus snippets</a>
+      <a  class="text-white" (click)="navigateToFavSnippets()">Tus snippets</a>
     </div>
 
     <div class="flex items-center gap-6">

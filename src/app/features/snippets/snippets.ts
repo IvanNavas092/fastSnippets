@@ -7,7 +7,7 @@ import { Snippet, UserSnippet } from '@/app/core/interfaces/Snippet';
 import { ModalSnippet } from './components/modal-snippet/modal-snippet';
 import { AuthUser } from '@/app/core/interfaces/user';
 import { AuthService } from '@/app/core/services/authService';
-import { take } from 'rxjs';
+import { Observable, of, switchMap, take } from 'rxjs';
 @Component({
   selector: 'app-snippets',
   standalone: true,
@@ -17,7 +17,8 @@ import { take } from 'rxjs';
 export class Snippets implements OnInit {
   AuxSnippetList: Snippet[] = [];
   allSnippets: Snippet[] = [];
-  auxSnippetUser: UserSnippet[] = [];
+  auxSnippetUser$: Observable<UserSnippet[]> = of([]); 
+
   selectedFramework: string = 'Todos';
   isLoading: boolean = true;
   showModal: boolean = false;
@@ -28,16 +29,25 @@ export class Snippets implements OnInit {
     private firebaseService: FirebaseService,
     private authService: AuthService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.loadSnippets();
 
     // obtain the user
-    this.authService.currentUser$.subscribe((user) => {
-      this.CurrentUser = user;
-      if (user) this.loadSavedSnippets(user.uid);
-    });
+    this.authService.currentUser$.pipe(
+      switchMap((user) => {
+        this.CurrentUser = user;
+        return user ? this.firebaseService.getSavedSnippetsByUser(user.uid) : of([]);
+      })
+    ).subscribe({
+      next: (saved) => {
+        this.auxSnippetUser$ = of(saved);
+        this.cdr.markForCheck();
+      },
+      error: (err) => console.error('Error al cargar favoritos:', err),
+    })
+
   }
   // load snippets publics
   loadSnippets() {
@@ -73,30 +83,24 @@ export class Snippets implements OnInit {
 
   favouriteSnippet(snippet: Snippet) {
     if (!this.CurrentUser) return;
-    console.log(snippet);
+
     const alreadySaved = this.detectIfUserSavedSnippet(snippet);
     console.log('alreadySaved:', alreadySaved);
+
     if (alreadySaved) {
       this.firebaseService
         .deleteSnippetForUser(this.CurrentUser.uid, snippet.uid)
         .then(() => {
-          this.auxSnippetUser = this.auxSnippetUser.filter(
-            (s) => s.snippet_uid !== snippet.uid
-          );
         });
     } else {
       this.firebaseService
         .saveSnippetForUser(this.CurrentUser.uid, snippet)
         .then(() => {
-          this.auxSnippetUser.push({
-            uid: snippet.uid,
-            user_uid: this.CurrentUser?.uid,
-            snippet_uid: snippet.uid,
-            created_at: new Date(),
-          });
+
         });
     }
   }
+
 
   onSearch(search: string) {
     this.AuxSnippetList = this.allSnippets.filter((s) =>
@@ -119,7 +123,7 @@ export class Snippets implements OnInit {
   loadSavedSnippets(userId: string): void {
     this.firebaseService.getSavedSnippetsByUser(userId).subscribe({
       next: (saved) => {
-        this.auxSnippetUser = saved;
+        this.auxSnippetUser$ = of(saved);
         console.log('saved:', saved);
       },
       error: (err) => console.error('Error al cargar favoritos:', err),
@@ -128,6 +132,10 @@ export class Snippets implements OnInit {
 
   // detect if user has saved snippet
   detectIfUserSavedSnippet(snippet: Snippet): boolean {
-    return this.auxSnippetUser.some((s) => s.snippet_uid === snippet.uid);
+    let pene = false;
+    this.auxSnippetUser$.subscribe(aux => {
+      pene = !!aux.find(s => s.snippet_uid === snippet.uid);
+    })
+    return pene
   }
 }

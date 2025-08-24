@@ -42,6 +42,11 @@ export class FirebaseService {
     }) as Observable<Snippet[]>;
   }
 
+  getSnippetsById(uid: string): Observable<Snippet[]> {
+    const q = query(this.snippetsCollection, where('uid', '==', uid));
+    return collectionData(q, { idField: 'uid' }) as Observable<Snippet[]>;
+  }
+
   // --------- Obtener snippets guardados por usuario ----------
   getSavedSnippetsByUser(userId: string): Observable<UserSnippet[]> {
     const q = query(

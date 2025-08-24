@@ -10,16 +10,12 @@ import { AuthService } from '@/app/core/services/authService';
   templateUrl: './header.html',
 })
 export class Header {
-  navigateToCreateSnippet() {
-    this.router.navigate(['/snippets']);
-  }
   // currentUser: AuthUser | null = null;
   isLoggedIn: boolean = false;
 
   constructor(
     private router: Router,
     private authService: AuthService,
-    private cdr: ChangeDetectorRef
   ) {
     this.authService.tokenUser$.subscribe((token) => {
       this.isLoggedIn = !!token;
@@ -28,11 +24,17 @@ export class Header {
     });
   }
 
+  backToHome() {
+    this.router.navigate(['/']);
+  }
   navigateToLogin() {
     this.router.navigate(['login']);
   }
-  backToHome() {
-    this.router.navigate(['/']);
+  navigateToCreateSnippet() {
+    this.router.navigate(['/snippets']);
+  }
+  navigateToFavSnippets() {
+    this.router.navigate(['/fav-snippets']);
   }
 
   async logout() {
