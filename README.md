@@ -29,6 +29,8 @@ Soporta frameworks como **Angular, React, Vue y Svelte**, mostrando fragmentos d
 ### 🔹 Home_1
 <img width="1894" height="951" alt="image" src="https://github.com/user-attachments/assets/9f6f90c7-14e3-4b23-8912-cbcd5f67be75" />
 
+### 🔹 Explore
+<img width="1907" height="915" alt="image" src="https://github.com/user-attachments/assets/9fec9991-4387-41af-a3fd-026020ae49dc" />
 
 
 ---
