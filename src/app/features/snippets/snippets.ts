@@ -1,9 +1,4 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  HostListener,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { Filters } from './components/filters/filters';
 import { CommonModule } from '@angular/common';
 import { BoxSnippet } from './components/box-snippet/box-snippet';
@@ -12,6 +7,7 @@ import { Snippet, UserSnippet } from '@/app/core/interfaces/Snippet';
 import { ModalSnippet } from './components/modal-snippet/modal-snippet';
 import { AuthUser } from '@/app/core/interfaces/user';
 import { AuthService } from '@/app/core/services/authService';
+import { Observable, of, switchMap, take } from 'rxjs';
 @Component({
   selector: 'app-snippets',
   standalone: true,
@@ -21,7 +17,8 @@ import { AuthService } from '@/app/core/services/authService';
 export class Snippets implements OnInit {
   AuxSnippetList: Snippet[] = [];
   allSnippets: Snippet[] = [];
-  auxSnippetUser: UserSnippet[] = [];
+  auxSnippetUser$: Observable<UserSnippet[]> = of([]); 
+
   selectedFramework: string = 'Todos';
   isLoading: boolean = true;
   showModal: boolean = false;
@@ -32,44 +29,51 @@ export class Snippets implements OnInit {
     private firebaseService: FirebaseService,
     private authService: AuthService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.loadSnippets();
-    
-  }
 
-  async loadSnippets() {
-    try {
-      this.isLoading = true;
-      const data = await this.firebaseService.getSnippets();
-      this.isLoading = false;
-      this.allSnippets = data;
-      // apply filter === 'Todos'
-      this.isLoading = false;
-      this.cdr.detectChanges();
-
-      // obtain snippets user
-      this.authService.currentUser$.subscribe((user) => {
+    // obtain the user
+    this.authService.currentUser$.pipe(
+      switchMap((user) => {
         this.CurrentUser = user;
-        if (user) {
-          this.loadSavedSnippets();
-        }
-      });
-      
-      
-    } catch (error) {
-      console.error('Error al cargar snippets:', error);
-      this.isLoading = false;
-      this.cdr.detectChanges();
-    }
+        return user ? this.firebaseService.getSavedSnippetsByUser(user.uid) : of([]);
+      })
+    ).subscribe({
+      next: (saved) => {
+        this.auxSnippetUser$ = of(saved);
+        this.cdr.markForCheck();
+      },
+      error: (err) => console.error('Error al cargar favoritos:', err),
+    })
+
+  }
+  // load snippets publics
+  loadSnippets() {
+    this.isLoading = true;
+
+    this.firebaseService.getSnippets().subscribe({
+      next: (data) => {
+        this.allSnippets = data;
+        this.isLoading = false;
+        this.onFrameworkFilter('Todos');
+        this.cdr.markForCheck();
+      },
+      error: (err) => {
+        console.error('Error al cargar snippets:', err);
+        this.isLoading = false;
+        this.cdr.markForCheck();
+      },
+    });
   }
 
   onFrameworkFilter(framework: string) {
     this.selectedFramework = framework;
 
     if (framework === 'Todos') {
-      this.AuxSnippetList = this.allSnippets;
+      this.AuxSnippetList = [...this.allSnippets];
+      console.log(this.AuxSnippetList);
     } else {
       this.AuxSnippetList = this.allSnippets.filter(
         (snippet) => snippet.framework.toLowerCase() === framework.toLowerCase()
@@ -78,8 +82,25 @@ export class Snippets implements OnInit {
   }
 
   favouriteSnippet(snippet: Snippet) {
-    console.log('Favorito:', snippet);
+    if (!this.CurrentUser) return;
+
+    const alreadySaved = this.detectIfUserSavedSnippet(snippet);
+    console.log('alreadySaved:', alreadySaved);
+
+    if (alreadySaved) {
+      this.firebaseService
+        .deleteSnippetForUser(this.CurrentUser.uid, snippet.uid)
+        .then(() => {
+        });
+    } else {
+      this.firebaseService
+        .saveSnippetForUser(this.CurrentUser.uid, snippet)
+        .then(() => {
+
+        });
+    }
   }
+
 
   onSearch(search: string) {
     this.AuxSnippetList = this.allSnippets.filter((s) =>
@@ -95,22 +116,26 @@ export class Snippets implements OnInit {
 
   closeModal(): void {
     this.showModal = false;
+    document.body.classList.remove('no-scroll');
   }
 
-  loadSavedSnippets(): void {
-    this.firebaseService.getSavedSnippetsByUser('vrxNXgu37YWPwZAEhwGTq82grSW2').then((saved) => {
-      this.auxSnippetUser = saved;
-      console.log('saved:', saved);
-      this.cdr.detectChanges();
+  // load snippets saved by user
+  loadSavedSnippets(userId: string): void {
+    this.firebaseService.getSavedSnippetsByUser(userId).subscribe({
+      next: (saved) => {
+        this.auxSnippetUser$ = of(saved);
+        console.log('saved:', saved);
+      },
+      error: (err) => console.error('Error al cargar favoritos:', err),
     });
   }
 
   // detect if user has saved snippet
   detectIfUserSavedSnippet(snippet: Snippet): boolean {
-    if (!this.auxSnippetUser || this.auxSnippetUser.length === 0) {
-      return false;
-    }
-    return this.auxSnippetUser.some((s) => s.snippet_uid === snippet.uid);
+    let pene = false;
+    this.auxSnippetUser$.subscribe(aux => {
+      pene = !!aux.find(s => s.snippet_uid === snippet.uid);
+    })
+    return pene
   }
-  
 }

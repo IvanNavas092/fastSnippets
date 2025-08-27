@@ -15,9 +15,18 @@ import {
 import { BoxAbout } from './components/box-about/box-about';
 import { Cta } from './components/cta/cta';
 import { PopularSnippet } from '@/app/core/interfaces/Snippet';
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-home',
-  imports: [CircleFrame, CommonModule, Hero, CardPopularSnippet, BoxAbout, Cta],
+  imports: [
+    CircleFrame,
+    CommonModule,
+    Hero,
+    CardPopularSnippet,
+    BoxAbout,
+    Cta,
+    RouterLink,
+  ],
   templateUrl: './home.html',
 })
 export class Home {

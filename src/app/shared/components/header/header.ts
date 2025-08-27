@@ -2,33 +2,23 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { Logo } from '../logo/logo';
 import { AuthService } from '@/app/core/services/authService';
+import { ButtonAvatarHeader } from '../button-avatar-header/button-avatar-header';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterModule, Logo],
+  imports: [RouterModule, Logo, ButtonAvatarHeader],
   templateUrl: './header.html',
 })
 export class Header {
-  navigateToCreateSnippet() {
-    this.router.navigate(['/snippets']);
-  }
   // currentUser: AuthUser | null = null;
   isLoggedIn: boolean = false;
 
-  constructor(private router: Router, private authService: AuthService, private cdr: ChangeDetectorRef) {
-    this.authService.tokenUser$.subscribe((token) => {
-      this.isLoggedIn = !!token;
-      // this.cdr.detectChanges();
-      // this.currentUser = token;
+  constructor(private router: Router, private authService: AuthService) {
+    this.authService.currentUser$.subscribe((user) => {
+      this.isLoggedIn = !!user;
+      console.log('User logged in:', user);
     });
-  }
-
-  navigateToLogin() {
-    this.router.navigate(['login']);
-  }
-  backToHome() {
-    this.router.navigate(['/login']);
   }
 
   async logout() {
@@ -39,5 +29,19 @@ export class Header {
     } catch (error) {
       console.error('Error during logout:', error);
     }
+  }
+
+  // nagivations to pages
+  backToHome() {
+    this.router.navigate(['/']);
+  }
+  navigateToLogin() {
+    this.router.navigate(['login']);
+  }
+  navigateToCreateSnippet() {
+    this.router.navigate(['/snippets']);
+  }
+  navigateToFavSnippets() {
+    this.router.navigate(['/fav-snippets']);
   }
 }

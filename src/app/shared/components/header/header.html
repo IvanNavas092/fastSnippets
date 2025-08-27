@@ -1,11 +1,21 @@
 <section class="fixed top-0 left-0 w-full p-6 backdrop-blur-2xl z-20">
   <nav class="flex items-center justify-between">
-    <div class="flex items-center cursor-pointer" (click)="backToHome()">
+    <div class="cursor-pointer" (click)="backToHome()">
       <app-logo></app-logo>
     </div>
-    <div class="flex items-center cursor-pointer gap-6" (click)="backToHome()">
-      <a class="text-white" href="">Explorar</a>
-      <a class="text-white" href="">Tus snippets</a>
+    <div class="flex items-center cursor-pointer gap-8">
+      <a
+        class="text-white font-semibold border p-2 hover:px-3 transition-all duration-200 shadow-md hover:shadow-lg shadow-purple-500"
+        (click)="navigateToCreateSnippet()"
+        >Explorar</a
+      >
+      @if (isLoggedIn) {
+      <a
+        class="text-white font-semibold border p-2 hover:px-3 transition-all duration-200 shadow-md hover:shadow-lg shadow-purple-500"
+        (click)="navigateToFavSnippets()"
+        >Mis favoritos</a
+      >
+      }
     </div>
 
     <div class="flex items-center gap-6">
@@ -21,6 +31,7 @@
       </button>
 
       <!-- Create Snippet -->
+      @if (!isLoggedIn) {
       <button
         (click)="navigateToCreateSnippet()"
         class="group relative flex cursor-pointer items-center justify-center w-10 h-10 rounded-full bg-purple-600 transition-colors"
@@ -56,6 +67,9 @@
           />
         </svg>
       </button>
+      } @if (isLoggedIn) {
+      <app-button-avatar-header> </app-button-avatar-header>
+      }
     </div>
   </nav>
 </section>

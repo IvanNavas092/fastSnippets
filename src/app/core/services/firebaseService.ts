@@ -14,9 +14,10 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  docData,
 } from '@angular/fire/firestore';
 import { collectionData } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -37,14 +38,30 @@ export class FirebaseService {
 
   // --------- Obtener snippets públicos ----------
   getSnippets(): Observable<Snippet[]> {
-    return collectionData(this.snippetsCollection, { idField: 'uid' }) as Observable<Snippet[]>;
+    return collectionData(this.snippetsCollection, {
+      idField: 'uid',
+    }) as Observable<Snippet[]>;
+  }
+
+  getSnippetById(snippetId: string): Observable<Snippet> {
+    // 1. Crea una referencia al documento específico usando su ID
+    const snippetDocRef = doc(this.fireStore, 'Snippets', snippetId);
+
+    // 2. Usa docData() para obtener los datos de ese documento como un Observable.
+    //    Mantén idField: 'uid' para que el ID del documento de Firestore se mapee a tu propiedad 'uid'.
+    return docData(snippetDocRef, { idField: 'uid' }) as Observable<Snippet>;
   }
 
   // --------- Obtener snippets guardados por usuario ----------
-  getSavedSnippetsByUser(user_uid: string): Observable<UserSnippet[]> {
-    const q = query(this.userSnippetsCollection, where('user_uid', '==', user_uid));
-    return collectionData(q, { idField: 'snippet_uid' }) as Observable<UserSnippet[]>;
+  getSavedSnippetsByUser(userId: string): Observable<UserSnippet[]> {
+    const q = query(
+      this.userSnippetsCollection,
+      where('user_uid', '==', userId)
+    );
+
+    return collectionData(q, { idField: 'uid' }) as Observable<UserSnippet[]>;
   }
+
   // save snippet for user
   saveSnippetForUser(userId: string, snippet: Snippet) {
     const userSnippet: UserSnippet = {
@@ -55,43 +72,49 @@ export class FirebaseService {
     return addDoc(this.userSnippetsCollection, userSnippet);
   }
 
-// delete snippet for user
-async deleteSnippetForUser(userId: string, snippetUidToDelete: string) {
-  // 1. Construir una consulta para encontrar el documento específico
-  //    en la colección 'UsersSnippet' que coincida con el usuario y el snippet.
-  const q = query(
-    this.userSnippetsCollection,
-    where('user_uid', '==', userId),
-    where('snippet_uid', '==', snippetUidToDelete)
-  );
+  // delete snippet for user
+  async deleteSnippetForUser(userId: string, snippetUidToDelete: string) {
+    // 1. Construir una consulta para encontrar el documento específico
+    //    en la colección 'UsersSnippet' que coincida con el usuario y el snippet.
+    const q = query(
+      this.userSnippetsCollection,
+      where('user_uid', '==', userId),
+      where('snippet_uid', '==', snippetUidToDelete)
+    );
 
-  try {
-    // 2. Ejecutar la consulta para obtener los documentos que coinciden.
-    const querySnapshot = await getDocs(q);
+    try {
+      // 2. Ejecutar la consulta para obtener los documentos que coinciden.
+      const querySnapshot = await getDocs(q);
 
-    // 3. Verificar si se encontraron documentos.
-    if (querySnapshot.empty) {
-      console.warn('No se encontró ningún snippet guardado para eliminar con ese usuario y UID de snippet.');
-      return; // Salir si no hay nada que borrar
+      // 3. Verificar si se encontraron documentos.
+      if (querySnapshot.empty) {
+        console.warn(
+          'No se encontró ningún snippet guardado para eliminar con ese usuario y UID de snippet.'
+        );
+        return; // Salir si no hay nada que borrar
+      }
+
+      // 4. Si se encuentran documentos, iterar sobre ellos y eliminarlos.
+      //    Normalmente, solo debería haber una coincidencia para una combinación única de usuario-snippet.
+      const deletePromises: Promise<void>[] = [];
+      querySnapshot.forEach((docSnap) => {
+        // Obtenemos la referencia al documento usando su ID real (generado automáticamente)
+        const docRefToDelete = doc(this.userSnippetsCollection, docSnap.id);
+        deletePromises.push(deleteDoc(docRefToDelete));
+      });
+
+      // 5. Esperar a que todas las operaciones de eliminación se completen.
+      await Promise.all(deletePromises);
+      console.log(
+        'Snippet(s) guardado(s) eliminado(s) exitosamente para el usuario:',
+        userId,
+        'y snippet:',
+        snippetUidToDelete
+      );
+    } catch (error) {
+      console.error('Error al eliminar el snippet guardado:', error);
+      // Vuelve a lanzar el error para que el componente que llama pueda manejarlo
+      throw error;
     }
-
-    // 4. Si se encuentran documentos, iterar sobre ellos y eliminarlos.
-    //    Normalmente, solo debería haber una coincidencia para una combinación única de usuario-snippet.
-    const deletePromises: Promise<void>[] = [];
-    querySnapshot.forEach((docSnap) => {
-      // Obtenemos la referencia al documento usando su ID real (generado automáticamente)
-      const docRefToDelete = doc(this.userSnippetsCollection, docSnap.id);
-      deletePromises.push(deleteDoc(docRefToDelete));
-    });
-
-    // 5. Esperar a que todas las operaciones de eliminación se completen.
-    await Promise.all(deletePromises);
-    console.log('Snippet(s) guardado(s) eliminado(s) exitosamente para el usuario:', userId, 'y snippet:', snippetUidToDelete);
-
-  } catch (error) {
-    console.error('Error al eliminar el snippet guardado:', error);
-    // Vuelve a lanzar el error para que el componente que llama pueda manejarlo
-    throw error;
   }
-}
 }
