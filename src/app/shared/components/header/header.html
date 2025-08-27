@@ -1,11 +1,10 @@
 <section class="fixed top-0 left-0 w-full p-6 backdrop-blur-2xl z-20">
   <nav class="flex items-center justify-between">
-    <div class="flex items-center cursor-pointer" (click)="backToHome()">
+    <div class="cursor-pointer" (click)="backToHome()">
       <app-logo></app-logo>
     </div>
-    <div class="flex items-center cursor-pointer gap-6">
-      <a class="text-white" href="">Explorar</a>
-      <a  class="text-white" (click)="navigateToFavSnippets()">Tus snippets</a>
+    <div class="cursor-pointer">
+      <a class="text-white font-semibold border p-2 hover:p-3 transition-all duration-200 shadow-md hover:shadow-lg shadow-purple-500" (click)="navigateToCreateSnippet()">Explorar</a>
     </div>
 
     <div class="flex items-center gap-6">

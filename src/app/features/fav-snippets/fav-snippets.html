@@ -1,11 +1,16 @@
 <section class="m-6 mt-28">
   <div class="flex flex-col space-y-2 min-h-[90vh]">
     <h1 class="text-3xl font-bold text-gray-100 mb-10">Lista de favoritos</h1>
+    <div>
+      <p class="text-xl text-white mt-4">
+        {{ snippetsUser.length }} snippets disponibles
+      </p>
+    </div>
     @if (loading) {
     <p class="text-gray-500 text-center text-lg">Cargando snippets...</p>
     } @else {
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      @for (item of snippetsUser; track item.uid) {
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+        @for (item of snippetsUser; track item.uid) {
       <app-box-snippet
         [isFavourite]="true"
         [snippet]="item"

@@ -17,10 +17,9 @@ export class Header {
     private router: Router,
     private authService: AuthService,
   ) {
-    this.authService.tokenUser$.subscribe((token) => {
-      this.isLoggedIn = !!token;
-      // this.cdr.detectChanges();
-      // this.currentUser = token;
+    this.authService.currentUser$.subscribe((user) => {
+      this.isLoggedIn = !!user;
+      console.log('User logged in:', user);
     });
   }
 

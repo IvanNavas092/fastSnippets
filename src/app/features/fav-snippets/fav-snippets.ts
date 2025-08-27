@@ -21,7 +21,8 @@ export class FavSnippets {
 
   constructor(
     private firebaseService: FirebaseService,
-    private authService: AuthService
+    private authService: AuthService,
+    private cdr: ChangeDetectorRef
   ) {
     this.authService.currentUser$
       .pipe(
@@ -47,6 +48,7 @@ export class FavSnippets {
         next: (snippets: Snippet[]) => {
           this.snippetsUser = snippets; // snippets that user has saved
           this.loading = false;
+          this.cdr.detectChanges();
           console.log('snippetsUser:', this.snippetsUser);
         },
         error: (err) => {
