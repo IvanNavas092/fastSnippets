@@ -8,6 +8,8 @@ import {
   updateProfile,
 } from '@angular/fire/auth';
 import { onAuthStateChanged } from 'firebase/auth';
+import { setPersistence, browserLocalPersistence } from 'firebase/auth';
+
 import { BehaviorSubject } from 'rxjs';
 import { AuthUser } from '../interfaces/user';
 
@@ -19,12 +21,13 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<AuthUser | null>(null);
   currentUser$ = this.currentUserSubject.asObservable();
 
+
   constructor(
     private afAuth: Auth,
   ) {
     onAuthStateChanged(this.afAuth, (user: any) => {
       console.log('USUARIO CAMBIADO: User:', user);
-     
+
       const mappedUser = user ? this.mapAuthUser(user) : null;
       this.currentUserSubject.next(mappedUser);
     });
@@ -34,14 +37,13 @@ export class AuthService {
   // Asegura que todas tus funciones de Auth manejen el caso de que 'this.auth' sea null
   async signIn(email: string, password: string) {
     try {
+      await setPersistence(this.afAuth, browserLocalPersistence);
       const userCredential = await signInWithEmailAndPassword(
         this.afAuth,
         email,
         password
       );
       this.currentUserSubject.next(this.mapAuthUser(userCredential.user));
-      console.log('Usuario ha iniciado sesión correctamente');
-      console.log('Usuario:', this.currentUserSubject.value);
       return userCredential;
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
@@ -73,7 +75,7 @@ export class AuthService {
   async logout() {
     await signOut(this.afAuth);
     this.currentUserSubject.next(null);
-    
+
     console.log('Usuario desconectado');
   }
 

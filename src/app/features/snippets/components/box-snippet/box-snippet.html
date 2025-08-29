@@ -57,9 +57,9 @@
   </div>
 
   <!-- code -->
-  <div class="p-3 relative bg-[#121212] rounded-lg overflow-x-auto max-w-full">
+  <div class="p-3 relative bg-[#212026] rounded-lg overflow-x-auto max-w-full ">
     @if (snippet.code && snippet.code.length > 0) {
-    <pre><code class="text-purple-600 font-mono text-xl md:text-sm lg:text-base whitespace-pre-wrap" [innerHTML]="snippet.code[0] |  highlight:'typescript'"></code></pre>
+    <pre><code class="text-purple-200 font-mono text-xl md:text-sm lg:text-base whitespace-pre-wrap" [innerHTML]="snippet.code[0] |  highlight"></code></pre>
     } @else {
     <pre><code class="bg-gray-100 text-black">No hay código disponible</code></pre>
     }

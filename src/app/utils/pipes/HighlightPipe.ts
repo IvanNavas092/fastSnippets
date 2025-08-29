@@ -9,6 +9,8 @@ export class HighlightPipe implements PipeTransform {
   constructor(private sanitizer: DomSanitizer) {}
 
   transform(code: string, language: string = 'typescript'): SafeHtml {
+    if (!code) return '';
+
     let highlighted: string;
 
     if (hljs.getLanguage(language)) {
