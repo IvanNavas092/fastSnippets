@@ -1,5 +1,8 @@
+
 @import "tailwindcss";
-@import 'highlight.js/styles/arduino-light.min.css';
+@import "highlight.js/styles/atom-one-dark.css";
+
+
 html {
   scroll-behavior: smooth;
 }

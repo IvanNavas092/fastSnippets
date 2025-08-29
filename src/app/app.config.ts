@@ -52,7 +52,6 @@ export const appConfig: ApplicationConfig = {
         css: () => import('highlight.js/lib/languages/css'),
         xml: () => import('highlight.js/lib/languages/xml'),
       },
-      themePath: 'highlight.js/styles/atom-one-dark.css',
     }),
   ],
 };
