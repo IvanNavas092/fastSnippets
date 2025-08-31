@@ -6,11 +6,13 @@
         {{ snippetsUser.length }} snippets disponibles
       </p>
     </div>
-    @if (loading) {
-    <p class="text-gray-500 text-center text-lg">Cargando snippets...</p>
+    @if (isLoading) {
+    <div class="flex justify-center items-center h-64">
+      <app-snippet-loading></app-snippet-loading>
+    </div>
     } @else {
-      <div class="columns-1 md:columns-2 2xl:columns-3 mt-4 "> 
-        @for (item of snippetsUser; track item.uid) {
+    <div class="columns-1 md:columns-2 2xl:columns-3 mt-4">
+      @for (item of snippetsUser; track item.uid) {
       <app-box-snippet
         [isFavourite]="true"
         [snippet]="item"

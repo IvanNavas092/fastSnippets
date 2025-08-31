@@ -18,9 +18,12 @@ import { AuthUser } from '../interfaces/user';
 })
 export class AuthService {
   user: AuthUser | null = null;
+  // subjects
   private currentUserSubject = new BehaviorSubject<AuthUser | null>(null);
   currentUser$ = this.currentUserSubject.asObservable();
 
+  private _isAuthReady = new BehaviorSubject<boolean>(false);
+  isAuthReady$ = this._isAuthReady.asObservable();
 
   constructor(
     private afAuth: Auth,
@@ -30,6 +33,9 @@ export class AuthService {
 
       const mappedUser = user ? this.mapAuthUser(user) : null;
       this.currentUserSubject.next(mappedUser);
+      if (!this._isAuthReady.value) {
+        this._isAuthReady.next(true);
+      }
     });
     console.log('AuthService: Running in browser, Auth initialized.');
   }
@@ -37,7 +43,10 @@ export class AuthService {
   // Asegura que todas tus funciones de Auth manejen el caso de que 'this.auth' sea null
   async signIn(email: string, password: string) {
     try {
-      await setPersistence(this.afAuth, browserLocalPersistence);
+      setPersistence(this.afAuth, browserLocalPersistence)
+      .then(() => console.log('Persistencia de Firebase Auth configurada a local (desde constructor).'))
+      .catch(error => console.error('Error al configurar la persistencia de Firebase Auth:', error));
+
       const userCredential = await signInWithEmailAndPassword(
         this.afAuth,
         email,

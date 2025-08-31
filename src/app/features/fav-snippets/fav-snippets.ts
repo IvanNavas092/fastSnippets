@@ -6,10 +6,11 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { forkJoin, of, switchMap, take } from 'rxjs';
 import { BoxSnippet } from '../snippets/components/box-snippet/box-snippet';
 import { ModalSnippet } from '../snippets/components/modal-snippet/modal-snippet';
-
+import { CommonModule } from '@angular/common';
+import { SnippetLoading } from '@/app/shared/components/snippet-loading/snippet-loading';
 @Component({
   selector: 'app-fav-snippets',
-  imports: [BoxSnippet, ModalSnippet],
+  imports: [BoxSnippet, ModalSnippet, CommonModule, SnippetLoading],
   templateUrl: './fav-snippets.html',
 })
 export class FavSnippets {
@@ -17,7 +18,7 @@ export class FavSnippets {
   snippetsUser: Snippet[] = [];
   selectedSnippet!: Snippet;
   showModal: boolean = false;
-  loading: boolean = true;
+  isLoading: boolean = true;
 
   constructor(
     private firebaseService: FirebaseService,
@@ -47,13 +48,13 @@ export class FavSnippets {
       .subscribe({
         next: (snippets: Snippet[]) => {
           this.snippetsUser = snippets; // snippets that user has saved
-          this.loading = false;
+          this.isLoading = false;
           this.cdr.detectChanges();
           console.log('snippetsUser:', this.snippetsUser);
         },
         error: (err) => {
           console.error('Error al cargar favoritos:', err),
-            (this.loading = false);
+            (this.isLoading = false);
         },
       });
   }

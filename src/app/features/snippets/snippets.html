@@ -15,9 +15,9 @@
 
     <!-- Estado de carga -->
     @if (isLoading) {
-    <div class="flex justify-center items-center h-64">
-      <p class="text-gray-500 text-lg">Cargando snippets...</p>
-    </div>
+      <div class="flex justify-center items-center h-64">
+        <app-snippet-loading></app-snippet-loading>
+      </div>
     }
 
     <!-- Snippets cargados pero sin resultados -->

@@ -5,6 +5,8 @@
     </div>
 
     <div class="flex items-center gap-6">
+      @if (authReady) {
+
       <!-- Login -->
       <button
         (click)="isLoggedIn ? logout() : navigateToLogin()"
@@ -53,9 +55,13 @@
           />
         </svg>
       </button>
+    
       } @if (isLoggedIn) {
       <app-button-avatar-header> </app-button-avatar-header>
       }
+    } @else {
+      <app-snippet-loading></app-snippet-loading>
+    }
     </div>
   </nav>
 </section>
