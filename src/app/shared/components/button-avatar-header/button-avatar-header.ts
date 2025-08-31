@@ -22,6 +22,13 @@ export class ButtonAvatarHeader {
       }
     },
     {
+      name: 'Snippets',
+      action: () => {
+        this.router.navigate(['/snippets']);
+      }
+    },
+    
+    {
       name: 'Favourites',
       action: () => {
         this.router.navigate(['/fav-snippets']);

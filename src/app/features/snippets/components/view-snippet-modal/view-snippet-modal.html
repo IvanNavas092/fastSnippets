@@ -1,13 +1,23 @@
 <div class="grid grid-cols-2 gap-4">
   @for (code of snippet.code; track $index; let i = $index) {
   <div>
-    <span class="text-2xl font-semibold text-white mt-1"
-      >Paso: {{ i + 1 }}</span
-    >
-    <article class="bg-white rounded-lg overflow-x-auto p-3 relative">
-      <pre><code class="text-purple-600 font-mono" [innerHTML]="snippet.code[i] | highlight"></code></pre>
-      <app-copy-button [code]="snippet.code[i]"></app-copy-button>
-      <p class="text-sm text-green-500">// {{ snippet.actions[i] }}</p>
+    <div class="flex justify-between">
+
+      <span class="text-2xl font-semibold text-white mt-1"
+        >Paso: {{ i + 1 }}</span
+      >
+      <div class="flex justify-end p-2">
+        <app-copy-button [code]="snippet.code[i]"></app-copy-button>
+      </div>
+    </div>
+    <article class="bg-[#212026] rounded-lg overflow-x-auto flex flex-col">
+
+      <pre>
+        <code [highlight]="code" [language]="'typescript'" class=" font-mono"
+        [innerHTML]="snippet.code[i] | highlight">
+        </code>
+      </pre>
+      <p class="text-sm text-green-500 p-2 px-4">// {{ snippet.actions[i] }}</p>
     </article>
   </div>
   }

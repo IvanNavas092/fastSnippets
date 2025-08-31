@@ -15,52 +15,49 @@
         }"
         alt="snippet.framework"
       />
-      <span class="text-lg lg:text-xl font-semibold text-white">
-        {{ snippet.framework }}
+      <span class="text-lg lg:text-2xl font-semibold text-white">
+        {{ snippet.title }}
       </span>
     </div>
-    <button (click)="emitFavourite(snippet)">
-      <svg
-        class="w-6 h-6 duration-200 transition-all cursor-pointer"
-        [ngClass]="{
-          'text-red-500': isFavourite,
-          'text-white': !isFavourite
-        }"
-        aria-hidden="true"
-        width="24"
-        height="24"
-        [attr.fill]="isFavourite ? 'currentColor' : 'none'"
-        viewBox="0 0 24 24"
-      >
-        <path
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z"
-        />
-      </svg>
-    </button>
-  </header>
-  <div class="flex items-center justify-between relative">
-    <div>
-      <p class="md:text-lg lg:text-xl font-semibold text-gray-100">
-        {{ snippet.title }}
-      </p>
-    </div>
-    <div class="">
+    <div class="flex items-center gap-3">
       <app-copy-button
         [code]="snippet.code[0]"
         [black]="false"
       ></app-copy-button>
+
+      <button (click)="emitFavourite(snippet)">
+        <svg
+          class="w-6 h-6 duration-200 transition-all cursor-pointer"
+          [ngClass]="{
+            'text-red-500': isFavourite,
+            'text-white': !isFavourite
+          }"
+          aria-hidden="true"
+          width="24"
+          height="24"
+          [attr.fill]="isFavourite ? 'currentColor' : 'none'"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z"
+          />
+        </svg>
+      </button>
     </div>
+  </header>
+  <div class="flex items-center justify-between relative">
+    <div class=""></div>
   </div>
 
   <!-- code -->
-  <div class="p-3 relative bg-[#212026] rounded-lg overflow-x-auto max-w-full">
+  <div class="p-1 relative bg-[#212026] rounded-lg overflow-x-auto max-w-full">
     @if (snippet.code && snippet.code.length > 0) {
     <pre>
-<code class="font-mono whitespace-pre-wrap" [highlight]="snippet.code[0]" [language]="'typescript'"></code>
+<code class="font-mono whitespace-pre-wrap rounded-sm" [highlight]="snippet.code[0]" [language]="'typescript'"></code>
 </pre>
     } @else {
     <pre><code class="bg-gray-100 text-black">No hay código disponible</code></pre>

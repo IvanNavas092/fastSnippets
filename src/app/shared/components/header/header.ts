@@ -10,11 +10,10 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [RouterModule, Logo, ButtonAvatarHeader, CommonModule],
   templateUrl: './header.html',
-  styleUrls: ['./header.css'],
 })
 export class Header {
-  // currentUser: AuthUser | null = null;
   isLoggedIn: boolean = false;
+
   constructor(private router: Router, private authService: AuthService) {
     this.authService.currentUser$.subscribe((user) => {
       this.isLoggedIn = !!user;
@@ -42,7 +41,5 @@ export class Header {
   navigateToCreateSnippet() {
     this.router.navigate(['/snippets']);
   }
-  navigateToFavSnippets() {
-    this.router.navigate(['/fav-snippets']);
-  }
+
 }
