@@ -19,6 +19,9 @@ import { environment } from '@/environments/environment';
 import { provideLottieOptions } from 'ngx-lottie';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 
+// highlight
+import { provideHighlightOptions } from 'ngx-highlightjs';
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZonelessChangeDetection(),
@@ -39,6 +42,16 @@ export const appConfig: ApplicationConfig = {
     // lottie
     provideLottieOptions({
       player: () => import('lottie-web'),
+    }),
+
+    // highlight
+    provideHighlightOptions({
+      coreLibraryLoader: () => import('highlight.js/lib/core'),
+      languages: {
+        typescript: () => import('highlight.js/lib/languages/typescript'),
+        css: () => import('highlight.js/lib/languages/css'),
+        xml: () => import('highlight.js/lib/languages/xml'),
+      },
     }),
   ],
 };

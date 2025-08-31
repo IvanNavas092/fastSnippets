@@ -3,20 +3,6 @@
     <div class="cursor-pointer" (click)="backToHome()">
       <app-logo></app-logo>
     </div>
-    <div class="flex items-center cursor-pointer gap-8">
-      <a
-        class="text-white font-semibold border p-2 hover:px-3 transition-all duration-200 shadow-md hover:shadow-lg shadow-purple-500"
-        (click)="navigateToCreateSnippet()"
-        >Explorar</a
-      >
-      @if (isLoggedIn) {
-      <a
-        class="text-white font-semibold border p-2 hover:px-3 transition-all duration-200 shadow-md hover:shadow-lg shadow-purple-500"
-        (click)="navigateToFavSnippets()"
-        >Mis favoritos</a
-      >
-      }
-    </div>
 
     <div class="flex items-center gap-6">
       <!-- Login -->

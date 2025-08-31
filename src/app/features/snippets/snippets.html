@@ -28,7 +28,7 @@
       </p>
     </div>
     } @else if (!isLoading && AuxSnippetList.length > 0) {
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+    <div class="columns-1 md:columns-3 gap-4 mt-4">
       @for (item of AuxSnippetList; track item.uid) {
       <app-box-snippet
         [isFavourite]="detectIfUserSavedSnippet(item)"

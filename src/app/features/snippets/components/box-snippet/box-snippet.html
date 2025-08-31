@@ -1,5 +1,5 @@
 <article
-  class="p-4 space-y-3 flex flex-col bg-[#18181b] rounded-lg hover:shadow-sm hover:shadow-purple-100 transition-shadow duration-200"
+  class="p-4 space-y-3 mb-3 flex flex-col bg-[#18181b] rounded-lg hover:shadow-sm hover:shadow-gray-100 transition-shadow duration-200 break-inside-avoid"
 >
   <!-- header -> icon + framework + favourite -->
   <header class="flex items-center justify-between">
@@ -57,9 +57,11 @@
   </div>
 
   <!-- code -->
-  <div class="p-3 relative bg-white rounded-lg overflow-x-auto">
+  <div class="p-3 relative bg-[#212026] rounded-lg overflow-x-auto max-w-full">
     @if (snippet.code && snippet.code.length > 0) {
-    <pre><code class="text-purple-600 font-mono text-xl md:text-sm lg:text-base" [innerHTML]="snippet.code[0] | highlight"></code></pre>
+    <pre>
+<code class="font-mono whitespace-pre-wrap" [highlight]="snippet.code[0]" [language]="'typescript'"></code>
+</pre>
     } @else {
     <pre><code class="bg-gray-100 text-black">No hay código disponible</code></pre>
     }

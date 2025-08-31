@@ -3,17 +3,18 @@ import { Router, RouterModule } from '@angular/router';
 import { Logo } from '../logo/logo';
 import { AuthService } from '@/app/core/services/authService';
 import { ButtonAvatarHeader } from '../button-avatar-header/button-avatar-header';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterModule, Logo, ButtonAvatarHeader],
+  imports: [RouterModule, Logo, ButtonAvatarHeader, CommonModule],
   templateUrl: './header.html',
+  styleUrls: ['./header.css'],
 })
 export class Header {
   // currentUser: AuthUser | null = null;
   isLoggedIn: boolean = false;
-
   constructor(private router: Router, private authService: AuthService) {
     this.authService.currentUser$.subscribe((user) => {
       this.isLoggedIn = !!user;

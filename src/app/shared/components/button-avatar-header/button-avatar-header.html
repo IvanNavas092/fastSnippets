@@ -13,7 +13,7 @@
     <div class="flex flex-col items-center">
       @for (link of links; track link.name) {
       <div
-        class="relative border-b border-white hover:border-0 w-full text-white px-2 py-4 gap-2 flex items-center group"
+        class="relative border-b cursor-pointer border-white hover:border-0 w-full text-white px-2 py-4 gap-2 flex items-center group"
       >
         <svg
           class="w-6 h-6 text-gray-800 dark:text-white"
@@ -30,7 +30,7 @@
         </svg>
 
         <a
-          href=""
+          (click)="link.action()"
           class="absolute group-hover:font-semibold group-hover:text-[15px] transition-all duration-200 text-sm px-8"
           >{{ link.name }}</a
         >
