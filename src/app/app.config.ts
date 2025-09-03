@@ -5,7 +5,12 @@ import {
 import { provideRouter, withInMemoryScrolling } from '@angular/router';
 
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
-import { getAuth, provideAuth } from '@angular/fire/auth';
+import {
+  getAuth,
+  indexedDBLocalPersistence,
+  provideAuth,
+  setPersistence,
+} from '@angular/fire/auth';
 
 import { routes } from './app.routes';
 import {

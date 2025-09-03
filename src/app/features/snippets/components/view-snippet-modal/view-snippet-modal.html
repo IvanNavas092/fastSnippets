@@ -2,22 +2,26 @@
   @for (code of snippet.code; track $index; let i = $index) {
   <div>
     <div class="flex justify-between">
+      <span class="text-2xl font-semibold text-white">Paso: {{ i + 1 }}</span>
+    </div>
 
-      <span class="text-2xl font-semibold text-white mt-1"
-        >Paso: {{ i + 1 }}</span
-      >
-      <div class="flex justify-end p-2">
+    <article class="relative bottom-3">
+      <div class="absolute top-10 right-4">
         <app-copy-button [code]="snippet.code[i]"></app-copy-button>
       </div>
-    </div>
-    <article class="bg-[#212026] rounded-lg overflow-x-auto flex flex-col">
-
       <pre>
-        <code [highlight]="code" [language]="'typescript'" class=" font-mono"
+        <code [highlight]="code" [language]="'typescript'" class=" rounded-lg font-mono"
         [innerHTML]="snippet.code[i] | highlight">
         </code>
       </pre>
-      <p class="text-sm text-green-500 p-2 px-4">// {{ snippet.actions[i] }}</p>
+      <div
+        class="relative bottom-15 text-sm text-[#98c379] bg-[#282c34] px-2 py-4 rounded-b-lg"
+      >
+        <span class="px-2">
+          //
+          {{ snippet.actions[i] }}
+        </span>
+      </div>
     </article>
   </div>
   }

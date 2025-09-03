@@ -1,12 +1,12 @@
 <article
-  class="p-4 space-y-3 mb-3 flex flex-col bg-[#18181b] rounded-lg hover:shadow-sm hover:shadow-gray-100 transition-shadow duration-200 break-inside-avoid"
+  class="p-4 space-y-1 mb-3 flex flex-col bg-[#18181b] rounded-lg hover:shadow-sm hover:shadow-gray-100 transition-shadow duration-200 break-inside-avoid"
 >
   <!-- header -> icon + framework + favourite -->
   <header class="flex items-center justify-between">
     <div class="flex items-center gap-3">
       <img
         src="./{{ detectIcon(snippet.icon) }}"
-        class="w-10 h-10 lg:w-12 lg:h-12 drop-shadow-xl/90"
+        class="w-10 h-10 lg:w-12 lg:h-12 drop-shadow-xl/60"
         [ngClass]="{
           'drop-shadow-red-600': snippet.framework === 'Angular',
           'drop-shadow-blue-600': snippet.framework === 'React',
@@ -49,34 +49,30 @@
       </button>
     </div>
   </header>
-  <div class="flex items-center justify-between relative">
-    <div class=""></div>
-  </div>
 
   <!-- code -->
-  <div class="p-1 relative bg-[#212026] rounded-lg overflow-x-auto max-w-full">
+  <div class="relative rounded-lg overflow-x-auto max-w-full">
     @if (snippet.code && snippet.code.length > 0) {
     <pre>
-<code class="font-mono whitespace-pre-wrap rounded-sm" [highlight]="snippet.code[0]" [language]="'typescript'"></code>
-</pre>
+      <code class="font-mono whitespace-pre-wrap rounded-sm" [highlight]="snippet.code[0]" [language]="'typescript'"></code>
+    </pre>
     } @else {
     <pre><code class="bg-gray-100 text-black">No hay código disponible</code></pre>
     }
-  </div>
-
-  <!-- actions -->
-  <div class="mt">
-    @if (snippet.actions && snippet.actions.length > 0) {
-    <p class="text-sm text-gray-400">{{ snippet.actions[0] }}</p>
-    } @else {
-    <p class="text-sm text-gray-400 italic">No hay descripción disponible</p>
-    }
+    <div class="relative bottom-10 right-0">
+      <!-- actions -->
+      @if (snippet.actions && snippet.actions.length > 0) {
+      <p class="text-sm text-gray-400">{{ snippet.actions[0] }}</p>
+      } @else {
+      <p class="text-sm text-gray-400 italic">No hay descripción disponible</p>
+      }
+    </div>
   </div>
 
   <!-- button -->
   <div
     (click)="openModal()"
-    class="flex justify-between items-center border-1 border-gray-500 rounded-lg transition-colors duration-200 cursor-pointer"
+    class="flex justify-between items-center border-1 border-gray-500 rounded-lg transition-colors duration-200 cursor-pointer -mt-6"
     [ngClass]="{
       'hover:bg-red-500': snippet.framework === 'Angular',
       'hover:bg-[#00d8ff]': snippet.framework === 'React',
