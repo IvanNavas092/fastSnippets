@@ -34,6 +34,8 @@ export class BoxSnippet {
     }
   }
 
+  
+
   openModal() {
     this.showModal.emit(this.snippet);
   }

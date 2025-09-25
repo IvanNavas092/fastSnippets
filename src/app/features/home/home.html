@@ -1,75 +1,73 @@
 <section>
-  <div class="m-6">
-    <div class="flex flex-col items-center justify-center min-h-screen">
-      <app-hero></app-hero>
-    </div>
-    <!-- glow -->
-    <div class="relative z-0">
-      <div
-        class="pointer-events-none absolute -top-18 left-1/2 transform -translate-x-1/2 w-[90%] h-48 bg-gradient-to-r from-purple-500/20 via-purple-400/20 to-purple-500/30 blur-3xl rounded-full opacity-70"
-      ></div>
-    </div>
-    <!-- frameworks -->
-    <h1 class="text-4xl font-bold text-gray-100 mb-10 text-center">
-      Frameworks disponibles
-    </h1>
+  <div class="flex flex-col items-center justify-center min-h-screen">
+    <app-hero></app-hero>
+  </div>
+  <!-- glow -->
+  <div class="relative z-0">
     <div
-      id="popularSnippet"
-      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 items-stretch"
+      class="pointer-events-none absolute -top-18 left-1/2 transform -translate-x-1/2 w-[90%] h-48 bg-gradient-to-r from-purple-500/20 via-purple-400/20 to-purple-500/30 blur-3xl rounded-full opacity-70"
+    ></div>
+  </div>
+  <!-- frameworks -->
+  <h1 class="text-4xl font-bold text-gray-100 mb-10 text-center">
+    Frameworks disponibles
+  </h1>
+  <div
+    id="popularSnippet"
+    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 items-stretch"
+  >
+    @for (item of frameworkList; track item.name) {
+
+    <app-circle-frame
+      [title]="item.name"
+      [icon]="item.logo"
+      [description]="item.description"
+    ></app-circle-frame>
+    }
+  </div>
+  <!-- popular snippet -->
+  <div class="mt-24">
+    <h2 class="text-4xl font-bold text-gray-100 mb-4 text-center">
+      Snippets Populares
+    </h2>
+
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 items-stretch"
     >
-      @for (item of frameworkList; track item.name) {
-
-      <app-circle-frame
-        [title]="item.name"
-        [icon]="item.logo"
-        [description]="item.description"
-      ></app-circle-frame>
+      @for (item of popularSnippetList; track item.framework) {
+      <app-card-popular-snippet [item]="item"></app-card-popular-snippet>
       }
     </div>
-    <!-- popular snippet -->
-    <div class="mt-24">
-      <h2 class="text-4xl font-bold text-gray-100 mb-4 text-center">
-        Snippets Populares
-      </h2>
-
-      <div
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 items-stretch"
+    <button
+      routerLink="/snippets"
+      class="flex items-center justify-center mt-6 mb-22 w-full cursor-pointer"
+    >
+      <span class="text-white hover:underline">Ver más snippets </span>
+      <svg
+        class="w-6 h-6 text-gray-800 dark:text-white ml-2"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill="none"
+        viewBox="0 0 24 24"
       >
-        @for (item of popularSnippetList; track item.framework) {
-        <app-card-popular-snippet [item]="item"></app-card-popular-snippet>
-        }
-      </div>
-      <button
-        routerLink="/snippets"
-        class="flex items-center justify-center mt-6 mb-22 w-full cursor-pointer"
-      >
-        <span class="text-white hover:underline">Ver más snippets </span>
-        <svg
-          class="w-6 h-6 text-gray-800 dark:text-white ml-2"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M19 12H5m14 0-4 4m4-4-4-4"
-          />
-        </svg>
-      </button>
-    </div>
-    <div class="grid grid-cols-3 items-stretch gap-12">
-      @for (item of aboutList; track item.title) {
-      <app-box-about [item]="item"></app-box-about>
-      }
-    </div>
-    <div class="mt-20 mb-20">
-      <app-cta></app-cta>
-    </div>
+        <path
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M19 12H5m14 0-4 4m4-4-4-4"
+        />
+      </svg>
+    </button>
+  </div>
+  <div class="grid grid-cols-3 items-stretch gap-12">
+    @for (item of aboutList; track item.title) {
+    <app-box-about [item]="item"></app-box-about>
+    }
+  </div>
+  <div class="mt-20 mb-20">
+    <app-cta></app-cta>
   </div>
 </section>

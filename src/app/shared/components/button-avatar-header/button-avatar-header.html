@@ -1,9 +1,10 @@
 <div class="relative">
   <button
-    class="rounded-full border border-white cursor-pointer"
+    class="rounded-full border border-white cursor-pointer p-4 bg[url()]"
     (click)="openMenuHandler()"
+
   >
-    <img [src]="image" alt="avatar" class="w-10 h-10" />
+    <img [src]="image" alt="avatar" class="w-2 h-2" />
   </button>
 
   @if (openMenu) {

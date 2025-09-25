@@ -49,9 +49,6 @@ export class FormLoginRegisterComponent implements OnInit {
   }
 
   async login() {
-    // Siempre marcar los campos como tocados para mostrar validaciones
-    this.markFormGroupTouched(this.form);
-
     if (this.form.valid) {
       console.log('Login con:', this.form.value);
       try {
@@ -88,29 +85,22 @@ export class FormLoginRegisterComponent implements OnInit {
   }
 
   signup() {
-    // Siempre marcar los campos como tocados para mostrar validaciones
-    this.markFormGroupTouched(this.form);
-
     if (this.form.valid) {
       console.log('Registro con:', this.form.value);
-      this.authService.signup(
-        this.form.value.email,
-        this.form.value.password,
-        this.form.value.username
-      );
+      this.authService
+        .signup(
+          this.form.value.email,
+          this.form.value.password,
+          this.form.value.username
+        )
+        .then(() => {
+          this.router.navigate(['/snippets']);
+          this.form.reset();
+        }),
+        () => {
+          console.error('Error al registrar usuario:');
+        };
     }
-  }
-
-  // Marcar todos los campos como tocados para mostrar validaciones
-  markFormGroupTouched(formGroup: FormGroup) {
-    Object.values(formGroup.controls).forEach((control) => {
-      control.markAsTouched();
-      control.markAsDirty();
-      control.updateValueAndValidity();
-      if ((control as any).controls) {
-        this.markFormGroupTouched(control as FormGroup);
-      }
-    });
   }
 
   changeMode(register: boolean) {

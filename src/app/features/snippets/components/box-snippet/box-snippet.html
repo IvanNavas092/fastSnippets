@@ -1,5 +1,5 @@
 <article
-  class="p-4 space-y-1 mb-3 flex flex-col bg-[#18181b] rounded-lg hover:shadow-sm hover:shadow-gray-100 transition-shadow duration-200 break-inside-avoid"
+  class="p-4 mb-3 flex flex-col bg-[#18181b] rounded-lg hover:shadow-sm hover:shadow-gray-100 transition-shadow duration-200 break-inside-avoid"
 >
   <!-- header -> icon + framework + favourite -->
   <header class="flex items-center justify-between">
@@ -70,9 +70,9 @@
   </div>
 
   <!-- button -->
-  <div
+  <button
+    class="flex items-center gap-2 justify-center text-white px-4 py-2 border-1 border-gray-500 rounded-lg transition-colors duration-200 cursor-pointer"
     (click)="openModal()"
-    class="flex justify-between items-center border-1 border-gray-500 rounded-lg transition-colors duration-200 cursor-pointer -mt-6"
     [ngClass]="{
       'hover:bg-red-500': snippet.framework === 'Angular',
       'hover:bg-[#00d8ff]': snippet.framework === 'React',
@@ -80,9 +80,7 @@
       'hover:bg-orange-600': snippet.framework === 'Svelte'
     }"
   >
-    <button class="mx-auto text-white px-4 py-2 rounded-lg cursor-pointer">
-      <span class="text-sm">Ver más</span>
-    </button>
+    <span class="text-sm">Ver más</span>
     <svg
       class="w-6 h-6 mr-2 text-gray-800 dark:text-white"
       width="24"
@@ -101,5 +99,5 @@
         d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
       />
     </svg>
-  </div>
+  </button>
 </article>
