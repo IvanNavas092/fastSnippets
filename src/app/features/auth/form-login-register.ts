@@ -12,6 +12,7 @@ import {
 } from '@angular/forms';
 import { inputList } from '@/app/utils/Lists';
 import { Router } from '@angular/router';
+import { IaAgentService } from '@/app/core/services/ia-agent-service';
 
 @Component({
   selector: 'app-auth',
@@ -29,8 +30,9 @@ export class FormLoginRegisterComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
+    private iaAgentService: IaAgentService,
     private router: Router,
-    private cdRef: ChangeDetectorRef // <<-- Inyectar aquí
+    private cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -119,4 +121,6 @@ export class FormLoginRegisterComponent implements OnInit {
       }
     }
   }
+
+
 }
