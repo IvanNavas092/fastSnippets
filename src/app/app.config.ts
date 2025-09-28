@@ -26,15 +26,16 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { provideHighlightOptions } from 'ngx-highlightjs';
 
 // http
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { CsrfInterceptor } from './core/interceptors/CsrfInterceptor ';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZonelessChangeDetection(),
     provideHttpClient(
-      withInterceptors([CsrfInterceptor])
+      withInterceptors([CsrfInterceptor]),
     ),
+     provideHttpClient(withFetch()),
     provideRouter(
       routes,
       // scroll

@@ -5,7 +5,7 @@
     <div
       class="flex flex-col space-y-2 p-2 rounded-lg h-full w-full overflow-y-auto text-white"
     >
-    @for (msg of messages; track trackByMsg(msg)) {
+    @for (msg of messages; track msg.id) {
       <span [ngClass]="{
         'text-purple-300': msg.sender === 'user',
        'text-white' : msg.sender === 'bot' } ">
