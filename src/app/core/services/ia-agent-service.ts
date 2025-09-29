@@ -19,7 +19,7 @@ import { Conversation } from '../interfaces/Conversation';
   providedIn: 'root',
 })
 export class IaAgentService {
-  private apiUrl = environment.apiUrl;
+  private apiUrl = environment.api.url;
 
   private ConsersationCollection: CollectionReference<DocumentData>;
 
