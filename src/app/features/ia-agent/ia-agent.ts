@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Message } from '@/app/core/interfaces/Message';
 import { Conversation } from '@/app/core/interfaces/Conversation';
-import { send } from 'process';
+import { marked } from 'marked';
 
 @Component({
   selector: 'app-ia-agent',
@@ -16,7 +16,7 @@ export class IaAgent {
   userInput = '';
   messages: Message[] = [];
   conversations: Conversation[] = [];
-  currentConversationId : string | null = null;
+  currentConversationId: string | null = null;
   loading = false;
 
   constructor(
@@ -30,21 +30,27 @@ export class IaAgent {
     if (!message) return;
     if (!this.currentConversationId) {
       this.iaAgentService
-      .createConversation({
-        title: message.trim().substring(0, 20),
-      })
-      .then((docRef) => {
-        this.loading = true;
-        this.userInput = '';
-        console.log('Conversacion creada con éxito:', docRef.id);
-        this.currentConversationId = docRef.id;
-        // add message to conversation
-        this.sendMessageToFirebase(docRef.id, { sender: 'user', text: message });
+        .createConversation({
+          title: message.trim().substring(0, 20),
+        })
+        .then((docRef) => {
+          this.loading = true;
+          this.userInput = '';
+          console.log('Conversacion creada con éxito:', docRef.id);
+          this.currentConversationId = docRef.id;
+          // add message to conversation
+          this.sendMessageToFirebase(docRef.id, {
+            sender: 'user',
+            text: message,
+          });
 
-        this.sendMessageToIa(docRef.id, message);
-      });
+          this.sendMessageToIa(docRef.id, message);
+        });
     } else {
-      this.sendMessageToFirebase(this.currentConversationId, { sender: 'user', text: message });
+      this.sendMessageToFirebase(this.currentConversationId, {
+        sender: 'user',
+        text: message,
+      });
       this.userInput = '';
       this.loading = true;
       this.sendMessageToIa(this.currentConversationId, message);
@@ -54,7 +60,10 @@ export class IaAgent {
   sendMessageToIa(convId: string, message: string) {
     this.iaAgentService.sendMessage(message).subscribe({
       next: (response) => {
-        this.sendMessageToFirebase(convId, { sender: 'bot', text: response });
+        this.sendMessageToFirebase(convId, {
+          sender: 'bot',
+          text: response.reply,
+        });
         console.log('entra al next');
         this.loading = false;
         this.cdr.markForCheck();
@@ -73,10 +82,15 @@ export class IaAgent {
 
   sendMessageToFirebase(conversationId: string, message: Message) {
     this.iaAgentService.addMessage(conversationId, message).then(() => {
-      console.log('Mensaje agregado exitosamente a la conversación:', conversationId);
-    })
+      console.log(
+        'Mensaje agregado exitosamente a la conversación:',
+        conversationId
+      );
+    });
     this.messages.push(message);
   }
 
-
+  formatMessage(message: string) {
+    return marked.parse(message);
+  }
 }

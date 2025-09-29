@@ -1,38 +1,135 @@
-<section class="mt-28 flex space-y-2 min-h-[80vh] justify-center">
+<section class=" flex gap-4 min-h-screen mx-auto ">
+  <!-- Sidebar de conversaciones -->
   <div
-    class="flex flex-col justify-between space-y-2 w-5xl bg-[#18181b] p-4 rounded-lg"
+    class="bg-[#18181b] p-4 rounded-lg col-span-2 h-full border border-gray-700 shadow-lg overflow-y-auto fixed"
   >
-    <div
-      class="flex flex-col space-y-2 p-2 rounded-lg h-full w-full overflow-y-auto text-white"
-    >
-    @for (msg of messages; track msg.id) {
-      <span [ngClass]="{
-        'text-purple-300': msg.sender === 'user',
-       'text-white' : msg.sender === 'bot' } ">
-       <strong>{{ msg.sender}}:</strong> {{ msg.text }}
-      </span>
-    }
-    @if (loading) {
-      <span class="loader"></span>
-    }
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-xl font-bold text-white">Conversaciones</h2>
+      <button class="p-2 rounded-lg bg-[#9810fa] hover:bg-[#7a0dc7] transition">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 text-white"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </button>
     </div>
-    <!-- input -->
-    <div class="flex gap-2">
+
+    <!-- Lista de conversaciones -->
+    <div class="space-y-2">
+      <div
+        class="p-3 rounded-lg bg-[#242323] cursor-pointer hover:bg-[#2a2a2a] transition border-l-4 border-[#9810fa]"
+      >
+        <p class="text-white font-medium truncate">Conversación actual</p>
+        <p class="text-gray-400 text-sm truncate">Último mensaje...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chat principal -->
+  <div class="ml-120 flex-1 flex flex-col h-[80vh] bg-[#18181b] p-6 rounded-lg border border-gray-700 shadow-lg">  
+    <!-- Encabezado del chat -->
+    <div class="pb-4 border-b border-gray-700 mb-4">
+      <h1 class="text-2xl font-bold text-white">
+        Bienvenido a la IA de FastSnippets
+      </h1>
+      <p class="text-gray-400">Estoy aquí para ayudarte</p>
+    </div>
+
+    <!-- Mensajes -->
+    <div class="flex flex-col h-[calc(100%-200px)] overflow-y-auto pr-2">
+
+      @for (msg of messages; track $index) {
+
+      <div
+        [ngClass]="{
+          'self-end bg-[#9810fa] text-white': msg.sender === 'user',
+          'self-start bg-[#242323] text-white': msg.sender === 'bot'
+        }"
+        class="max-w-[80%] rounded-2xl px-4 py-3 shadow-md"
+      >
+        <div class="flex items-center space-x-2 mb-1">
+          <div
+            [ngClass]="{
+              'bg-white text-[#9810fa]': msg.sender === 'user',
+              'bg-[#9810fa] text-white': msg.sender === 'bot'
+            }"
+            class="h-6 w-6 rounded-full flex items-center justify-center text-xs font-bold"
+          >
+            {{ msg.sender === "user" ? "T" : "A" }}
+          </div>
+          <span class="font-medium text-sm">
+            {{ msg.sender === "user" ? "Tú" : "Asistente" }}
+          </span>
+        </div>
+        <p [innerHTML]="formatMessage(msg.text)" class="text-sm"></p>
+      </div>
+      }
+
+      <!-- Loader -->
+      @if (loading) {
+
+      <div
+        class="self-start bg-[#242323] rounded-2xl px-4 py-3 max-w-[80%] shadow-md"
+      >
+        <div class="flex items-center space-x-2 mb-1">
+          <div
+            class="h-6 w-6 rounded-full flex items-center justify-center text-xs font-bold bg-[#9810fa] text-white"
+          >
+            A
+          </div>
+          <span class="font-medium text-sm">Asistente</span>
+        </div>
+        <div class="flex space-x-1">
+          <div class="h-2 w-2 bg-gray-400 rounded-full animate-bounce"></div>
+          <div
+            class="h-2 w-2 bg-gray-400 rounded-full animate-bounce"
+            style="animation-delay: 0.2s"
+          ></div>
+          <div
+            class="h-2 w-2 bg-gray-400 rounded-full animate-bounce"
+            style="animation-delay: 0.4s"
+          ></div>
+        </div>
+      </div>
+      }
+    </div>
+
+    <!-- Input y botón -->
+    <div class="mt-6 flex gap-3">
       <input
         id="userInput"
         type="text"
         (keyup.enter)="submitMessage()"
         [(ngModel)]="userInput"
         placeholder="Escribe tu pregunta..."
-        class="flex-1 px-4 py-2 rounded-lg bg-[#18181b] border-1 border-white text-white focus:outline-none focus:ring-[#9810fa]"
+        class="flex-1 px-4 py-3 rounded-xl bg-[#242323] border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-[#9810fa] focus:border-transparent transition"
       />
       <button
         (click)="submitMessage()"
         type="button"
         [disabled]="!userInput.trim() || loading"
-        class="px-4 py-2 bg-[#9810fa] rounded-lg hover:bg-[#242323] transition disabled:opacity-50 disabled:cursor-not-allowed"
+        class="px-6 py-3 bg-[#9810fa] rounded-xl hover:bg-[#7a0dc7] transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
       >
-         {{ loading ? 'Enviando...' : 'Enviar' }}
+        <span>{{ loading ? "Enviando..." : "Enviar" }}</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          />
+        </svg>
       </button>
     </div>
   </div>

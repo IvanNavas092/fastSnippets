@@ -121,6 +121,8 @@ export class FormLoginRegisterComponent implements OnInit {
       }
     }
   }
-
+  goBack() {
+    window.history.back();  
+  }
 
 }

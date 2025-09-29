@@ -1,6 +1,9 @@
 <main class="grid min-h-screen grid-rows-[auto_1fr_auto]">
+  @if (!isLoginRoute) {
   <app-header></app-header>
-  <div class="m-6">
+  }
+  
+  <div [class]="isLoginRoute ? 'm-6' : 'm-0'">
     <router-outlet />
   </div>
   @if (!isLoginRoute) {

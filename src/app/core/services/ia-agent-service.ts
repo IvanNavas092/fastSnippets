@@ -14,12 +14,13 @@ import {
 } from '@angular/fire/firestore';
 import { Message } from '@/app/core/interfaces/Message';
 import { Conversation } from '../interfaces/Conversation';
+import { ChatResponse } from '@/app/core/interfaces/ChatResponse';
 
 @Injectable({
   providedIn: 'root',
 })
 export class IaAgentService {
-  private apiUrl = environment.apiUrl;
+  private apiUrl = environment.api.url;
 
   private ConsersationCollection: CollectionReference<DocumentData>;
 
@@ -73,8 +74,8 @@ export class IaAgentService {
   }
 
   // --------- Send Message to IA Agent ----------
-  sendMessage(message: string): Observable<string> {
-    return this.http.post<string>(
+  sendMessage(message: string): Observable<ChatResponse> {
+    return this.http.post<ChatResponse>(
       this.apiUrl + 'chat',
       { user_message: message },
       { withCredentials: true }

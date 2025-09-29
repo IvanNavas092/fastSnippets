@@ -22,7 +22,8 @@ export class App {
     this.getToken();
   }
   get isLoginRoute(): boolean {
-    return this.router.url.startsWith('/login');
+    const routes = ['/login', '/ia-agent'];
+    return routes.some(route => this.router.url.startsWith(route));
   }
 
   getToken() {
