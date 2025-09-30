@@ -1,79 +1,76 @@
-<section class=" flex gap-4 min-h-screen mx-auto ">
+<section class="flex gap-4 min-h-screen mx-auto">
   <!-- Sidebar de conversaciones -->
   <div
-    class="bg-[#18181b] p-4 rounded-lg col-span-2 h-full border border-gray-700 shadow-lg overflow-y-auto fixed"
+    class="fixed bg-[#18181b] p-4 rounded-lg w-64 border border-[#282c34] shadow-lg overflow-y-auto"
   >
-    <div class="flex items-center justify-between mb-6">
-      <h2 class="text-xl font-bold text-white">Conversaciones</h2>
-      <button class="p-2 rounded-lg bg-[#9810fa] hover:bg-[#7a0dc7] transition">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-5 w-5 text-white"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-            clip-rule="evenodd"
-          />
-        </svg>
+    <div class="p-2" (click)="goBack()">
+      <svg
+        class="w-6 h-6 text-gray-800 dark:text-whitetransition rounded-full cursor-pointer"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M5 12h14M5 12l4-4m-4 4 4 4"
+        />
+      </svg>
+    </div>
+    <div class=" relative flex flex-col space-y-2 mb-6">
+      <button
+        class="p-2 w-full text-left cursor-pointer rounded-lg hover:bg-[#282c34] transition text-white"
+      >
+        Nuevo Chat
       </button>
+      <input
+        type="text"
+        placeholder="Buscar..."
+        class="p-2 w-full text-left cursor-pointer  border-b-1 border-[#282c34] hover:bg-[#282c34] transition text-white"
+      />
     </div>
 
     <!-- Lista de conversaciones -->
-    <div class="space-y-2">
-      <div
-        class="p-3 rounded-lg bg-[#242323] cursor-pointer hover:bg-[#2a2a2a] transition border-l-4 border-[#9810fa]"
-      >
-        <p class="text-white font-medium truncate">Conversación actual</p>
-        <p class="text-gray-400 text-sm truncate">Último mensaje...</p>
-      </div>
+    <div class="flex flex-col space-y-2 overflow-y-auto max-h-[70vh] ">
+      @for (conv of conversations; track $index) {
+      <app-conversation-box [conv]="conv"></app-conversation-box>
+      }
     </div>
   </div>
 
   <!-- Chat principal -->
-  <div class="ml-120 flex-1 flex flex-col h-[80vh] bg-[#18181b] p-6 rounded-lg border border-gray-700 shadow-lg">  
-    <!-- Encabezado del chat -->
-    <div class="pb-4 border-b border-gray-700 mb-4">
+  <div
+    class="flex-1 flex flex-col h-screen bg-[#18181b] p-6 rounded-lg border border-[#282c34] shadow-lg"
+  >
+    <!-- Encabezado -->
+    <div class="pb-4 border-b border-[#282c34] mb-4">
       <h1 class="text-2xl font-bold text-white">
         Bienvenido a la IA de FastSnippets
       </h1>
       <p class="text-gray-400">Estoy aquí para ayudarte</p>
     </div>
 
-    <!-- Mensajes -->
-    <div class="flex flex-col h-[calc(100%-200px)] overflow-y-auto pr-2">
-
+    <!-- Mensajes con scroll -->
+    <div class="flex flex-col flex-1 overflow-y-auto pr-2">
       @for (msg of messages; track $index) {
-
       <div
+        class="max-w-[80%] rounded-2xl px-4 py-3 shadow-md"
         [ngClass]="{
           'self-end bg-[#9810fa] text-white': msg.sender === 'user',
           'self-start bg-[#242323] text-white': msg.sender === 'bot'
         }"
-        class="max-w-[80%] rounded-2xl px-4 py-3 shadow-md"
       >
-        <div class="flex items-center space-x-2 mb-1">
-          <div
-            [ngClass]="{
-              'bg-white text-[#9810fa]': msg.sender === 'user',
-              'bg-[#9810fa] text-white': msg.sender === 'bot'
-            }"
-            class="h-6 w-6 rounded-full flex items-center justify-center text-xs font-bold"
-          >
-            {{ msg.sender === "user" ? "T" : "A" }}
-          </div>
-          <span class="font-medium text-sm">
-            {{ msg.sender === "user" ? "Tú" : "Asistente" }}
-          </span>
-        </div>
-        <p [innerHTML]="formatMessage(msg.text)" class="text-sm"></p>
+        <app-message-box [msg]="msg"></app-message-box>
       </div>
       }
 
       <!-- Loader -->
-      @if (loading) {
+      @if (isLoading) {
 
       <div
         class="self-start bg-[#242323] rounded-2xl px-4 py-3 max-w-[80%] shadow-md"
@@ -101,35 +98,25 @@
       }
     </div>
 
-    <!-- Input y botón -->
+    <!-- Input -->
     <div class="mt-6 flex gap-3">
       <input
-        id="userInput"
         type="text"
+        placeholder="Escribe tu pregunta..."
+        class="flex-1 px-4 py-3 rounded-xl bg-[#18181b] border border-[#282c34] text-white focus:outline-none focus:ring-1 focus:ring-[#282c34] transition"
         (keyup.enter)="submitMessage()"
         [(ngModel)]="userInput"
-        placeholder="Escribe tu pregunta..."
-        class="flex-1 px-4 py-3 rounded-xl bg-[#242323] border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-[#9810fa] focus:border-transparent transition"
       />
       <button
-        (click)="submitMessage()"
-        type="button"
-        [disabled]="!userInput.trim() || loading"
-        class="px-6 py-3 bg-[#9810fa] rounded-xl hover:bg-[#7a0dc7] transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+        class="px-5 py-2 bg-[#9810fa] rounded-xl hover:bg-[#7a0dc7] transition flex items-center space-x-2"
       >
-        <span>{{ loading ? "Enviando..." : "Enviar" }}</span>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-5 w-5"
-          viewBox="0 0 20 20"
-          fill="currentColor"
+        <button
+          type="button"
+          (click)="submitMessage()"
+          class="flex-1 text-white font-semibold"
         >
-          <path
-            fill-rule="evenodd"
-            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-            clip-rule="evenodd"
-          />
-        </svg>
+          {{ isLoading ? "enviando..." : "Enviar" }}
+        </button>
       </button>
     </div>
   </div>

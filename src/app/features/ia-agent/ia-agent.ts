@@ -1,28 +1,34 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { IaAgentService } from '@/app/core/services/ia-agent-service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Message } from '@/app/core/interfaces/Message';
 import { Conversation } from '@/app/core/interfaces/Conversation';
-import { marked } from 'marked';
+import { MessageBox } from './components/message-box/message-box';
+import { ConversationBox } from './components/conversation-box/conversation-box';
 
 @Component({
   selector: 'app-ia-agent',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, MessageBox, ConversationBox],
   templateUrl: './ia-agent.html',
   styleUrls: ['./ia-agent.css'],
 })
-export class IaAgent {
+export class IaAgent implements OnInit {
   userInput = '';
   messages: Message[] = [];
   conversations: Conversation[] = [];
   currentConversationId: string | null = null;
-  loading = false;
+  isLoading = false;
+  isLoadingConv = false;
 
   constructor(
     private iaAgentService: IaAgentService,
     private cdr: ChangeDetectorRef
   ) {}
+
+  ngOnInit(): void {
+    this.loadData();
+  }
 
   submitMessage() {
     const message = this.userInput.trim();
@@ -34,7 +40,7 @@ export class IaAgent {
           title: message.trim().substring(0, 20),
         })
         .then((docRef) => {
-          this.loading = true;
+          this.isLoading = true;
           this.userInput = '';
           console.log('Conversacion creada con éxito:', docRef.id);
           this.currentConversationId = docRef.id;
@@ -52,7 +58,7 @@ export class IaAgent {
         text: message,
       });
       this.userInput = '';
-      this.loading = true;
+      this.isLoading = true;
       this.sendMessageToIa(this.currentConversationId, message);
     }
   }
@@ -65,17 +71,16 @@ export class IaAgent {
           text: response.reply,
         });
         console.log('entra al next');
-        this.loading = false;
+        this.isLoading = false;
         this.cdr.markForCheck();
       },
       error: (error) => {
         console.error('Error al enviar mensaje:', error);
-        this.loading = false;
+        this.isLoading = false;
       },
       complete: () => {
         console.log('entra al complete');
-        this.loading = false;
-        console.log(this.messages);
+        this.isLoading = false;
       },
     });
   }
@@ -87,10 +92,18 @@ export class IaAgent {
         conversationId
       );
     });
-    this.messages.push(message);
+    this.messages = [...this.messages, message];
   }
 
-  formatMessage(message: string) {
-    return marked.parse(message);
+  loadData() {
+    this.iaAgentService.getConversations().subscribe((data) => {
+      this.conversations = data;
+      this.cdr.markForCheck();
+    });
+    this.isLoadingConv = true;
+  }
+
+  goBack() {
+    window.history.back();
   }
 }

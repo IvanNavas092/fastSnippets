@@ -1,0 +1,31 @@
+<div class="flex items-center space-x-2 mb-1">
+  <!-- header -->
+  <div
+    [ngClass]="{
+      'bg-white text-[#9810fa]': msg()?.sender === 'user',
+      'bg-[#9810fa] text-white': msg()?.sender === 'bot'
+    }"
+    class="h-6 w-6 rounded-full flex items-center justify-center text-xs font-bold"
+  >
+    {{ msg()?.sender === "user" ? "T" : "A" }}
+  </div>
+  <span class="font-medium text-sm">
+    {{ msg()?.sender === "user" ? "Tú" : "Asistente" }}
+  </span>
+</div>
+<!-- content -->
+<div class="text-sm space-y-2">
+  @for (part of parts; track $index) {
+
+  <!-- normal text -->
+  @if (part.type === 'text') {
+
+  <div [innerHTML]="formatMessage(part.content)"></div>
+  }
+  <!-- code -->
+  @if (part.type === 'code') {
+  <pre class="rounded-md bg-[#1e1e1e] p-3 overflow-x-auto">
+        <code [attr.class]="part.lang">{{ part.content }}</code>
+      </pre>
+  } }
+</div>
