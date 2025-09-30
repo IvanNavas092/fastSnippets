@@ -1,11 +1,15 @@
 <section class="flex gap-4 min-h-screen mx-auto">
   <!-- Sidebar de conversaciones -->
   <div
-    class="fixed bg-[#18181b] p-4 rounded-lg w-64 border border-[#282c34] shadow-lg overflow-y-auto"
+    class="bg-[#18181b] p-4 rounded-lg w-64 border border-[#282c34] shadow-lg overflow-y-auto"
   >
-    <div class="p-2" (click)="goBack()">
+    <button
+      type="button"
+      class="p-2 hover:bg-[#282c34] transition rounded-full cursor-pointer"
+      (click)="goBack()"
+    >
       <svg
-        class="w-6 h-6 text-gray-800 dark:text-whitetransition rounded-full cursor-pointer"
+        class="w-6 h-6 text-white"
         aria-hidden="true"
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -21,25 +25,29 @@
           d="M5 12h14M5 12l4-4m-4 4 4 4"
         />
       </svg>
-    </div>
-    <div class=" relative flex flex-col space-y-2 mb-6">
-      <button
-        class="p-2 w-full text-left cursor-pointer rounded-lg hover:bg-[#282c34] transition text-white"
-      >
-        Nuevo Chat
-      </button>
-      <input
-        type="text"
-        placeholder="Buscar..."
-        class="p-2 w-full text-left cursor-pointer  border-b-1 border-[#282c34] hover:bg-[#282c34] transition text-white"
-      />
-    </div>
+    </button>
 
-    <!-- Lista de conversaciones -->
-    <div class="flex flex-col space-y-2 overflow-y-auto max-h-[70vh] ">
-      @for (conv of conversations; track $index) {
-      <app-conversation-box [conv]="conv"></app-conversation-box>
-      }
+    <div class="flex flex-col space-y-2 mb-6 ">
+      <div class="gap-2 flex flex-col">
+        <button
+          class="p-2 w-full text-left cursor-pointer rounded-lg hover:bg-[#282c34] transition text-white"
+        >
+          Nuevo Chat
+        </button>
+        <input
+          type="text"
+          placeholder="Buscar..."
+          class="p-2 w-full text-left cursor-pointer rounded-lg border-b-1 border-[#282c34] hover:bg-[#282c34] transition text-white"
+        />
+      </div>
+
+      <!-- Lista de conversaciones -->
+      <div class="flex flex-col space-y-2 max-h-[70vh] pr-2 overflow-y-auto">
+        <h2 class="text-white border-b-1 border-[#282c34]">Conversaciones</h2>
+        @for (conv of conversations; track $index) {
+        <app-conversation-box [conv]="conv"></app-conversation-box>
+        }
+      </div>
     </div>
   </div>
 
@@ -108,6 +116,7 @@
         [(ngModel)]="userInput"
       />
       <button
+        type="button"
         class="px-5 py-2 bg-[#9810fa] rounded-xl hover:bg-[#7a0dc7] transition flex items-center space-x-2"
       >
         <button

@@ -29,6 +29,7 @@ export class MessageBox implements AfterViewInit {
     const parts = [];
     let lastIndex = 0;
     const regex = /```(\w+)?\n([\s\S]*?)```/g;
+    console.log(regex);
 
     text.replace(regex, (match, lang, code, offset) => {
       if (offset > lastIndex) {
