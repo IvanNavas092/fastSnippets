@@ -6,10 +6,11 @@ import { Message } from '@/app/core/interfaces/Message';
 import { Conversation } from '@/app/core/interfaces/Conversation';
 import { MessageBox } from './components/message-box/message-box';
 import { ConversationBox } from './components/conversation-box/conversation-box';
+import { ButtonSidebar } from "./components/button-sidebar/button-sidebar";
 
 @Component({
   selector: 'app-ia-agent',
-  imports: [FormsModule, CommonModule, MessageBox, ConversationBox],
+  imports: [FormsModule, CommonModule, MessageBox, ConversationBox, ButtonSidebar],
   templateUrl: './ia-agent.html',
   styleUrls: ['./ia-agent.css'],
 })
@@ -20,6 +21,7 @@ export class IaAgent implements OnInit {
   currentConversationId: string | null = null;
   isLoading = false;
   isLoadingConv = false;
+  clickedHistory = false;
 
   constructor(
     private iaAgentService: IaAgentService,
@@ -105,5 +107,9 @@ export class IaAgent implements OnInit {
 
   goBack() {
     window.history.back();
+  }
+
+  openHistory() {
+    this.clickedHistory = !this.clickedHistory;
   }
 }

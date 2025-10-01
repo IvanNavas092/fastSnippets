@@ -1,0 +1,18 @@
+<div class="relative flex items-center ">
+  @if (isInput()) {
+  <input
+    [type]="type()"
+    [placeholder]="placeholder()"
+    class="p-2 w-full text-left cursor-pointer rounded-lg border-b-1 border-[#282c34] hover:bg-[#282c34] transition text-white placeholder:px-6"
+  />
+  } @else {
+  <button
+    class="p-2 w-full text-left cursor-pointer rounded-lg hover:bg-[#282c34] transition text-white"
+  >
+  <span class="px-6">
+      {{ text() }}
+    </span>
+  </button>
+  }
+  <img [src]="icon()" [alt]="text()" class="absolute left-2 inset-y-0 my-auto w-4" />
+</div>

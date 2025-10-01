@@ -1,7 +1,7 @@
 <section class="flex gap-4 min-h-screen mx-auto">
   <!-- Sidebar de conversaciones -->
   <div
-    class="bg-[#18181b] p-4 rounded-lg w-64 border border-[#282c34] shadow-lg overflow-y-auto"
+    class="bg-[#18181b] p-4 rounded-lg w-60 border border-[#282c34] shadow-lg overflow-y-auto"
   >
     <button
       type="button"
@@ -27,25 +27,54 @@
       </svg>
     </button>
 
-    <div class="flex flex-col space-y-2 mb-6 ">
+    <div class="flex flex-col space-y-2 mb-6">
       <div class="gap-2 flex flex-col">
-        <button
-          class="p-2 w-full text-left cursor-pointer rounded-lg hover:bg-[#282c34] transition text-white"
-        >
-          Nuevo Chat
-        </button>
-        <input
-          type="text"
-          placeholder="Buscar..."
-          class="p-2 w-full text-left cursor-pointer rounded-lg border-b-1 border-[#282c34] hover:bg-[#282c34] transition text-white"
-        />
+        <app-button-sidebar
+          [text]="'Nuevo Chat'"
+          [icon]="'svgs-ia/new-chat.svg'"
+        ></app-button-sidebar>
+
+        <app-button-sidebar
+          [isInput]="true"
+          [text]="'Buscar'"
+          [type]="'text'"
+          [icon]="'svgs-ia/search.svg'"
+          [placeholder]="'Buscar...'"
+        ></app-button-sidebar>
       </div>
 
       <!-- Lista de conversaciones -->
-      <div class="flex flex-col space-y-2 max-h-[70vh] pr-2 overflow-y-auto">
-        <h2 class="text-white border-b-1 border-[#282c34]">Conversaciones</h2>
-        @for (conv of conversations; track $index) {
-        <app-conversation-box [conv]="conv"></app-conversation-box>
+      <div class="flex flex-col space-y-2 max-h-[70vh] pr-2 mt-12">
+        <button
+          (click)="openHistory()"
+          class="flex items-center space-x-2 text-white justify-between"
+        >
+          <span>Historial</span>
+          <svg
+            [ngClass]="{ 'rotate-180': clickedHistory }"
+            class="w-5 h-5 text-gray-800 dark:text-white"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m19 9-7 7-7-7"
+            />
+          </svg>
+        </button>
+        @if (clickedHistory) {
+        <div class="overflow-y-auto px-2 flex flex-col space-y-2">
+          @for (conv of conversations; track $index) {
+          <app-conversation-box [conv]="conv"></app-conversation-box>
+          }
+        </div>
         }
       </div>
     </div>
