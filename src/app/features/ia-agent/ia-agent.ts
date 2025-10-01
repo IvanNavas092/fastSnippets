@@ -20,7 +20,6 @@ export class IaAgent implements OnInit {
   conversations: Conversation[] = [];
   currentConversationId: string | null = null;
   isLoading = false;
-  isLoadingConv = false;
   clickedHistory = false;
 
   constructor(
@@ -34,8 +33,8 @@ export class IaAgent implements OnInit {
 
   submitMessage() {
     const message = this.userInput.trim();
-
     if (!message) return;
+
     if (!this.currentConversationId) {
       this.iaAgentService
         .createConversation({
@@ -102,7 +101,6 @@ export class IaAgent implements OnInit {
       this.conversations = data;
       this.cdr.markForCheck();
     });
-    this.isLoadingConv = true;
   }
 
   goBack() {

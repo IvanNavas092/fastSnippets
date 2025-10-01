@@ -1,5 +1,6 @@
-<section class="flex gap-4 min-h-screen mx-auto">
-  <!-- Sidebar de conversaciones -->
+
+<section class="flex gap-4 max-h-screen mx-auto">
+  <!-- Sidebar -->
   <div
     class="bg-[#18181b] p-4 rounded-lg w-60 border border-[#282c34] shadow-lg overflow-y-auto"
   >
@@ -28,7 +29,8 @@
     </button>
 
     <div class="flex flex-col space-y-2 mb-6">
-      <div class="gap-2 flex flex-col">
+      <!-- header -->
+      <div class="  gap-2 flex flex-col">
         <app-button-sidebar
           [text]="'Nuevo Chat'"
           [icon]="'svgs-ia/new-chat.svg'"
@@ -43,11 +45,11 @@
         ></app-button-sidebar>
       </div>
 
-      <!-- Lista de conversaciones -->
-      <div class="flex flex-col space-y-2 max-h-[70vh] pr-2 mt-12">
+      <!-- Conversations-->
+      <div class="flex flex-col space-y-2 h-full mt-12">
         <button
           (click)="openHistory()"
-          class="flex items-center space-x-2 text-white justify-between"
+          class="flex items-center space-x-2 text-white justify-between cursor-pointer"
         >
           <span>Historial</span>
           <svg
@@ -69,8 +71,9 @@
             />
           </svg>
         </button>
+
         @if (clickedHistory) {
-        <div class="overflow-y-auto px-2 flex flex-col space-y-2">
+        <div class="overflow-y-auto flex flex-col space-y-2  mt-1">
           @for (conv of conversations; track $index) {
           <app-conversation-box [conv]="conv"></app-conversation-box>
           }
@@ -80,11 +83,11 @@
     </div>
   </div>
 
-  <!-- Chat principal -->
+  <!-- chat -->
   <div
     class="flex-1 flex flex-col h-screen bg-[#18181b] p-6 rounded-lg border border-[#282c34] shadow-lg"
   >
-    <!-- Encabezado -->
+    <!-- header -->
     <div class="pb-4 border-b border-[#282c34] mb-4">
       <h1 class="text-2xl font-bold text-white">
         Bienvenido a la IA de FastSnippets
@@ -92,7 +95,7 @@
       <p class="text-gray-400">Estoy aquí para ayudarte</p>
     </div>
 
-    <!-- Mensajes con scroll -->
+    <!-- list of messages-->
     <div class="flex flex-col flex-1 overflow-y-auto pr-2">
       @for (msg of messages; track $index) {
       <div
