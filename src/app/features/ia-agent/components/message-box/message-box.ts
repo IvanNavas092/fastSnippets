@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import { Message } from '@/app/core/interfaces/Message';
 import { marked } from 'marked';
 import hljs from 'highlight.js/lib/core';
+import { Highlight } from "ngx-highlightjs";
 
 @Component({
   selector: 'app-message-box',
-  imports: [CommonModule],
+  imports: [CommonModule, Highlight],
   templateUrl: './message-box.html',
   styles: ``,
 })
@@ -18,7 +19,7 @@ export class MessageBox implements OnInit {
   }
   ngOnInit(): void {
     if (this.msg()) {
-      this.parseMessage(this.msg()?.text);
+      this.parseMessage(this.msg()?.text || '');
     }
   }
 
@@ -29,7 +30,7 @@ export class MessageBox implements OnInit {
     return marked.parse(message);
   }
 
-  parseMessage(text: string | undefined) {
+  parseMessage(text: string) {
   
     // regex: busca ```lang ... ```
     const regex = /```(\w+)?\n([\s\S]*?)```/g;

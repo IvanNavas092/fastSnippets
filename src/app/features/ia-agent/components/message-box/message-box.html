@@ -25,7 +25,7 @@
   <!-- code -->
   @if (part.type === 'code') {
   <pre class="rounded-md bg-[#1e1e1e] p-3 overflow-x-auto">
-        <code [attr.class]="part.lang">{{ part.content }}</code>
+        <code [attr.class]="part.lang" [highlight]="part.content" [language]="part.lang ? part.lang : 'plaintext'"></code>
       </pre>
   } }
 </div>
