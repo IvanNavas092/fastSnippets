@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { IaAgentService } from '@/app/core/services/ia-agent-service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -12,20 +12,32 @@ import { ButtonSidebar } from "./components/button-sidebar/button-sidebar";
   selector: 'app-ia-agent',
   imports: [FormsModule, CommonModule, MessageBox, ConversationBox, ButtonSidebar],
   templateUrl: './ia-agent.html',
-  styleUrls: ['./ia-agent.css'],
 })
-export class IaAgent implements OnInit {
+
+export class IaAgent implements OnInit, AfterViewChecked {
+  @ViewChild('chatBox') chatBox!: ElementRef;
   userInput = '';
   messages: Message[] = [];
   conversations: Conversation[] = [];
   currentConversationId: string | null = null;
   isLoading = false;
   clickedHistory = false;
+  messageError = '';
+  shouldScroll = false;
 
   constructor(
     private iaAgentService: IaAgentService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
+
+  ngAfterViewChecked(): void {
+    if (this.shouldScroll) {
+      this.scrollToBottom();
+      this.shouldScroll = false;
+    }
+  }
+
+
 
   ngOnInit(): void {
     this.loadData();
@@ -62,6 +74,8 @@ export class IaAgent implements OnInit {
       this.isLoading = true;
       this.sendMessageToIa(this.currentConversationId, message);
     }
+    this.shouldScroll = true;
+
   }
 
   sendMessageToIa(convId: string, message: string) {
@@ -73,10 +87,12 @@ export class IaAgent implements OnInit {
         });
         console.log('entra al next');
         this.isLoading = false;
+        this.shouldScroll = true;
         this.cdr.markForCheck();
+
       },
       error: (error) => {
-        console.error('Error al enviar mensaje:', error);
+        this.messageError = "Algo salió mal, inténtalo de nuevo";
         this.isLoading = false;
       },
       complete: () => {
@@ -94,6 +110,7 @@ export class IaAgent implements OnInit {
       );
     });
     this.messages = [...this.messages, message];
+
   }
 
   loadData() {
@@ -109,5 +126,9 @@ export class IaAgent implements OnInit {
 
   openHistory() {
     this.clickedHistory = !this.clickedHistory;
+  }
+
+  private scrollToBottom() {
+    this.chatBox.nativeElement.scrollTop = this.chatBox.nativeElement.scrollHeight;
   }
 }

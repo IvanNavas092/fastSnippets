@@ -1,8 +1,7 @@
-
-<section class="flex gap-4 max-h-screen mx-auto">
+<section class="flex max-h-screen mx-auto">
   <!-- Sidebar -->
   <div
-    class="bg-[#18181b] p-4 rounded-lg w-60 border border-[#282c34] shadow-lg overflow-y-auto"
+    class="bg-[#18181b] p-4 w-60 border border-[#282c34] shadow-lg overflow-y-auto"
   >
     <button
       type="button"
@@ -30,7 +29,7 @@
 
     <div class="flex flex-col space-y-2 mb-6">
       <!-- header -->
-      <div class="  gap-2 flex flex-col">
+      <div class="gap-2 flex flex-col">
         <app-button-sidebar
           [text]="'Nuevo Chat'"
           [icon]="'svgs-ia/new-chat.svg'"
@@ -73,7 +72,7 @@
         </button>
 
         @if (clickedHistory) {
-        <div class="overflow-y-auto flex flex-col space-y-2  mt-1">
+        <div class="overflow-y-auto flex flex-col space-y-2 mt-1">
           @for (conv of conversations; track $index) {
           <app-conversation-box [conv]="conv"></app-conversation-box>
           }
@@ -85,7 +84,7 @@
 
   <!-- chat -->
   <div
-    class="flex-1 flex flex-col h-screen bg-[#18181b] p-6 rounded-lg border border-[#282c34] shadow-lg"
+    class="flex-1 flex flex-col h-screen bg-[#18181b] p-6 border border-[#282c34] shadow-lg"
   >
     <!-- header -->
     <div class="pb-4 border-b border-[#282c34] mb-4">
@@ -96,7 +95,7 @@
     </div>
 
     <!-- list of messages-->
-    <div class="flex flex-col flex-1 overflow-y-auto pr-2">
+    <div #chatBox class="flex flex-col flex-1 overflow-y-auto pr-2 space-y-2">
       @for (msg of messages; track $index) {
       <div
         class="max-w-[80%] rounded-2xl px-4 py-3 shadow-md"
@@ -106,24 +105,26 @@
         }"
       >
         <app-message-box [msg]="msg"></app-message-box>
+        @if (messageError) {
+        <p class="text-red-500">{{ messageError }}</p>
+        }
       </div>
       }
 
       <!-- Loader -->
       @if (isLoading) {
-
       <div
-        class="self-start bg-[#242323] rounded-2xl px-4 py-3 max-w-[80%] shadow-md"
+        class="self-start bg-[#242323] rounded-2xl px-4 py-3 max-w-[80%] shadow-md animate-pulse"
       >
         <div class="flex items-center space-x-2 mb-1">
           <div
             class="h-6 w-6 rounded-full flex items-center justify-center text-xs font-bold bg-[#9810fa] text-white"
           >
-            A
+            I
           </div>
-          <span class="font-medium text-sm">Asistente</span>
+          <span class="font-medium text-sm text-white">Asistente Ingrid</span>
         </div>
-        <div class="flex space-x-1">
+        <div class="flex mt-1 space-x-1">
           <div class="h-2 w-2 bg-gray-400 rounded-full animate-bounce"></div>
           <div
             class="h-2 w-2 bg-gray-400 rounded-full animate-bounce"

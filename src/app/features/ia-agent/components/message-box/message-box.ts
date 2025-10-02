@@ -31,42 +31,50 @@ export class MessageBox implements OnInit {
   }
 
   parseMessage(text: string) {
-  
+
     // regex: busca ```lang ... ```
     const regex = /```(\w+)?\n([\s\S]*?)```/g;
-  
+
     let lastIndex = 0;
     let match;
-  
+
     while ((match = regex.exec(text)) !== null) {
       const [fullMatch, lang, code] = match;
-  
+
       // 1. Texto antes del bloque de código
       if (match.index > lastIndex) {
+        let content = text.slice(lastIndex, match.index).trim();
+        content = content.replace(/---/g, '\n');
+
         this.parts.push({
           type: 'text',
-          content: text.slice(lastIndex, match.index).trim()
+          content
         });
       }
-  
+
       // 2. El bloque de código
       this.parts.push({
         type: 'code',
         content: code.trim(),
         lang: lang || 'plaintext'
       });
-  
+
+      console.log(this.parts);
+
       lastIndex = regex.lastIndex;
     }
-  
+
     // 3. Texto que queda después del último bloque
     if (lastIndex < text.length) {
+      let content = text.slice(lastIndex).trim();
+      content = content.replace(/---/g, '\n');
+
       this.parts.push({
         type: 'text',
-        content: text.slice(lastIndex).trim()
+        content
       });
     }
-  
+
     return this.parts;
   }
 
