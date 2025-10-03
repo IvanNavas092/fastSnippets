@@ -1,5 +1,6 @@
 <div
-        class="p-3 rounded-lg  cursor-pointer hover:bg-[#363636] transition border-l-2  border-[#9810fa]"
-      >
-        <p class="text-white text-sm truncate">{{conv()?.title}}</p>
-      </div>
+  (click)="getIdConversation()"
+  class="p-3 rounded-lg cursor-pointer hover:bg-[#363636] transition border-l-2 border-[#9810fa]"
+>
+  <p class="text-white text-sm truncate">{{ conv()?.title }}</p>
+</div>

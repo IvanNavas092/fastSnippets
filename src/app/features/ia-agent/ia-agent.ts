@@ -19,7 +19,7 @@ export class IaAgent implements OnInit, AfterViewChecked {
   userInput = '';
   messages: Message[] = [];
   conversations: Conversation[] = [];
-  currentConversationId: string | null = null;
+  currentConversationId: string | undefined = undefined;
   isLoading = false;
   clickedHistory = false;
   messageError = '';
@@ -41,6 +41,10 @@ export class IaAgent implements OnInit, AfterViewChecked {
 
   ngOnInit(): void {
     this.loadData();
+    // if currentConversationId is not null, load messages
+    if (this.currentConversationId) {
+      this.loadMessagesInConversation();
+    }
   }
 
   submitMessage() {
@@ -120,6 +124,13 @@ export class IaAgent implements OnInit, AfterViewChecked {
     });
   }
 
+  loadMessagesInConversation() {
+    this.iaAgentService.getMessagesOfConv(this.currentConversationId).subscribe((data) => {
+      this.messages = data;
+      this.cdr.markForCheck();
+    });
+  }
+
   goBack() {
     window.history.back();
   }
@@ -130,5 +141,9 @@ export class IaAgent implements OnInit, AfterViewChecked {
 
   private scrollToBottom() {
     this.chatBox.nativeElement.scrollTop = this.chatBox.nativeElement.scrollHeight;
+  }
+
+  isInConversation() {
+    return this.currentConversationId !== null;
   }
 }

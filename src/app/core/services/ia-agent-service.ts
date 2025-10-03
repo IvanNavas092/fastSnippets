@@ -56,7 +56,7 @@ export class IaAgentService {
   }
   
   // --------- Get Messages of a Conversation ----------
-  getMessagesOfConv(convId: string): Observable<Message[]> {
+  getMessagesOfConv(convId: string | undefined): Observable<Message[]> {
     const messagesRef = collection(
       this.fireStore,
       `Conversations/${convId}/messages`
