@@ -56,7 +56,7 @@ export class IaAgent implements OnInit {
   // local state
   userInput = '';
   isLoading = false;
-  clickedHistory = false;
+  clickedHistory = true;
   messageError = '';
   shouldScroll = false;
 
@@ -68,6 +68,8 @@ export class IaAgent implements OnInit {
     this.initializeStreams();
   }
 
+  okey, ahora tengo un problema, cuando le doy a las conversaciones no me cargan los mensajes, eso si cuando le doy al ultimo me lo carga todo bien, pero le doy a los demas, se me van los mensajes pero no me cargan, mira
+
   // initialize observables
   private initializeStreams() {
     this.conversations$ = this.iaAgentService.getConversations().pipe(
@@ -75,7 +77,7 @@ export class IaAgent implements OnInit {
         // if no conversation is selected, select the last one
         if (!this.selectedConversationId$.value && conversations.length > 0) {
           this.selectedConversationId$.next(
-            conversations[conversations.length - 1].id
+            conversations[0].id
           );
         }
       }),
@@ -112,6 +114,7 @@ export class IaAgent implements OnInit {
       : from(
           this.iaAgentService.createConversation({
             title: messageText.substring(0, 20),
+            timestamp: new Date(),
           })
         ).pipe(
           tap((docRef) => this.selectedConversationId$.next(docRef.id)),
@@ -126,6 +129,7 @@ export class IaAgent implements OnInit {
             this.iaAgentService.addMessage(convId!, {
               sender: 'user',
               text: messageText,
+              timestamp: new Date(),
             })
           ).pipe(
             concatMap(() => this.iaAgentService.sendMessage(messageText)),
@@ -133,6 +137,7 @@ export class IaAgent implements OnInit {
               this.iaAgentService.addMessage(convId!, {
                 sender: 'bot',
                 text: response.reply,
+                timestamp: new Date(),
               })
             )
           )
@@ -178,3 +183,4 @@ export class IaAgent implements OnInit {
     }, 0);
   }
 }
+

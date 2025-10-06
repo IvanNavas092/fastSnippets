@@ -11,6 +11,8 @@ import {
   docData,
   DocumentData,
   Firestore,
+  orderBy,
+  query,
 } from '@angular/fire/firestore';
 import { Message } from '@/app/core/interfaces/Message';
 import { Conversation } from '../interfaces/Conversation';
@@ -23,10 +25,10 @@ export class IaAgentService {
   private readonly CONVERSATIONS_COLLECTION = 'Conversations';
   private apiUrl = environment.api.url;
 
-  private ConsersationCollection: CollectionReference<DocumentData>;
+  private ConversationCollection: CollectionReference<DocumentData>;
 
   constructor(private http: HttpClient, private fireStore: Firestore) {
-    this.ConsersationCollection = collection(
+    this.ConversationCollection = collection(
       this.fireStore,
       this.CONVERSATIONS_COLLECTION
     );
@@ -36,12 +38,13 @@ export class IaAgentService {
 
   // --------- Create Conversation ----------
   createConversation(conversation: Conversation) {
-    return addDoc(this.ConsersationCollection, conversation);
+    return addDoc(this.ConversationCollection, conversation);
   }
 
   // --------- Get Conversations ----------
   getConversations(): Observable<Conversation[]> {
-    return collectionData(this.ConsersationCollection, {
+    const queryOrdered = query(this.ConversationCollection, orderBy('timestamp', 'desc'))
+    return collectionData(this.ConversationCollection, {
       idField: 'id',
     }) as Observable<Conversation[]>;
   }
@@ -74,7 +77,9 @@ export class IaAgentService {
       `${this.CONVERSATIONS_COLLECTION}/${convId}/messages`
     );
 
-    return collectionData(messagesRef, { idField: 'id' }) as Observable<
+    const orderedQuery = query(messagesRef, orderBy('timestamp', 'asc'));
+
+    return collectionData(orderedQuery, { idField: 'id' }) as Observable<
       Message[]
     >;
   }
