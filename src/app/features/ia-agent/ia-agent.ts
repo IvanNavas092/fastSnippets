@@ -1,4 +1,9 @@
-import { AfterViewChecked, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { IaAgentService } from '@/app/core/services/ia-agent-service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -6,20 +11,50 @@ import { Message } from '@/app/core/interfaces/Message';
 import { Conversation } from '@/app/core/interfaces/Conversation';
 import { MessageBox } from './components/message-box/message-box';
 import { ConversationBox } from './components/conversation-box/conversation-box';
-import { ButtonSidebar } from "./components/button-sidebar/button-sidebar";
+import { ButtonSidebar } from './components/button-sidebar/button-sidebar';
+import { ReversePipe } from '@/app/shared/pipes/reverse';
+import {
+  BehaviorSubject,
+  catchError,
+  concatMap,
+  finalize,
+  from,
+  map,
+  Observable,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
 
 @Component({
   selector: 'app-ia-agent',
-  imports: [FormsModule, CommonModule, MessageBox, ConversationBox, ButtonSidebar],
+  imports: [
+    FormsModule,
+    CommonModule,
+    MessageBox,
+    ConversationBox,
+    ButtonSidebar,
+    ReversePipe,
+  ],
   templateUrl: './ia-agent.html',
 })
-
-export class IaAgent implements OnInit, AfterViewChecked {
+export class IaAgent implements OnInit {
   @ViewChild('chatBox') chatBox!: ElementRef;
+  @ViewChild('messageInput') messageInput!: ElementRef;
+
+  // subject for selected conversation id
+  private selectedConversationId$ = new BehaviorSubject<string | undefined>(
+    undefined
+  );
+
+  // observables
+  conversations$!: Observable<Conversation[]>;
+  messages$!: Observable<Message[]>;
+  currentConversationId$: Observable<string | undefined> =
+    this.selectedConversationId$.asObservable();
+
+  // local state
   userInput = '';
-  messages: Message[] = [];
-  conversations: Conversation[] = [];
-  currentConversationId: string | undefined = undefined;
   isLoading = false;
   clickedHistory = false;
   messageError = '';
@@ -27,108 +62,97 @@ export class IaAgent implements OnInit, AfterViewChecked {
 
   constructor(
     private iaAgentService: IaAgentService,
-    private cdr: ChangeDetectorRef
-  ) { }
-
-  ngAfterViewChecked(): void {
-    if (this.shouldScroll) {
-      this.scrollToBottom();
-      this.shouldScroll = false;
-    }
-  }
-
-
+  ) {}
 
   ngOnInit(): void {
-    this.loadData();
-    // if currentConversationId is not null, load messages
-    if (this.currentConversationId) {
-      this.loadMessagesInConversation();
-    }
+    this.initializeStreams();
   }
 
+  // initialize observables
+  private initializeStreams() {
+    this.conversations$ = this.iaAgentService.getConversations().pipe(
+      tap((conversations) => {
+        // if no conversation is selected, select the last one
+        if (!this.selectedConversationId$.value && conversations.length > 0) {
+          this.selectedConversationId$.next(
+            conversations[conversations.length - 1].id
+          );
+        }
+      }),
+      catchError((error) => {
+        console.error('Error loading conversations:', error);
+        return of([]);
+      })
+    );
+
+    this.messages$ = this.currentConversationId$.pipe(
+      switchMap((convId) => {
+        if (!convId) return of([]);
+        return this.iaAgentService.getMessagesOfConv(convId);
+      }),
+      tap(() => this.scrollToBottom()), // for each new message, scroll to bottom
+      catchError((error) => {
+        console.error('Error loading messages:', error);
+        return of([]);
+      })
+    );
+  }
+  // Submit message
   submitMessage() {
-    const message = this.userInput.trim();
-    if (!message) return;
+    const messageText = this.userInput.trim();
+    if (!messageText || this.isLoading) return;
 
-    if (!this.currentConversationId) {
-      this.iaAgentService
-        .createConversation({
-          title: message.trim().substring(0, 20),
+    this.isLoading = true;
+    this.userInput = '';
+    this.messageError = '';
+
+    // create conversation for emit the idConversation
+    const conversationId$ = this.selectedConversationId$.value
+      ? of(this.selectedConversationId$.value)
+      : from(
+          this.iaAgentService.createConversation({
+            title: messageText.substring(0, 20),
+          })
+        ).pipe(
+          tap((docRef) => this.selectedConversationId$.next(docRef.id)),
+          map((docRef) => docRef.id)
+        );
+
+    // cadena with concatMap to ensure order of operations
+    conversationId$
+      .pipe(
+        concatMap((convId) =>
+          from(
+            this.iaAgentService.addMessage(convId!, {
+              sender: 'user',
+              text: messageText,
+            })
+          ).pipe(
+            concatMap(() => this.iaAgentService.sendMessage(messageText)),
+            concatMap((response) =>
+              this.iaAgentService.addMessage(convId!, {
+                sender: 'bot',
+                text: response.reply,
+              })
+            )
+          )
+        ),
+        finalize(() => {
+          this.isLoading = false;
+          this.scrollToBottom();
+        }),
+        catchError((error) => {
+          console.error('Error processing message:', error);
+          this.messageError = 'Algo salió mal, inténtalo de nuevo';
+          this.isLoading = false;
+          return of(null);
         })
-        .then((docRef) => {
-          this.isLoading = true;
-          this.userInput = '';
-          console.log('Conversacion creada con éxito:', docRef.id);
-          this.currentConversationId = docRef.id;
-          // add message to conversation
-          this.sendMessageToFirebase(docRef.id, {
-            sender: 'user',
-            text: message,
-          });
-
-          this.sendMessageToIa(docRef.id, message);
-        });
-    } else {
-      this.sendMessageToFirebase(this.currentConversationId, {
-        sender: 'user',
-        text: message,
-      });
-      this.userInput = '';
-      this.isLoading = true;
-      this.sendMessageToIa(this.currentConversationId, message);
-    }
-    this.shouldScroll = true;
-
+      )
+      .subscribe();
   }
 
-  sendMessageToIa(convId: string, message: string) {
-    this.iaAgentService.sendMessage(message).subscribe({
-      next: (response) => {
-        this.sendMessageToFirebase(convId, {
-          sender: 'bot',
-          text: response.reply,
-        });
-        console.log('entra al next');
-        this.isLoading = false;
-        this.shouldScroll = true;
-        this.cdr.markForCheck();
-
-      },
-      error: (error) => {
-        this.messageError = "Algo salió mal, inténtalo de nuevo";
-        this.isLoading = false;
-      },
-      complete: () => {
-        console.log('entra al complete');
-        this.isLoading = false;
-      },
-    });
-  }
-
-  sendMessageToFirebase(conversationId: string, message: Message) {
-    this.iaAgentService.addMessage(conversationId, message).then(() => {
-      console.log(
-        'Mensaje agregado exitosamente a la conversación:',
-        conversationId
-      );
-    });
-    this.messages = [...this.messages, message];
-
-  }
-
-  loadData() {
-    this.iaAgentService.getConversations().subscribe((data) => {
-      this.conversations = data;
-      this.cdr.markForCheck();
-    });
-  }
-
-  loadMessagesInConversation() {
-    this.iaAgentService.getMessagesOfConv(this.currentConversationId).subscribe((data) => {
-      this.messages = data;
-      this.cdr.markForCheck();
-    });
+  loadMessagesInConversation(conversationIdClicked?: string) {
+    this.selectedConversationId$.next(conversationIdClicked);
   }
 
   goBack() {
@@ -139,11 +163,18 @@ export class IaAgent implements OnInit, AfterViewChecked {
     this.clickedHistory = !this.clickedHistory;
   }
 
-  private scrollToBottom() {
-    this.chatBox.nativeElement.scrollTop = this.chatBox.nativeElement.scrollHeight;
+  openNewChat() {
+    this.selectedConversationId$.next(undefined);
+    this.userInput = '';
+    this.messageError = '';
   }
 
-  isInConversation() {
-    return this.currentConversationId !== null;
+  private scrollToBottom() {
+    setTimeout(() => {
+      if (this.chatBox?.nativeElement) {
+        this.chatBox.nativeElement.scrollTop =
+          this.chatBox.nativeElement.scrollHeight;
+      }
+    }, 0);
   }
 }

@@ -33,6 +33,7 @@
         <app-button-sidebar
           [text]="'Nuevo Chat'"
           [icon]="'svgs-ia/new-chat.svg'"
+          (clicked)="openNewChat()"
         ></app-button-sidebar>
 
         <app-button-sidebar
@@ -72,11 +73,17 @@
         </button>
 
         @if (clickedHistory) {
-        <div class="overflow-y-auto flex flex-col space-y-2 mt-1">
-          @for (conv of conversations; track $index) {
-          <app-conversation-box [conv]="conv"></app-conversation-box>
+          @if (conversations$ | async; as conversations) {
+            <div class="overflow-y-auto flex flex-col space-y-2 mt-1">
+              @for (conv of conversations; track conv.id) {
+                <app-conversation-box
+                  [conv]="conv"
+                  (idConversation)="loadMessagesInConversation($event)"
+                  [isActive]="conv.id === (currentConversationId$ | async)"
+                ></app-conversation-box>
+              }
+            </div>
           }
-        </div>
         }
       </div>
     </div>
@@ -96,7 +103,7 @@
 
     <!-- list of messages-->
     <div #chatBox class="flex flex-col flex-1 overflow-y-auto pr-2 space-y-2">
-      @for (msg of messages; track $index) {
+      @for (msg of messages$ | async; track msg.id) {
       <div
         class="max-w-[80%] rounded-2xl px-4 py-3 shadow-md"
         [ngClass]="{
@@ -144,21 +151,17 @@
       <input
         type="text"
         placeholder="Escribe tu pregunta..."
-        class="flex-1 px-4 py-3 rounded-xl bg-[#18181b] border border-[#282c34] text-white focus:outline-none focus:ring-1 focus:ring-[#282c34] transition"
+        class="flex-12/12 px-4 py-3 rounded-xl bg-[#18181b] border border-[#282c34] text-white focus:outline-none focus:ring-1 focus:ring-[#282c34] transition"
         (keyup.enter)="submitMessage()"
         [(ngModel)]="userInput"
+        [disabled]="isLoading"
       />
       <button
         type="button"
-        class="px-5 py-2 bg-[#9810fa] rounded-xl hover:bg-[#7a0dc7] transition flex items-center space-x-2"
+        (click)="submitMessage()"
+        class="flex-1 text-white font-semibold px-5 py-3 bg-[#9810fa] rounded-xl hover:bg-[#7a0dc7] transition flex items-center space-x-2"
       >
-        <button
-          type="button"
-          (click)="submitMessage()"
-          class="flex-1 text-white font-semibold"
-        >
-          {{ isLoading ? "enviando..." : "Enviar" }}
-        </button>
+        {{ isLoading ? "enviando..." : "Enviar" }}
       </button>
     </div>
   </div>

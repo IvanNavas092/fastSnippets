@@ -20,13 +20,16 @@ import { ChatResponse } from '@/app/core/interfaces/ChatResponse';
   providedIn: 'root',
 })
 export class IaAgentService {
+  private readonly CONVERSATIONS_COLLECTION = 'Conversations';
   private apiUrl = environment.api.url;
 
   private ConsersationCollection: CollectionReference<DocumentData>;
 
-
   constructor(private http: HttpClient, private fireStore: Firestore) {
-    this.ConsersationCollection = collection(this.fireStore, 'Conversations');
+    this.ConsersationCollection = collection(
+      this.fireStore,
+      this.CONVERSATIONS_COLLECTION
+    );
   }
 
   // Firebase Conversations
@@ -45,23 +48,35 @@ export class IaAgentService {
 
   // --------- Get Conversation by ID ----------
   getConversationById(conversationId: string): Observable<Conversation> {
-    const conversationRef = doc(this.fireStore, 'Conversations', conversationId);
-    return docData(conversationRef, { idField: 'id' }) as Observable<Conversation>;
+    const conversationRef = doc(
+      this.fireStore,
+      this.CONVERSATIONS_COLLECTION,
+      conversationId
+    );
+    return docData(conversationRef, {
+      idField: 'id',
+    }) as Observable<Conversation>;
   }
 
-    // --------- Add Message to a Conversation ----------
+  // --------- Add Message to a Conversation ----------
   addMessage(convId: string, message: Message) {
-    const messagesRef = collection(this.fireStore, `Conversations/${convId}/messages`);
+    const messagesRef = collection(
+      this.fireStore,
+      `${this.CONVERSATIONS_COLLECTION}/${convId}/messages`
+    );
     return addDoc(messagesRef, message);
   }
-  
+
   // --------- Get Messages of a Conversation ----------
   getMessagesOfConv(convId: string | undefined): Observable<Message[]> {
     const messagesRef = collection(
       this.fireStore,
-      `Conversations/${convId}/messages`
+      `${this.CONVERSATIONS_COLLECTION}/${convId}/messages`
     );
-    return collectionData(messagesRef, { idField: 'id' }) as Observable<Message[]>;
+
+    return collectionData(messagesRef, { idField: 'id' }) as Observable<
+      Message[]
+    >;
   }
 
   // DJANGO API Calls

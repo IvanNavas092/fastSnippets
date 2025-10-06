@@ -14,4 +14,8 @@ export class ButtonSidebar {
   placeholder = input<string>();
   clicked = output<boolean>();
 
+  openNewChat() {
+    this.clicked.emit(true);
+  }
+
 }
