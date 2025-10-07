@@ -8,6 +8,7 @@ import { BoxSnippet } from '../snippets/components/box-snippet/box-snippet';
 import { ModalSnippet } from '../snippets/components/modal-snippet/modal-snippet';
 import { CommonModule } from '@angular/common';
 import { SnippetLoading } from '@/app/shared/components/snippet-loading/snippet-loading';
+
 @Component({
   selector: 'app-fav-snippets',
   imports: [BoxSnippet, ModalSnippet, CommonModule, SnippetLoading],

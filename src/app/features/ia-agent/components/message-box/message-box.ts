@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, input, OnInit } from '@angular/core';
+import { Component, ElementRef, input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Message } from '@/app/core/interfaces/Message';
 import { marked } from 'marked';
@@ -23,8 +23,6 @@ export class MessageBox implements OnInit {
     }
   }
 
-
-
   formatMessage(message: string | undefined) {
     if (!message) return '';
     return marked.parse(message);
@@ -32,7 +30,7 @@ export class MessageBox implements OnInit {
 
   parseMessage(text: string) {
 
-    // regex: busca ```lang ... ```
+    // regex: search ```lang ... ```
     const regex = /```(\w+)?\n([\s\S]*?)```/g;
 
     let lastIndex = 0;
@@ -52,7 +50,7 @@ export class MessageBox implements OnInit {
         });
       }
 
-      // 2. El bloque de código
+      // 2. code
       this.parts.push({
         type: 'code',
         content: code.trim(),
@@ -64,7 +62,7 @@ export class MessageBox implements OnInit {
       lastIndex = regex.lastIndex;
     }
 
-    // 3. Texto que queda después del último bloque
+    // 3. text later of last code block
     if (lastIndex < text.length) {
       let content = text.slice(lastIndex).trim();
       content = content.replace(/---/g, '\n');

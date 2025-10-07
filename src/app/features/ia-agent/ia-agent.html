@@ -75,7 +75,7 @@
         @if (clickedHistory) {
           @if (conversations$ | async; as conversations) {
             <div class="overflow-y-auto flex flex-col space-y-2 mt-1">
-              @for (conv of conversations; track conv.id) {
+              @for (conv of conversations | reverse; track conv.id) {
                 <app-conversation-box
                   [conv]="conv"
                   (idConversation)="loadMessagesInConversation($event)"
@@ -83,6 +83,8 @@
                 ></app-conversation-box>
               }
             </div>
+          } @else {
+            <p class="text-gray-400 text-sm">No hay conversaciones</p>
           }
         }
       </div>

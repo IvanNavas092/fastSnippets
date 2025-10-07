@@ -68,29 +68,26 @@ export class IaAgent implements OnInit {
     this.initializeStreams();
   }
 
-  okey, ahora tengo un problema, cuando le doy a las conversaciones no me cargan los mensajes, eso si cuando le doy al ultimo me lo carga todo bien, pero le doy a los demas, se me van los mensajes pero no me cargan, mira
 
   // initialize observables
   private initializeStreams() {
+    // conversations
     this.conversations$ = this.iaAgentService.getConversations().pipe(
-      tap((conversations) => {
-        // if no conversation is selected, select the last one
-        if (!this.selectedConversationId$.value && conversations.length > 0) {
-          this.selectedConversationId$.next(
-            conversations[0].id
-          );
-        }
-      }),
-      catchError((error) => {
-        console.error('Error loading conversations:', error);
-        return of([]);
-      })
-    );
+      tap((conversations) => console.log('Loaded conversations:', conversations))
+    )
 
+    // messages
     this.messages$ = this.currentConversationId$.pipe(
+      tap((convId) => {
+        console.log('Loading messages of conversation:', convId);
+      }),
       switchMap((convId) => {
-        if (!convId) return of([]);
-        return this.iaAgentService.getMessagesOfConv(convId);
+        if (!convId) return of([]) 
+        return this.iaAgentService.getMessagesOfConv(convId).pipe(
+          tap((messages) => {
+            console.log('Loaded messages:', messages);
+          })
+        );
       }),
       tap(() => this.scrollToBottom()), // for each new message, scroll to bottom
       catchError((error) => {
@@ -157,7 +154,9 @@ export class IaAgent implements OnInit {
   }
 
   loadMessagesInConversation(conversationIdClicked?: string) {
+    console.log('Loading conversation:', conversationIdClicked);
     this.selectedConversationId$.next(conversationIdClicked);
+    console.log('Selected conversation:', this.selectedConversationId$.value);
   }
 
   goBack() {

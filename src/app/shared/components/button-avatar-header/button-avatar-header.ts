@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@/app/core/services/authService';
+
 @Component({
   selector: 'app-button-avatar-header',
   imports: [],

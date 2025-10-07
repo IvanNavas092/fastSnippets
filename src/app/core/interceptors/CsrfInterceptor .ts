@@ -1,7 +1,7 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 
 export const CsrfInterceptor: HttpInterceptorFn = (req, next) => {
-  // Solo para métodos que modifican datos
+  // only send the token for unsafe methods
   if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method)) {
     const token = getCookie('csrftoken'); // o sessionStorage si lo usas
 
@@ -15,7 +15,7 @@ export const CsrfInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req);
 };
 
-// 🔹 Función para leer cookie del navegador
+// function for read the cookie
 function getCookie(name: string): string | null {
   const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
   return match ? decodeURIComponent(match[2]) : null;

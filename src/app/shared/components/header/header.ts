@@ -19,7 +19,6 @@ import { ButtonIa } from './button-ia/button-ia';
     ButtonIa,
   ],
   templateUrl: './header.html',
-  styleUrls: ['./header.css'],
 })
 export class Header {
   isLoggedIn: boolean = false;

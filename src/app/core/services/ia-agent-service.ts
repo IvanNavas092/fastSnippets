@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@/environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import {
   addDoc,
   collection,
@@ -13,10 +13,12 @@ import {
   Firestore,
   orderBy,
   query,
+  where,
 } from '@angular/fire/firestore';
 import { Message } from '@/app/core/interfaces/Message';
 import { Conversation } from '../interfaces/Conversation';
 import { ChatResponse } from '@/app/core/interfaces/ChatResponse';
+import { AuthService } from './authService';
 
 @Injectable({
   providedIn: 'root',
@@ -24,27 +26,43 @@ import { ChatResponse } from '@/app/core/interfaces/ChatResponse';
 export class IaAgentService {
   private readonly CONVERSATIONS_COLLECTION = 'Conversations';
   private apiUrl = environment.api.url;
-
+  private userId: string | null = null;
   private ConversationCollection: CollectionReference<DocumentData>;
 
-  constructor(private http: HttpClient, private fireStore: Firestore) {
+  constructor(private http: HttpClient, private fireStore: Firestore, private authService: AuthService) {
     this.ConversationCollection = collection(
       this.fireStore,
       this.CONVERSATIONS_COLLECTION
     );
+
+    this.authService.currentUser$.subscribe((user) => {
+      this.userId = user ? user.uid : null;
+    })
+
   }
 
   // Firebase Conversations
 
   // --------- Create Conversation ----------
   createConversation(conversation: Conversation) {
-    return addDoc(this.ConversationCollection, conversation);
+    // if the user not authenticated, throw error
+    if (!this.userId) {
+      throw new Error('User not authenticated');
+    }
+
+    return addDoc(this.ConversationCollection, {
+      ...conversation,
+      userId: this.userId
+    }); 
   }
 
   // --------- Get Conversations ----------
   getConversations(): Observable<Conversation[]> {
-    const queryOrdered = query(this.ConversationCollection, orderBy('timestamp', 'desc'))
-    return collectionData(this.ConversationCollection, {
+     if (!this.userId) return of([]);
+
+    const userQuery = query(this.ConversationCollection, where('userId', '==', this.userId), orderBy('timestamp', 'desc'))
+
+    return collectionData(userQuery, {
       idField: 'id',
     }) as Observable<Conversation[]>;
   }

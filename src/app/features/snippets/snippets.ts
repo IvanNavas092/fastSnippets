@@ -9,6 +9,7 @@ import { AuthUser } from '@/app/core/interfaces/user';
 import { AuthService } from '@/app/core/services/authService';
 import { Observable, of, switchMap, take } from 'rxjs';
 import { SnippetLoading } from "@/app/shared/components/snippet-loading/snippet-loading";
+
 @Component({
   selector: 'app-snippets',
   standalone: true,

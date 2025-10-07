@@ -2,6 +2,7 @@ import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { filtersList } from '@/app/utils/Lists';
 import { BubbleFramework } from '../bubble-framework/bubble-framework';
 import { FormsModule } from '@angular/forms';
+
 @Component({
   selector: 'app-filters',
   standalone: true,
