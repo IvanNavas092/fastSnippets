@@ -51,10 +51,10 @@
   </header>
 
   <!-- code -->
-  <div class="relative rounded-lg overflow-x-auto max-w-full">
+<div class="relative rounded-lg overflow-x-hidden overflow-y-auto max-w-full"> 
     @if (snippet.code && snippet.code.length > 0) {
-    <pre>
-      <code class="font-mono whitespace-pre-wrap rounded-sm" [highlight]="snippet.code[0]" [language]="'typescript'"></code>
+    <pre class="text-sm">
+      <code class=" rounded-sm whitespace-pre-wrap  " [highlight]="snippet.code[0]" [language]="'typescript'"></code>
     </pre>
     } @else {
     <pre><code class="bg-gray-100 text-black">No hay código disponible</code></pre>

@@ -62,7 +62,7 @@
       </svg>
     </button>
   </div>
-  <div class="grid grid-cols-3 items-stretch gap-12">
+  <div class="grid grid-cols-1 lg:grid-cols-3 items-stretch gap-6 lg:gap-12">
     @for (item of aboutList; track item.title) {
     <app-box-about [item]="item"></app-box-about>
     }

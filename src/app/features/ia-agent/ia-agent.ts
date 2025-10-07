@@ -59,6 +59,7 @@ export class IaAgent implements OnInit {
   clickedHistory = true;
   messageError = '';
   shouldScroll = false;
+  isOpenSidebar = false;
 
   constructor(
     private iaAgentService: IaAgentService,
@@ -165,6 +166,10 @@ export class IaAgent implements OnInit {
 
   openHistory() {
     this.clickedHistory = !this.clickedHistory;
+  }
+
+  toggleSidebar() {
+    this.isOpenSidebar = !this.isOpenSidebar;
   }
 
   openNewChat() {
