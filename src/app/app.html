@@ -1,12 +1,18 @@
 <main class="grid min-h-screen grid-rows-[auto_1fr_auto] ">
-  @if (!isLoginRoute) {
-  <app-header></app-header>
-  }
-  
-  <div [class]="isLoginRoute ? 'p-0' : 'p-4'">
-    <router-outlet />
-  </div>
-  @if (!isLoginRoute) {
-  <app-footer></app-footer>
+  @if (isReady$ | async) {
+    @if (!isLoginRoute) {
+      <app-header></app-header>
+    }
+    
+    <div [class]="isLoginRoute ? 'p-0' : 'p-4'">
+      <router-outlet />
+    </div>
+    @if (!isLoginRoute) {
+      <app-footer></app-footer>
+    }
+  } @else {
+    <div class="flex items-center justify-center min-h-screen">
+      <app-snippet-loading></app-snippet-loading>
+    </div>
   }
 </main>

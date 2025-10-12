@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-steps-form',
@@ -7,5 +7,7 @@ import { Component } from '@angular/core';
   styles: ``
 })
 export class StepsForm {
+  @Input() step!: number;
+
 
 }
