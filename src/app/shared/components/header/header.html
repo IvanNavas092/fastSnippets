@@ -57,8 +57,10 @@
       </button>
     
       } @if (isLoggedIn) {
-      <app-button-ia></app-button-ia>
-      <app-button-avatar-header> </app-button-avatar-header>
+        <div class="flex items-center gap-4">
+          <app-button-ia></app-button-ia>
+          <app-button-avatar-header> </app-button-avatar-header>
+        </div>
       }
     } @else {
       <app-snippet-loading></app-snippet-loading>

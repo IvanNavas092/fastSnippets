@@ -1,34 +1,41 @@
-<div class="relative">
-  <button
-    class="rounded-full border border-white cursor-pointer p-4 bg[url()]"
-    (click)="openMenuHandler()"
+<div class="flex items-center justify-center h-11">
+  <div class="relative">
+    <button
+      type="button"
+      class="w-11 h-11 rounded-full border-2 border-transparent hover:border-purple-600 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-600 cursor-pointer"
+      (click)="openMenuHandler()"
+      aria-label="Abrir menú de usuario"
+    >
+      <img
+        [src]="image"
+        alt="Avatar de usuario"
+        class="w-full h-full rounded-full object-cover"
+      />
+    </button>
 
-  >
-    <img [src]="image" alt="avatar" class="w-2 h-2" />
-  </button>
-
-  @if (openMenu) {
-  <div
-    class="absolute right-0 mt-2 w-56 bg-black/40 rounded-lg shadow-md text-white"
-  >
-    <div class="flex flex-col items-center">
-      @for (link of links; track link.name) {
-      <div
-        class="relative border-b cursor-pointer border-white hover:border-0 w-full text-white px-2 py-4 gap-2 flex items-center group"
-      >
-        <img [src]="link.icon" alt="icon" class="w-6 h-6 text-white" />
-
-        <a
-          (click)="link.action()"
-          class="absolute group-hover:font-semibold group-hover:text-[15px] transition-all duration-200 text-sm px-8"
-          >{{ link.name }}</a
+    @if (openMenu) {
+    <div
+      class="absolute right-0 mt-2 w-56 bg-black/40 rounded-lg shadow-md text-white"
+    >
+      <div class="flex flex-col items-center">
+        @for (link of links; track link.name) {
+        <div
+          class="relative border-b cursor-pointer border-white hover:border-0 w-full text-white px-2 py-4 gap-2 flex items-center group"
         >
-        <span
-          class="absolute left-0 bottom-0 h-[2px] w-0 bg-purple-600 transition-all duration-200 group-hover:w-full"
-        ></span>
+          <img [src]="link.icon" alt="icon" class="w-6 h-6 text-white" />
+
+          <a
+            (click)="link.action()"
+            class="absolute group-hover:font-semibold group-hover:text-[15px] transition-all duration-200 text-sm px-8"
+            >{{ link.name }}</a
+          >
+          <span
+            class="absolute left-0 bottom-0 h-[2px] w-0 bg-purple-600 transition-all duration-200 group-hover:w-full"
+          ></span>
+        </div>
+        }
       </div>
-      }
     </div>
+    }
   </div>
-  }
 </div>

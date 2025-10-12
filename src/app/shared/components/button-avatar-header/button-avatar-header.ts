@@ -9,7 +9,7 @@ import { AuthService } from '@/app/core/services/authService';
   styles: ``,
 })
 export class ButtonAvatarHeader {
-  @Input() image: string = 'angular.svg';
+  @Input() image: string = 'svgs-avatar/avatar.jpg';
   openMenu: boolean = false;
 
   constructor(private router: Router, private authService: AuthService) {}
