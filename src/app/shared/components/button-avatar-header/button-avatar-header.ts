@@ -1,10 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@/app/core/services/authService';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-button-avatar-header',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './button-avatar-header.html',
   styles: ``,
 })
