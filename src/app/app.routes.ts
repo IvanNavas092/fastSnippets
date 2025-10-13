@@ -5,7 +5,8 @@ import { Snippets } from './features/snippets/snippets';
 import { FavSnippets } from './features/fav-snippets/fav-snippets';
 import { guardLoginGuard } from './core/auth/guard-login-guard';
 import { IaAgent } from './features/ia-agent/ia-agent';
-import { CreateSnippet } from './features/snippets/components/create-snippet/create-snippet';
+import { CreateSnippet } from './features/create-snippet/create-snippet';
+
 export const routes: Routes = [
   { path: '', component: Home },
   { path: 'login', component: FormLoginRegisterComponent },
