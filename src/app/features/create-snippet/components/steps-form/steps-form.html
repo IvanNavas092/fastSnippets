@@ -1,11 +1,11 @@
-<div
-  class="flex min-w-full rounded-full border-1  border-gray-600"
->
-  @for (step of steps; track $index) {
+<div class="flex w-full rounded-full border-1 border-gray-600">
+  @for (step of steps; track step.number) {
   <div
-    class="rounded-full px-4 py-2 border-r-1  text-white transition-colors duration-300"
-    [ngClass]="{' border border-purple-600': step.number === stepActive, 'border-white': step.number !== stepActive }"
-    
+    class="rounded-full px-4 py-2 border-r-1 text-white transition-colors duration-300"
+    [ngClass]="{
+      ' border border-purple-600': step.number === stepActive,
+      'border-white': step.number !== stepActive
+    }"
   >
     {{ step.label }}
   </div>
