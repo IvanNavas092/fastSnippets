@@ -1,0 +1,11 @@
+<div class="flex gap-2">
+    @for (fw of frameworksOptions; track $index) {
+    <button 
+    (click)="selectFramework(fw.name)"
+    class="hover:scale-105 transition-all duration-200 cursor-pointer "
+       >
+        <img [src]="fw.route" [alt]="fw.name" class=" w-9 h-9 border-1 p-1 border-gray-300 rounded-full"
+         [ngClass]="{'bg-purple-600': fw.name === activeFramework}">
+    </button>
+    }
+</div>
