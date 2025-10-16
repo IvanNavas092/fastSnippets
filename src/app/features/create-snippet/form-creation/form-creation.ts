@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { OptionFramework } from "../components/option-framework/option-framework";
 import { ModalPasteCode } from "../components/modal-paste-code/modal-paste-code";
@@ -7,30 +7,28 @@ import { ModalPasteCode } from "../components/modal-paste-code/modal-paste-code"
   selector: 'app-form-creation',
   imports: [ReactiveFormsModule, OptionFramework, ModalPasteCode],
   templateUrl: './form-creation.html',
-  styles: ``
 })
+
 export class FormCreation {
   form!: FormGroup;
   isOpenModal = false;
   activeFramework: string = '';
+  @Output() activeStep = new EventEmitter<number>();
 
   constructor(private fb: FormBuilder) {
+    console.log('FormCreation component loaded');
     this.form = this.fb.group({
       title: ['', Validators.required],
       codes: this.fb.array([
 
       ])
     });
-
   }
-
 
   // get codes
   get codes(): FormArray {
     return this.form.get('codes') as FormArray;
   }
-
-
 
   removeCode(index: number) {
     this.codes.removeAt(index);

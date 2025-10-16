@@ -1,6 +1,7 @@
 <div class="flex gap-2">
     @for (fw of frameworksOptions; track $index) {
     <button 
+    type="button"
     (click)="selectFramework(fw.name)"
     class="hover:scale-105 transition-all duration-200 cursor-pointer "
        >

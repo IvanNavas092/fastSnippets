@@ -10,6 +10,7 @@ import { FormCreation } from "./form-creation/form-creation";
   templateUrl: './create-snippet.html',
 })
 export class CreateSnippet {
+  activeStep: number = 1;
   snippet: Snippet = {
     uid: '',
     title: '',
