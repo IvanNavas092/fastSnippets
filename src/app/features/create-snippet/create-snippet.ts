@@ -11,6 +11,7 @@ import { FormCreation } from "./form-creation/form-creation";
 })
 export class CreateSnippet {
   activeStep: number = 1;
+
   snippet: Snippet = {
     uid: '',
     title: '',

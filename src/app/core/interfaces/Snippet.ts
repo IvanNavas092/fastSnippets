@@ -20,3 +20,10 @@ export interface UserSnippet {
   snippet_uid: string;
   created_at: Date;
 }
+
+export interface SnippetData {
+  title: string;
+  framework: string;
+  code: string[];
+  actions: string[];
+}
