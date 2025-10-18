@@ -1,17 +1,22 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { StepData } from "./components/step-data/step-data";
+import { BoxCode } from "../components/box-code/box-code";
+import { OptionFramework } from '../components/option-framework/option-framework';
 
 @Component({
   selector: 'app-form-creation',
-  imports: [ReactiveFormsModule, StepData],
+  imports: [ReactiveFormsModule, BoxCode, OptionFramework],
   templateUrl: './form-creation.html',
 })
 
 export class FormCreation {
   form: FormGroup;
   activeFramework: string = '';
-  activeStep = 1;
+  @Output() currentStepChange = new EventEmitter<number>();
+  currentStep: number = 1;
+  codeInput: string = '';
+
+  isOpenModal = false;
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
@@ -20,7 +25,6 @@ export class FormCreation {
       codes: this.fb.array([
       ])
     });
-    this.activeStep = 1;
   }
 
   // get codes
@@ -42,7 +46,9 @@ export class FormCreation {
   }
 
   nextStep() {
-    this.activeStep = this.activeStep + 1;
+    this.currentStep = this.currentStep + 1;
+    this.currentStepChange.emit(this.currentStep);
+    console.log('currentStep', this.currentStep);
   }
 
   // submit form
@@ -62,6 +68,18 @@ export class FormCreation {
 
   recoveryframework($event: string) {
     this.activeFramework = $event;
+  }
+
+  // manage modal
+  handleModal() {
+    this.isOpenModal = !this.isOpenModal;
+    document.body.classList.add('no-scroll');
+  }
+
+  // close modal
+  closeModal() {
+    this.isOpenModal = false;
+    document.body.classList.remove('no-scroll');
   }
 
 

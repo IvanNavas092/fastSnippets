@@ -15,7 +15,6 @@ export class OptionFramework {
     this.frameworkSelected.emit(framework);
   }
 
-  
   frameworksOptions = [
     {
       name: 'Angular',

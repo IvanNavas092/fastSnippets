@@ -27,4 +27,7 @@ export class CreateSnippet {
       console.log('snippet creado con exito', res);
     });
   }
+
+  debes hacer que al clicar en los steps, te lleve a ellos si es posible, y que el boxCode te enseñe un preview del codigo con el highligh.js y si eso 
+  que haya alguna manera de expandirla o de editarla, evidentemente.
 }
