@@ -12,7 +12,7 @@
           alt="title"
           formControlName="title"
           placeholder="Formulario Reactivo..."
-          class="p-2 border-1 border-gray-300 rounded-md text-white placeholder:text-gray-500"
+          class="p-2 border-1 border-gray-300 rounded-md text-white placeholder:text-gray-500 shadow-sm shadow-purple-600 focus:shadow-lg transition-all duration-200 "
         />
 
         <!-- option framework -->
@@ -21,46 +21,43 @@
         ></app-option-framework>
       </div>
 
-      @if (
-        this.form.get("title")?.hasError("required") &&
-        this.form.get("title")?.touched
-      ) {
-        <span class="text-red-500 text-xs"> El título es obligatorio </span>
-      }
-      @if (
-        this.form.get("title")?.hasError("minlength") &&
-        this.form.get("title")?.touched
-      ) {
-        <span class="text-red-500 text-xs">
-          El título debe tener al menos 3 caracteres
-        </span>
+      @if ( this.form.get("title")?.hasError("required") &&
+      this.form.get("title")?.touched ) {
+      <span class="text-red-500 text-xs"> El título es obligatorio </span>
+      } @if ( this.form.get("title")?.hasError("minlength") &&
+      this.form.get("title")?.touched ) {
+      <span class="text-red-500 text-xs">
+        El título debe tener al menos 3 caracteres
+      </span>
       }
     </div>
     <!-- button for add code -->
     <div class="flex flex-col gap-2">
-      <label for="" class="text-white font-bold text-lg">Código</label>
-      <button
+      <label for="" class="text-white font-bold text-lg drop-shadow-purple-600">Código</label>
+       <button
         type="button"
         (click)="handleModal()"
-        class="py-2 px-4 border-1 border-gray-300 rounded-lg hover:scale-105 transition-all duration-200 cursor-pointer text-white"
+        class="py-2 px-4 border border-gray-300 rounded-lg hover:scale-105 transition-all duration-200 cursor-pointer text-white
+               bg-black/50 shadow-[0_0_10px_rgba(255,255,255,0.2)] hover:shadow-[0_0_20px_rgba(147,51,234,0.6)]"
       >
         <span>Incluir Código</span>
       </button>
       <!-- show codes added -->
-      @if (hasCodes()) {
-        <span class="text-md font-bold text-white">Codigos incluidos:</span>
-          @for (code of codes.controls; track $index) {
-            <app-box-code
-              [code]="code.get('code')?.value"
-              (removeCode)="removeCode($event)"
-            ></app-box-code>
-          }
-      }
+      <span class="text-md font-bold text-white drop-shadow-purple-600">Codigos incluidos:</span>
+      <div class="max-h-96 overflow-y-auto flex flex-col gap-3">
+        @if (hasCodes()) { @for (code of codes.controls; track $index) {
+        <app-box-code
+          [code]="code.get('code')?.value"
+          (removeCode)="removeCode($event)"
+        ></app-box-code>
+        } }
+      </div>
     </div>
     <div class="flex">
       <button
         type="submit"
-        class="py-2 px-4 border-1 border-gray-300 rounded-lg hover:scale-105 transition-all duration-200 cursor-pointer text-white"
+        class="py-2 px-4 border border-gray-300 rounded-lg hover:scale-105 transition-all duration-200 cursor-pointer text-white
+               bg-purple-600/80 hover:bg-purple-600 shadow-[0_0_15px_rgba(147,51,234,0.6)] hover:shadow-[0_0_25px_rgba(147,51,234,0.9)]"
       >
         Continuar
       </button>
@@ -70,9 +67,9 @@
 
 <!-- modal for add code -->
 @if (isOpenModal) {
-  <app-modal-paste-code
-    (pasteCode)="addCode($event)"
-    (closeModal)="closeModal()"
-    [codes]="codes"
-  ></app-modal-paste-code>
+<app-modal-paste-code
+  (pasteCode)="addCode($event)"
+  (closeModal)="closeModal()"
+  [codes]="codes"
+></app-modal-paste-code>
 }

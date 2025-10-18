@@ -25,8 +25,6 @@ export class ModalPasteCode {
       this.pasteCodeChange();
     }
   }
-  en stepData cuando le doy a borrar no borra
-
 
   closeChange() {
     this.closeModal.emit();

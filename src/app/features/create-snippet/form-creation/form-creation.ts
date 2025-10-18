@@ -1,11 +1,10 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { StepData } from "./components/step-data/step-data";
-import { ModalPasteCode } from "../components/modal-paste-code/modal-paste-code";
 
 @Component({
   selector: 'app-form-creation',
-  imports: [ReactiveFormsModule, StepData, ModalPasteCode],
+  imports: [ReactiveFormsModule, StepData],
   templateUrl: './form-creation.html',
 })
 
