@@ -1,16 +1,22 @@
-import { Component, EventEmitter, HostListener, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormArray, FormsModule } from '@angular/forms';
+import { BoxCode } from "../box-code/box-code";
 @Component({
   selector: 'app-modal-paste-code',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, BoxCode],
   templateUrl: './modal-paste-code.html',
   styles: ``
 })
 export class ModalPasteCode {
   @Output() closeModal = new EventEmitter<void>();
   @Output() pasteCode = new EventEmitter<string>();
+  @Input() codes!: FormArray;
   codeInput: string = '';
+
+  constructor() {
+    console.log('ModalPasteCode component loaded');
+  }
 
   @HostListener('window:keydown.enter', ['$event'])
   handleKeyDown(event: Event) {
@@ -19,13 +25,19 @@ export class ModalPasteCode {
       this.pasteCodeChange();
     }
   }
+  en stepData cuando le doy a borrar no borra
+
 
   closeChange() {
     this.closeModal.emit();
   }
+
   pasteCodeChange() {
     this.pasteCode.emit(this.codeInput);
-    this.closeChange();
+    this.codeInput = '';
   }
 
+  removeCode(index: number) {
+    this.codes.removeAt(index);
+  }
 }

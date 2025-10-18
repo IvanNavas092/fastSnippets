@@ -1,35 +1,80 @@
-<div class="fixed inset-0 bg-black/50 flex items-center justify-center p-4">
-    <div class="bg-[#18181b] rounded-lg p-4 w-full max-w-md shadow-lg space-y-2  relative">
-        <div class="flex flex-col gap-4">
-            <!-- button for close -->
-            <div class="absolute top-0 right-0 p-2 cursor-pointer">
-                <button (click)="closeChange()"
-                    class="group relative flex cursor-pointer items-center justify-center w-10 h-10 rounded-full bg-purple-600 transition-colors"
-                    aria-label="Crear snippet">
-                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                    <svg viewBox="0 0 40 40" class="pointer-events-none absolute inset-0" aria-hidden="true">
-                        <circle cx="20" cy="20" r="18"
-                            class="fill-none stroke-white [stroke-dasharray:113] [stroke-dashoffset:113] transition-[stroke-dashoffset,opacity] duration-200 ease-out opacity-0 group-hover:[stroke-dashoffset:0] group-hover:opacity-100 transform -rotate-90 origin-center"
-                            stroke-width="2" />
-                    </svg>
-                </button>
-            </div>
-            <!-- textarea -->
-            <textarea name="code" id="" placeholder="Pega tu codigo aquí!"
-            [(ngModel)]="codeInput"
-                class="text-white bg-[#282c34] p-4 rounded max-h-52"></textarea>
-        </div>
-
-        <button type="button" class="py-2 px-4 border-1 border-gray-300 rounded-full cursor-pointer hover:scale-105 transition-all duration-200
-        disabled:cursor-not-allowed disabled:opacity-50 text-white"
-        (click)="pasteCodeChange()"
-        [disabled]="!codeInput">
-            <span class="text-sm text-white">
-                Añadir
-            </span>
-        </button>
+<div
+  class="fixed inset-0 bg-black/50 grid grid-cols-3 gap-2 items-center justify-center p-4 overflow-hidden"
+>
+  <!-- Panel izquierdo -->
+  <div
+    class="relative bg-[#18181b] rounded-lg p-4 w-full h-[80vh] col-span-2 shadow-lg flex flex-col space-y-4"
+  >
+    <!-- botón cerrar -->
+    <div class="absolute top-0 right-0 p-2 cursor-pointer">
+      <button
+        (click)="closeChange()"
+        class="group relative flex items-center justify-center w-10 h-10 rounded-full bg-purple-600 transition-colors"
+        aria-label="Cerrar"
+      >
+        <svg
+          class="w-4 h-4 text-white"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+        <svg
+          viewBox="0 0 40 40"
+          class="pointer-events-none absolute inset-0"
+          aria-hidden="true"
+        >
+          <circle
+            cx="20"
+            cy="20"
+            r="18"
+            class="fill-none stroke-white [stroke-dasharray:113] [stroke-dashoffset:113] transition-[stroke-dashoffset,opacity] duration-200 ease-out opacity-0 group-hover:[stroke-dashoffset:0] group-hover:opacity-100 transform -rotate-90 origin-center"
+            stroke-width="2"
+          />
+        </svg>
+      </button>
     </div>
+
+    <!-- Textarea ocupa todo -->
+    <textarea
+      name="code"
+      placeholder="Pega tu código aquí!"
+      [(ngModel)]="codeInput"
+      class="flex-1 w-full text-white bg-[#282c34] p-4 rounded resize-none outline-none"
+    ></textarea>
+
+    <!-- Botón -->
+    <button
+      type="button"
+      class="py-2 px-4 border border-gray-300 rounded-full cursor-pointer hover:scale-105 transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50 text-white"
+      (click)="pasteCodeChange()"
+      [disabled]="!codeInput"
+    >
+      <span class="text-sm text-white">Añadir</span>
+    </button>
+  </div>
+
+  <!-- Panel derecho -->
+  <div
+    class="relative bg-[#18181b] rounded-lg p-4 w-full h-[80vh] col-span-1 shadow-lg flex flex-col space-y-4"
+  >
+    <!-- show codes added -->
+    <span class="text-md font-bold text-white">Codigos incluidos:</span>
+    @if (codes.controls.length > 0) {
+      @for (code of codes.controls; track $index) {
+        <app-box-code
+          [code]="code.get('code')?.value"
+          (removeCode)="removeCode($event)"
+        ></app-box-code>
+      }
+    } @else {
+      <span class="text-sm text-gray-300">No has incluido ningún código</span>
+    }
+  </div>
 </div>

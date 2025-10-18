@@ -1,81 +1,62 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { OptionFramework } from '../../../components/option-framework/option-framework';
 import { ModalPasteCode } from '../../../components/modal-paste-code/modal-paste-code';
+import { BoxCode } from "../../../components/box-code/box-code";
 
 @Component({
   selector: 'app-step-data',
-  imports: [OptionFramework, ModalPasteCode, ReactiveFormsModule],
+  imports: [OptionFramework, ModalPasteCode, ReactiveFormsModule, BoxCode],
   templateUrl: './step-data.html',
   styles: ``
 })
 export class StepData {
+  @Input() form!: FormGroup;
+  @Input() codes!: FormArray;
+  @Output() addCodeChange = new EventEmitter<string>();
+  @Output() nextStep = new EventEmitter<void>();
 
-  form!: FormGroup;
   isOpenModal = false;
   activeFramework: string = '';
   @Output() activeStep = new EventEmitter<number>();
-  @Output() snippet = new EventEmitter<any>();
 
-  constructor(private fb: FormBuilder) {
-    console.log('FormCreation component loaded');
-    this.form = this.fb.group({
-      title: ['', Validators.required, Validators.minLength(3)],
-      codes: this.fb.array([
-      ])
-    });
-  }
-
-  // get codes
-  get codes(): FormArray {
-    return this.form.get('codes') as FormArray;
-  }
-
+  // remove code
   removeCode(index: number) {
     this.codes.removeAt(index);
   }
 
+
   // create code group
   addCode(code: string) {
-    console.log('code:', code);
-    const codeGroup = this.fb.group({
-      code: [code, Validators.required],
-      action: ['', Validators.required]
-    });
-    return this.codes.push(codeGroup);
+    this.addCodeChange.emit(code);
   }
-
-  // submit form
-  submit() {
-    if (this.form.valid) {
-      console.log('Enviado, todo correcto!')
-      cont snippet = this.form.value;
-      this.snippet.emit(snippet);
-      this.form.reset();
-      this.activeStep.emit(2);
-    } else {
-      this.form.markAllAsTouched();
-    }
-
-    
-  }
-
 
   // function to check if codes are empty
   hasCodes() {
-    return this.codes && this.codes.length > 0;
+    return this.codes.controls && this.codes.controls.length > 0;
   }
 
+  // manage modal
   handleModal() {
     this.isOpenModal = !this.isOpenModal;
+    document.body.classList.add('no-scroll');
+
   }
 
+  // close modal
   closeModal() {
     this.isOpenModal = false;
+    document.body.classList.remove('no-scroll');
   }
 
+  // function for recovery framework of option-framwework
   recoveryframework($event: string) {
     this.activeFramework = $event;
+  }
+
+  // submit (next step)
+  submit() {
+    this.nextStep.emit();
   }
 
 }

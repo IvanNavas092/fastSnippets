@@ -1,8 +1,8 @@
 <section
-  class="mt-28 h-full grid grid-cols-1 place-items-center "
+  class="mt-28 min-h-[85vh] grid grid-cols-1 place-items-center "
 >
-  <div class="p-4 border-1 border-gray-600 rounded-lg">
+  <div class="p-4 border-1 border-gray-600 rounded-lg flex flex-col gap-4">
     <app-steps-form [stepActive]="activeStep"></app-steps-form>
-    <app-form-creation (activeStep)="activeStep"></app-form-creation>
+    <app-form-creation ></app-form-creation>
   </div>
 </section>

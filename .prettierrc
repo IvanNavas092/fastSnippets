@@ -1,9 +1,15 @@
 {
-  "printWidth": 100,
-  "tabWidth": 2,
-  "tabs": false,
+  "printWidth": 80,
   "singleQuote": true,
-  "semicolon": true,
-  "quoteProps": "preserve",
-  "bracketSpacing": true
+  "bracketSameLine": false,
+  "htmlWhitespaceSensitivity": "ignore",
+  "overrides": [
+    {
+      "files": "*.html",
+      "options": {
+        "printWidth": 0
+      }
+    }
+    
+  ]
 }

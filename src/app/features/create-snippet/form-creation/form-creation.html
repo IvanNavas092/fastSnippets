@@ -1,5 +1,18 @@
-<section class="relative p-4">
-    <div class="flex flex-col gap-4">
-      <app-step-data (activeStep)="activeStep = $event"></app-step-data>
-    </div>
+<section class="relative">
+    <!-- steps form -->
+    @if (activeStep === 1) {
+      <!-- step 1 content here -->
+      <app-step-data
+        [form]="form"
+        (activeStep)="(activeStep)"
+        (addCodeChange)="addCode($event)"
+        [codes]="codes"
+        (nextStep)="nextStep()"
+      >
+      </app-step-data>
+    } @else if (activeStep === 2) {
+      <!-- step 2 content here -->
+    } @else {
+      <!-- step 3 content here -->
+    }
 </section>
