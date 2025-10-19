@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BoxCode } from "../components/box-code/box-code";
 import { OptionFramework } from '../components/option-framework/option-framework';
@@ -10,76 +10,58 @@ import { OptionFramework } from '../components/option-framework/option-framework
 })
 
 export class FormCreation {
-  form: FormGroup;
-  activeFramework: string = '';
-  @Output() currentStepChange = new EventEmitter<number>();
-  currentStep: number = 1;
-  codeInput: string = '';
+  @Input() form!: FormGroup;
+  @Input() currentStep = 1;
+  @Input() codes!: FormArray;
 
-  isOpenModal = false;
+  @Output() nextStepChange = new EventEmitter<void>();
+  @Output() submitForm = new EventEmitter<void>();
+  @Output() frameworkSelected = new EventEmitter<string>();
+  @Output() addCode = new EventEmitter<string>();
+  @Output() removeCode = new EventEmitter<number>();
+  @Output() allOkChange = new EventEmitter<boolean>();
 
-  constructor(private fb: FormBuilder) {
-    this.form = this.fb.group({
-      title: ['', Validators.required],
-      framework: [''],
-      codes: this.fb.array([
-      ])
-    });
-  }
+  codeInput = '';
+  activeFramework = '';
+  messageError = '';
 
-  // get codes
-  get codes(): FormArray {
-    return this.form.get('codes') as FormArray;
-  }
-
-  removeCode(index: number) {
-    this.codes.removeAt(index);
-  }
-
-  // create code group
-  addCode(code: string) {
-    const codeGroup = this.fb.group({
-      code: [code, Validators.required],
-      action: ['', Validators.required]
-    });
-    return this.codes.push(codeGroup);
-  }
-
-  nextStep() {
-    this.currentStep = this.currentStep + 1;
-    this.currentStepChange.emit(this.currentStep);
-    console.log('currentStep', this.currentStep);
-  }
-
-  // submit form
-  submit() {
-    if (this.form.valid) {
-      console.log('Enviado, todo correcto!')
-      this.form.reset();
-    } else {
-      this.form.markAllAsTouched();
-    }
-  }
-
-  // function to check if codes are empty
-  hasCodes() {
+  hasCodes(): boolean {
     return this.codes && this.codes.length > 0;
   }
 
-  recoveryframework($event: string) {
-    this.activeFramework = $event;
+nextStep() {
+  if (this.currentStep === 1) {
+    const titleValid = this.form.get('title')?.valid;
+    const frameworkValid = !!this.activeFramework;
+
+    if (titleValid && frameworkValid) {
+      this.allOkChange.emit(true);
+      this.nextStepChange.emit();
+      this.messageError = '';
+    } else {
+      this.allOkChange.emit(false);
+      this.messageError = 'Introduce un título y selecciona un framework';
+    }
   }
 
-  // manage modal
-  handleModal() {
-    this.isOpenModal = !this.isOpenModal;
-    document.body.classList.add('no-scroll');
-  }
+  if (this.currentStep === 2) {
+    const codesValid = this.codes.length > 0;
 
-  // close modal
-  closeModal() {
-    this.isOpenModal = false;
-    document.body.classList.remove('no-scroll');
+    if (codesValid) {
+      this.allOkChange.emit(true);
+      this.nextStepChange.emit();
+      this.messageError = '';
+    } else {
+      this.allOkChange.emit(false);
+      this.messageError = 'Agrega al menos un código';
+    }
+  }
+}
+
+
+  recoveryFramework(fw: string) {
+    this.activeFramework = fw;
+
   }
 
 

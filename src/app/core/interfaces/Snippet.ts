@@ -27,3 +27,8 @@ export interface SnippetData {
   code: string[];
   actions: string[];
 }
+
+export interface SnippetCode {
+  code: string;
+  action: string;
+}

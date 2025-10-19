@@ -1,13 +1,21 @@
-<section
-  class="mt-28 min-h-[85vh] grid  place-items-center"
->
-  <div class="p-4 border-1 border-gray-300 shadow-xl shadow-purple-600 rounded-lg flex flex-col gap-4">
-    <div class="z-0">
+<section class="mt-28 min-h-[85vh] grid place-items-center">
+  <div class="p-4 border border-gray-300 shadow-xl shadow-purple-600 rounded-lg flex flex-col gap-4">
+    <app-steps-form
+      [stepActive]="activeStep"
+      (stepChanged)="activeStep = $event"
+      [allOk]="allOk">
+    </app-steps-form>
 
-      <app-steps-form [stepActive]="activeStep"></app-steps-form>
-    </div>
-    <div class="z-10">
-      <app-form-creation (currentStepChange)="activeStep = $event"></app-form-creation>
-    </div>
+    <app-form-creation
+      [form]="form"
+      [currentStep]="activeStep"
+      [codes]="codes"
+      (nextStepChange)="handleNextStep()"
+      (submitForm)="handleSubmit()"
+      (frameworkSelected)="handleFrameworkSelected($event)"
+      (addCode)="addCode($event)"
+      (removeCode)="removeCode($event)"
+      (allOkChange)="allOk = $event">
+    </app-form-creation>
   </div>
 </section>

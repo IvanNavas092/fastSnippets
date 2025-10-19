@@ -1,7 +1,9 @@
 <div class="flex w-full rounded-full border-1 border-gray-600 text-lg">
   @for (step of steps; track step.number) {
-  <div
-    class="z-10 relative rounded-full w-full px-4 py-2 border-r-1 text-white transition-colors duration-300"
+  <button
+  [disabled]="step.number > stepActive + (allOk ? 0 : -1)"
+  (click)="onStepChanged(step.number)"
+    class="z-10 relative rounded-full w-full px-4 py-2 border-r-1 text-white transition-colors duration-300 cursor-pointer"
     [ngClass]="{
       ' bg-purple-600 border border-purple-600 font-bold':
         step.number === stepActive,
@@ -15,6 +17,6 @@
       class="z-0 absolute inset-0 bg-white opacity-40 blur-lg rounded-full "
     ></div>
     }
-  </div>
+  </button>
   }
 </div>
