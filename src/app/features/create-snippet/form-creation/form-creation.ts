@@ -1,6 +1,13 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { BoxCode } from "../components/box-code/box-code";
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { BoxCode } from '../components/box-code/box-code';
 import { OptionFramework } from '../components/option-framework/option-framework';
 
 @Component({
@@ -8,7 +15,6 @@ import { OptionFramework } from '../components/option-framework/option-framework
   imports: [ReactiveFormsModule, BoxCode, OptionFramework],
   templateUrl: './form-creation.html',
 })
-
 export class FormCreation {
   @Input() form!: FormGroup;
   @Input() currentStep = 1;
@@ -21,7 +27,7 @@ export class FormCreation {
   @Output() removeCode = new EventEmitter<number>();
   @Output() allOkChange = new EventEmitter<boolean>();
 
-  codeInput = '';
+  codeInput = new FormControl('', Validators.required);
   activeFramework = '';
   messageError = '';
 
@@ -29,40 +35,45 @@ export class FormCreation {
     return this.codes && this.codes.length > 0;
   }
 
-nextStep() {
-  if (this.currentStep === 1) {
-    const titleValid = this.form.get('title')?.valid;
-    const frameworkValid = !!this.activeFramework;
+  nextStep() {
+    if (this.currentStep === 1) {
+      const titleValid = this.form.get('title')?.valid;
+      const frameworkValid = !!this.activeFramework;
 
-    if (titleValid && frameworkValid) {
-      this.allOkChange.emit(true);
-      this.nextStepChange.emit();
-      this.messageError = '';
-    } else {
-      this.allOkChange.emit(false);
-      this.messageError = 'Introduce un título y selecciona un framework';
+      if (titleValid && frameworkValid) {
+        this.allOkChange.emit(true);
+        this.nextStepChange.emit();
+        this.messageError = '';
+      } else {
+        this.allOkChange.emit(false);
+        this.messageError = 'Introduce un título y selecciona un framework';
+      }
+    }
+
+    if (this.currentStep === 2) {
+      const codesValid = this.codes.length > 0;
+
+      if (codesValid) {
+        this.allOkChange.emit(true);
+        this.nextStepChange.emit();
+        this.messageError = '';
+      } else {
+        this.allOkChange.emit(false);
+        this.messageError = 'Agrega al menos un código';
+      }
     }
   }
+  metete aqui https://chatgpt.com/c/68f53645-b89c-8330-81d9-e2bc51a8a957, acabo de hacer eso
 
-  if (this.currentStep === 2) {
-    const codesValid = this.codes.length > 0;
+  handleAddCode() {
+    const code = this.codeInput.value?.trim();
+    if (!code) return;
 
-    if (codesValid) {
-      this.allOkChange.emit(true);
-      this.nextStepChange.emit();
-      this.messageError = '';
-    } else {
-      this.allOkChange.emit(false);
-      this.messageError = 'Agrega al menos un código';
-    }
+    this.addCode.emit(code); // 🔥 Emitimos al padre
+    this.codeInput.reset(); // Limpia el textarea
   }
-}
-
 
   recoveryFramework(fw: string) {
     this.activeFramework = fw;
-
   }
-
-
 }

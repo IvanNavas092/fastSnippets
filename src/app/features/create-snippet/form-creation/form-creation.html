@@ -52,7 +52,7 @@
         <textarea
           name="codes"
           placeholder="Pega tu código aquí!"
-          [value]="codeInput"
+          [formControl]="codeInput"
           cols="100"
           rows="10"
           class="w-full text-white bg-[#282c34] p-4 rounded"
@@ -61,7 +61,7 @@
         <!-- button for add code -->
         <button
           type="button"
-          (click)="addCode.emit(codeInput)"
+          (click)="handleAddCode()"
           class="border border-gray-300 text-white font-bold rounded-lg p-2 cursor-pointer shadow-lg hover:shadow-purple-600 transition-all duration-200"
         >
           <span>Añadir</span>
@@ -74,7 +74,7 @@
           @if (hasCodes()) {
             @for (code of codes.controls; track $index) {
               <app-box-code
-                [code]="code.get('code')?.value"
+                [code]="code.get('code')?.value || ''"
                 (removeCode)="removeCode.emit($event)"
               ></app-box-code>
             }

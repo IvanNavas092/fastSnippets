@@ -24,6 +24,6 @@ export class StepsForm {
   }
 
 
-  debes hacer que se guarde en localStorage los datos o algo asi, porque se borra el framework seleccionado cuando pasamos de step
+  //debes hacer que se guarde en localStorage los datos o algo asi, porque se borra el framework seleccionado cuando pasamos de step
 
 }
