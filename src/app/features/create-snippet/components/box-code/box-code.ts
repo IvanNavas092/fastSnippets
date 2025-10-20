@@ -1,16 +1,30 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Highlight } from "ngx-highlightjs";
 
 @Component({
   selector: 'app-box-code',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule, Highlight],
   templateUrl: './box-code.html',
-  styles: ``
 })
 export class BoxCode {
-  @Input() code!: string;
+  /** Código que se mostrará en el box */
+  @Input() code: string = '';
+
+  /** Índice o identificador del código (opcional) */
+  @Input() index?: number;
+
+  /** Evento emitido al eliminar el código */
   @Output() removeCode = new EventEmitter<number>();
 
   removeCodeChange() {
-    this.removeCode.emit();
+    this.removeCode.emit(this.index);
+  }
+
+  /** Devuelve una vista previa truncada del código */
+  get preview(): string {
+    if (!this.code) return 'Código vacío';
+    return this.code.length > 80 ? this.code.substring(0, 80) + '...' : this.code;
   }
 }

@@ -1,4 +1,4 @@
-<div class="flex w-full rounded-full border-1 border-gray-600 text-lg">
+<div class="flex min-w- w-full rounded-full border-1 border-gray-600 text-lg">
   @for (step of steps; track step.number) {
   <button
   [disabled]="step.number > stepActive + (allOk ? 0 : -1)"

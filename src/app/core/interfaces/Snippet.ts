@@ -29,6 +29,6 @@ export interface SnippetData {
 }
 
 export interface SnippetCode {
-  code: string;
-  action: string;
+  code?: string;
+  action?: string;
 }

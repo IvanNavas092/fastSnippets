@@ -31,10 +31,18 @@ export class App {
     this.getToken();
 
   }
-  get isLoginRoute(): boolean {
+
+   get hideHeader(): boolean {
     const routes = ['/login', '/ia-agent'];
     return routes.some(route => this.router.url.startsWith(route));
   }
+
+  get hideFooter(): boolean {
+    const routes = ['/login', '/ia-agent', '/create-snippet'];
+    return routes.some(route => this.router.url.startsWith(route));
+  }
+
+
 
   getToken() {
     if (isPlatformBrowser(this.platformId)) {

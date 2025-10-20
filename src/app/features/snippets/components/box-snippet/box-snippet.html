@@ -8,10 +8,10 @@
         src="./{{ detectIcon(snippet.icon) }}"
         class="w-10 h-10 lg:w-12 lg:h-12 drop-shadow-xl/60"
         [ngClass]="{
-          'drop-shadow-red-600': snippet.framework === 'Angular',
-          'drop-shadow-blue-600': snippet.framework === 'React',
-          'drop-shadow-green-600': snippet.framework === 'Vue',
-          'drop-shadow-orange-600': snippet.framework === 'Svelte'
+          'drop-shadow-angular': snippet.framework === 'Angular',
+          'drop-shadow-react': snippet.framework === 'React',
+          'drop-shadow-vue': snippet.framework === 'Vue',
+          'drop-shadow-svelte': snippet.framework === 'Svelte',
         }"
         alt="snippet.framework"
       />
@@ -30,7 +30,7 @@
           class="w-6 h-6 duration-200 transition-all cursor-pointer"
           [ngClass]="{
             'text-red-500': isFavourite,
-            'text-white': !isFavourite
+            'text-white': !isFavourite,
           }"
           aria-hidden="true"
           width="24"
@@ -51,33 +51,39 @@
   </header>
 
   <!-- code -->
-<div class="relative rounded-lg overflow-x-hidden overflow-y-auto max-w-full"> 
+  <div class="rounded-lg overflow-x-hidden overflow-y-auto max-w-full my-4">
     @if (snippet.code && snippet.code.length > 0) {
-    <pre class="text-sm">
-      <code class=" rounded-sm whitespace-pre-wrap  " [highlight]="snippet.code[0]" [language]="'typescript'"></code>
-    </pre>
+      <code
+        class="block text-sm rounded-sm whitespace-pre-wrap p-4"
+        [highlight]="snippet.code[0]"
+        [language]="'typescript'"
+      ></code>
     } @else {
-    <pre><code class="bg-gray-100 text-black">No hay código disponible</code></pre>
+      <code class="block bg-gray-100 text-black p-4 rounded-sm"
+        >No hay código disponible</code
+      >
     }
-    <div class="relative bottom-10 right-0">
-      <!-- actions -->
-      @if (snippet.actions && snippet.actions.length > 0) {
-      <p class="text-sm text-gray-400">{{ snippet.actions[0] }}</p>
-      } @else {
-      <p class="text-sm text-gray-400 italic">No hay descripción disponible</p>
-      }
-    </div>
-  </div>
 
+    <!-- He movido la descripción fuera del contenedor principal del código para un mejor layout -->
+    @if (snippet.actions && snippet.actions.length > 0) {
+      <p class="text-sm text-gray-400 mt-2 italic">
+        // {{ snippet.actions[0] }}
+      </p>
+    } @else {
+      <p class="text-sm text-gray-400 mt-2 italic">
+        // No hay descripción disponible
+      </p>
+    }
+  </div>
   <!-- button -->
   <button
     class="flex items-center gap-2 justify-center text-white px-4 py-2 border-1 border-gray-500 rounded-lg transition-colors duration-200 cursor-pointer"
     (click)="openModal()"
     [ngClass]="{
-      'hover:bg-red-500': snippet.framework === 'Angular',
-      'hover:bg-[#00d8ff]': snippet.framework === 'React',
-      'hover:bg-green-600': snippet.framework === 'Vue',
-      'hover:bg-orange-600': snippet.framework === 'Svelte'
+      'hover:bg-red-angular': snippet.framework === 'Angular',
+      'hover:bg-react': snippet.framework === 'React',
+      'hover:bg-vue': snippet.framework === 'Vue',
+      'hover:bg-svelte': snippet.framework === 'Svelte',
     }"
   >
     <span class="text-sm">Ver más</span>

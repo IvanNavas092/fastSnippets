@@ -1,13 +1,13 @@
 <main class="grid min-h-screen grid-rows-[auto_1fr_auto] ">
   @if (isReady$ | async) {
-    @if (!isLoginRoute) {
+    @if (!hideHeader) {
       <app-header></app-header>
     }
     
-    <div [class]="isLoginRoute ? 'p-0' : 'p-4'">
+    <div [class]="hideFooter ? 'p-0' : 'p-4'">
       <router-outlet />
     </div>
-    @if (!isLoginRoute) {
+    @if (!hideFooter) {
       <app-footer></app-footer>
     }
   } @else {

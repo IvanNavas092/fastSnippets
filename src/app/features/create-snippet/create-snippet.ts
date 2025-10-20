@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FirebaseService } from '@/app/core/services/firebaseService';
-import { Snippet, SnippetData } from '@/app/core/interfaces/Snippet';
+import { Snippet, SnippetCode, SnippetData } from '@/app/core/interfaces/Snippet';
 import { StepsForm } from "@/app/features/create-snippet/components/steps-form/steps-form";
 import { FormCreation } from "./form-creation/form-creation";
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -20,7 +20,7 @@ export class CreateSnippet {
   ) {
     this.form = this.fb.group({
       title: ['', Validators.required],
-      framework: [''],
+      framework: ['' , Validators.required],
       codes: this.fb.array([]),
     });
   }
@@ -29,10 +29,10 @@ export class CreateSnippet {
     return this.form.get('codes') as FormArray;
   }
 
-  addCode(code: string): void {
+  addCode(data: SnippetCode): void {
     const codeGroup = this.fb.group({
-      code: [code, Validators.required],
-      action: ['', Validators.required],
+      code: [data.code, Validators.required],
+      action: [data.action, [Validators.required, Validators.maxLength(100)]],
     });
     this.codes.push(codeGroup);
   }
@@ -42,7 +42,12 @@ export class CreateSnippet {
   }
 
   handleFrameworkSelected(framework: string): void {
+    console.log(framework);
     this.form.patchValue({ framework });
+  }
+
+   handlePrevStep(): void {
+    if (this.activeStep > 1) this.activeStep--;
   }
 
   handleNextStep(): void {

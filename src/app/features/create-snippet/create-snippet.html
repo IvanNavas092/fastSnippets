@@ -11,6 +11,7 @@
       [currentStep]="activeStep"
       [codes]="codes"
       (nextStepChange)="handleNextStep()"
+      (prevStepChange)="handlePrevStep()"
       (submitForm)="handleSubmit()"
       (frameworkSelected)="handleFrameworkSelected($event)"
       (addCode)="addCode($event)"

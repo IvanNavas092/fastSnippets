@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-option-framework',
@@ -7,11 +7,10 @@ import { Component, EventEmitter, Output } from '@angular/core';
   templateUrl: './option-framework.html',
 })
 export class OptionFramework {
+  @Input() selectedFramework = '';
   @Output() frameworkSelected = new EventEmitter<string>();
-  activeFramework: string = '';
 
   selectFramework(framework: string) {
-    this.activeFramework = framework;
     this.frameworkSelected.emit(framework);
   }
 

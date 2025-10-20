@@ -1,37 +1,44 @@
 <div
-  class="flex justify-between border-1 border-gray-300 rounded-lg p-2 overflow-y-auto"
+  class="group flex items-center justify-between border border-[#282c34] rounded-lg px-3 py-2 bg-[#282c34] transition-all duration-200 shadow-sm"
 >
-  <span class="text-gray-300 text-sm">
-    {{ this.code.substring(0, 25) || "Código vacío" }}
-  </span>
-  <button (click)="removeCodeChange()" class="cursor-pointer" type="button">
+  <code
+    class=" text-sm  max-w-[85%] select-none"
+    [highlight]="preview"
+    [language]="'typescript'"
+  >
+  </code>
+
+  <button
+    type="button"
+    (click)="removeCodeChange()"
+    class="relative flex items-center justify-center w-6 h-6 rounded-full group/delete hover:bg-purple-600/20 transition-all duration-200 cursor-pointer"
+  >
+    <!-- X -->
     <svg
-      class="w-4 h-4 text-white"
+      class="w-4 h-4 text-gray-300 group-hover/delete:text-purple-400 transition-colors duration-200"
       fill="none"
       stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
       viewBox="0 0 24 24"
     >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M6 18L18 6M6 6l12 12"
-      />
+      <path d="M6 18L18 6M6 6l12 12" />
     </svg>
+
+    
     <svg
       viewBox="0 0 40 40"
-      class="pointer-events-none absolute inset-0"
+      class="absolute inset-0 pointer-events-none"
       aria-hidden="true"
     >
       <circle
         cx="20"
         cy="20"
         r="18"
-        class="fill-none stroke-white [stroke-dasharray:113] [stroke-dashoffset:113] transition-[stroke-dashoffset,opacity] duration-200 ease-out opacity-0 group-hover:[stroke-dashoffset:0] group-hover:opacity-100 transform -rotate-90 origin-center"
+        class="fill-none stroke-purple-500 [stroke-dasharray:113] [stroke-dashoffset:113] transition-[stroke-dashoffset,opacity] duration-300 ease-out opacity-0 group-hover/delete:[stroke-dashoffset:0] group-hover/delete:opacity-100 transform -rotate-90 origin-center"
         stroke-width="2"
       />
     </svg>
   </button>
 </div>
-
-

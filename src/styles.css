@@ -32,3 +32,10 @@ body {
   background: #9810fa; 
   border-radius: 10px; 
 }
+
+@theme {
+  --color-angular: #c3002f;
+  --color-react: #00d8ff;
+  --color-vue: #4dba87;
+  --color-svelte: #ff3e00;
+}
