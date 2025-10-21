@@ -30,10 +30,16 @@ export class FormCreation {
   @Output() addCode = new EventEmitter<SnippetCode>();
   @Output() removeCode = new EventEmitter<number>();
   @Output() allOkChange = new EventEmitter<boolean>();
+  @Output() tagsSubmitted = new EventEmitter<string[]>();
 
+  tagsInput = new FormControl('', Validators.required);
   codeInput = new FormControl('', Validators.required);
   actionInput = new FormControl('', Validators.required);
+  introducedTags: string[] = [];
+
+  // state locals
   messageError = '';
+  messageErrorTags = '';
   IsMoreThan1 = false
 
 
@@ -95,7 +101,25 @@ export class FormCreation {
     }
   }
 
+  addTag() {
+    if (this.introducedTags.length >= 3) {
+      this.messageErrorTags = 'Máximo 3 tags permitidos';
+      return;
+    }
+    const tag = this.tagsInput.value?.trim().toLowerCase();
+    console.log(tag);
+    if (tag && !this.introducedTags.includes(tag)) {
+      this.introducedTags.push(tag);
+      this.tagsInput.reset();
+    }
+  }
 
+  removeTag(index: number) {
+    this.introducedTags.splice(index, 1);
+    this.messageErrorTags = '';
+  }
+
+  // detect icon from framework
   detectIcon(icon: string): string {
     if (icon === 'Angular') {
       return 'angular.svg';

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FirebaseService } from '@/app/core/services/firebaseService';
-import { Snippet, SnippetCode, SnippetData } from '@/app/core/interfaces/Snippet';
+import { SnippetCode, SnippetData } from '@/app/core/interfaces/Snippet';
 import { StepsForm } from "@/app/features/create-snippet/components/steps-form/steps-form";
 import { FormCreation } from "./form-creation/form-creation";
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -20,6 +20,7 @@ export class CreateSnippet {
   ) {
     this.form = this.fb.group({
       title: ['', Validators.required],
+      tags: [this.fb.array([])],
       framework: ['' , Validators.required],
       codes: this.fb.array([]),
     });
@@ -29,12 +30,22 @@ export class CreateSnippet {
     return this.form.get('codes') as FormArray;
   }
 
+  get tags(): FormArray {
+    return this.form.get('tags') as FormArray;
+  }
+
   addCode(data: SnippetCode): void {
     const codeGroup = this.fb.group({
       code: [data.code, Validators.required],
       action: [data.action, [Validators.required, Validators.maxLength(100)]],
     });
     this.codes.push(codeGroup);
+  }
+
+  addTags(tags: string[]): void {
+    const tagsArray = this.form.get('tags') as FormArray;
+    tagsArray.clear();
+    tags.forEach((tag) => tagsArray.push(this.fb.control(tag)));
   }
 
   removeCode(index: number): void {

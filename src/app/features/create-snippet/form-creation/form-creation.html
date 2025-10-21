@@ -7,7 +7,9 @@
     @if (currentStep === 1) {
       <!-- title Input -->
       <div class="flex flex-col gap-2">
-        <label for="" class="text-white font-bold text-lg">Título</label>
+        <label for="" class="text-white font-bold text-base md:text-lg"
+          >Título</label
+        >
         <div
           class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:gap-4 md:items-center"
         >
@@ -34,15 +36,72 @@
         }
 
         <!-- tags -->
-        <label for="" class="text-white font-bold text-lg">Tags</label>
-        <div class="flex flex-col gap-2">
+        <label for="" class="text-white font-bold text-base md:text-lg"
+          >Tags
+          <span class="text-gray-300 text-sm font-medium"
+            >(Máximo 3)</span
+          ></label
+        >
+        <div class="flex gap-2">
           <input
             type="text"
             alt="tags"
+            [formControl]="tagsInput"
             placeholder="#form #reactive"
-            class="py-2 px-4 border-1 border-gray-300 rounded-md text-white placeholder:text-gray-500 shadow-sm shadow-purple-600 focus:shadow-lg transition-all duration-200"
+            class="py-2 px-4 border-1 flex-1 border-gray-300 rounded-md text-white placeholder:text-gray-500 shadow-sm shadow-purple-600 focus:shadow-lg transition-all duration-200"
           />
+          <button
+            type="button"
+            (click)="addTag()"
+            class="border border-gray-300 px-4 py-2 rounded text-white cursor-pointer"
+          >
+            Añadir
+          </button>
         </div>
+        <div class="grid grid-cols-3 gap-2">
+          @for (tag of introducedTags; track $index) {
+            <div
+              class="rounded-full border border-gray-300 flex items-center justify-between px-4 py-2 text-sm w-full"
+            >
+              <span class="text-sm text-gray-600">{{ tag }}</span>
+              <button
+                type="button"
+                (click)="removeTag($index)"
+                class="relative flex items-center justify-center w-6 h-6 rounded-full group/delete hover:bg-purple-600/20 transition-all duration-200 cursor-pointer"
+              >
+                <!-- X -->
+                <svg
+                  class="w-4 h-4 text-gray-300 group-hover/delete:text-purple-400 transition-colors duration-200"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M6 18L18 6M6 6l12 12" />
+                </svg>
+
+                <svg
+                  viewBox="0 0 40 40"
+                  class="absolute inset-0 pointer-events-none"
+                  aria-hidden="true"
+                >
+                  <circle
+                    cx="20"
+                    cy="20"
+                    r="18"
+                    class="fill-none stroke-purple-500 [stroke-dasharray:113] [stroke-dashoffset:113] transition-[stroke-dashoffset,opacity] duration-300 ease-out opacity-0 group-hover/delete:[stroke-dashoffset:0] group-hover/delete:opacity-100 transform -rotate-90 origin-center"
+                    stroke-width="2"
+                  />
+                </svg>
+              </button>
+            </div>
+          }
+        </div>
+        @if (introducedTags.length >= 3) {
+          <span class="text-sm text-red-500">{{ messageErrorTags }}</span>
+        }
       </div>
       <!-- STEP 2 -->
     } @else if (currentStep === 2) {
@@ -50,7 +109,7 @@
       <div class="flex flex-col gap-2">
         <label
           for=""
-          class="text-white font-bold text-lg drop-shadow-purple-600"
+          class="text-white font-bold text-base md:text-lg drop-shadow-purple-600"
           >Código</label
         >
         <!-- textarea code -->
@@ -60,7 +119,7 @@
           [formControl]="codeInput"
           cols="100"
           rows="5"
-          class="w-full text-white bg-[#282c34] p-4 rounded "
+          class="w-full text-white bg-[#282c34] p-4 rounded"
         ></textarea>
         <!-- input action -->
         <div class="flex flex-col gap-2">
@@ -76,11 +135,11 @@
             placeholder="Detecta cuando cambia un @Input en un componente hijo."
             class="py-2 px-4 border-1 border-gray-300 rounded-md text-white placeholder:text-gray-500 shadow-sm shadow-purple-600 focus:shadow-lg transition-all duration-200"
           />
+          <!-- show error -->
+          @if (messageError) {
+            <span class="text-sm text-red-500">{{ messageError }}</span>
+          }
         </div>
-        <!-- show error -->
-        @if (messageError) {
-          <span class="text-sm text-red-500">{{ messageError }}</span>
-        }
         <!-- button for add code -->
         <div class="flex">
           <button
@@ -95,7 +154,7 @@
         <span class="text-md font-bold text-white drop-shadow-purple-600"
           >Códigos incluidos:</span
         >
-        <div class=" max-h-32 p-1 overflow-y-auto flex flex-col gap-3">
+        <div class="max-h-32 p-1 overflow-y-auto flex flex-col gap-3">
           @if (hasCodes()) {
             @for (code of codes.controls; track $index) {
               <app-box-code
@@ -121,13 +180,13 @@
         <span class="text-white">{{ form.get("title")?.value }}</span>
       </div>
       <!-- framework -->
-      <div class="flex gap-2  items-center">
+      <div class="flex gap-2 items-center">
         <label for="framework" class="text-white text-md font-semibold"
           >Framework seleccionado:
         </label>
         <img
           src="./{{ detectIcon(form.get('framework')?.value) }}"
-          class="w-6 h-6 lg:w-8 lg:h-8 drop-shadow-lg/60 "
+          class="w-6 h-6 lg:w-8 lg:h-8 drop-shadow-lg/60"
           [ngClass]="{
             ' drop-shadow-angular': form.get('framework')?.value === 'Angular',
             'drop-shadow-react': form.get('framework')?.value === 'React',
@@ -139,7 +198,7 @@
       </div>
 
       <div
-        class="grid grid-cols-1  gap-2"
+        class="grid grid-cols-1 gap-2"
         [ngClass]="{
           'md:grid-cols-2': IsMoreThan1,
         }"
