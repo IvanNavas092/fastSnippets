@@ -17,7 +17,7 @@ import {
   docData,
 } from '@angular/fire/firestore';
 import { collectionData } from '@angular/fire/firestore';
-import { map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -26,15 +26,26 @@ export class FirebaseService {
   private snippetsCollection: CollectionReference<DocumentData>;
   private userSnippetsCollection: CollectionReference<DocumentData>;
 
+  countsSnippets = new BehaviorSubject<{ angular: number; react: number; vue: number; svelte: number }>({
+    angular: 0,
+    react: 0,
+    vue: 0,
+    svelte: 0,
+  });
+  countsSnippets$ = this.countsSnippets.asObservable();
+
   constructor(private fireStore: Firestore) {
     this.snippetsCollection = collection(this.fireStore, 'Snippets');
     this.userSnippetsCollection = collection(this.fireStore, 'UsersSnippet');
   }
 
-  // --------- Crear snippet ----------
-  createSnippet(snippet: Snippet) {
-    return addDoc(this.snippetsCollection, snippet);
-  }
+  async createSnippet(snippet: Snippet) {
+  if (!snippet.framework) throw new Error('Framework no especificado');
+
+  const docRef = await addDoc(this.snippetsCollection, snippet);
+  this.incrementCounter(snippet.framework.name); // solo actualizar después de guardar
+  return docRef;
+}
 
   // --------- Obtener snippets públicos ----------
   getSnippets(): Observable<Snippet[]> {
@@ -117,4 +128,28 @@ export class FirebaseService {
       throw error;
     }
   }
+
+  updateCountsFromFirebase() {
+    getDocs(this.snippetsCollection).then(snapshot => {
+      const counts = { angular: 0, react: 0, vue: 0, svelte: 0 };
+      snapshot.forEach(doc => {
+        const data = doc.data() as Snippet;
+        if (data.framework && counts.hasOwnProperty(data.framework.name)) {
+          counts[data.framework.name as keyof typeof counts]++;
+        }
+      });
+      this.countsSnippets.next(counts);
+      console.log('countsSnippets:', counts);
+    });
+  }
+
+
+  incrementCounter(framework: 'angular' | 'react' | 'vue' | 'svelte') {
+    const current = this.countsSnippets.value;
+    this.countsSnippets.next({
+      ...current,
+      [framework]: current[framework] + 1,
+    });
+  }
+
 }

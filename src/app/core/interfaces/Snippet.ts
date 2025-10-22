@@ -1,8 +1,11 @@
+import { framework } from "./Framework";
+
+
 export interface Snippet {
   uid: string;
   title: string;
   icon: number;
-  framework: string;
+  framework: framework;
   code: string[];
   actions: string[];
 }

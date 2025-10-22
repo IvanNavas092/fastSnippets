@@ -23,13 +23,13 @@ export class BoxSnippet {
 
   detectIcon(icon: number): string {
     if (icon === 1) {
-      return 'angular.svg';
+      return 'svgs-icons-fw/angular.svg';
     } else if (icon === 2) {
-      return 'react.svg';
+      return 'svgs-icons-fw/react.svg';
     } else if (icon === 3) {
-      return 'vue.svg';
+      return 'svgs-icons-fw/vue.svg';
     } else if (icon === 4) {
-      return 'svelte.svg';
+      return 'svgs-icons-fw/svelte.svg';
     } else {
       return 'unkown.svg';
     }

@@ -122,13 +122,13 @@ export class FormCreation {
   // detect icon from framework
   detectIcon(icon: string): string {
     if (icon === 'Angular') {
-      return 'angular.svg';
+      return 'svgs-icons-fw/angular.svg';
     } else if (icon === 'React') {
-      return 'react.svg';
+      return 'svgs-icons-fw/react.svg';
     } else if (icon === 'Vue') {
-      return 'vue.svg';
+      return 'svgs-icons-fw/vue.svg';
     } else if (icon === 'Svelte') {
-      return 'svelte.svg';
+      return 'svgs-icons-fw/svelte.svg';
     } else {
       return 'unkown.svg';
     }

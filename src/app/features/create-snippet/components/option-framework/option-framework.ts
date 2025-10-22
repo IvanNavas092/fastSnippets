@@ -17,19 +17,19 @@ export class OptionFramework {
   frameworksOptions = [
     {
       name: 'Angular',
-      route: 'angular.svg'
+      route: 'svgs-icons-fw/angular.svg'
     },
     {
       name: 'React',
-      route: 'react.svg'
+      route: 'svgs-icons-fw/react.svg'
     },
     {
       name: 'Vue',
-      route: 'vue.svg'
+      route: 'svgs-icons-fw/vue.svg'
     },
     {
       name: 'Svelte',
-      route: 'svelte.svg'
+      route: 'svgs-icons-fw/svelte.svg'
     },
   ]
 }

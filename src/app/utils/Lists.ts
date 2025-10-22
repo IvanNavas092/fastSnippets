@@ -1,37 +1,37 @@
 import { aboutItem } from '../core/interfaces/ItemAbout';
 import { PopularSnippet, Snippet } from '../core/interfaces/Snippet';
-import { framework } from '../core/interfaces/Framework';
+import { framework, FrameworkType } from '../core/interfaces/Framework';
 
 export const frameworkList: framework[] = [
   {
     id: '1',
-    name: 'Angular',
-    logo: 'angular.svg',
+    name: FrameworkType.Angular,
+    logo: 'svgs-icons-fw/angular.svg',
     description: 'Componentes, servicios, directivas y más',
   },
   {
     id: '2',
-    name: 'React',
-    logo: 'react.svg',
+    name: FrameworkType.React,
+    logo: 'svgs-icons-fw/react.svg',
     description: 'Hooks, componentes, contextos y más',
   },
   {
     id: '3',
-    name: 'Vue.js',
-    logo: 'vue.svg',
+    name: FrameworkType.Vue,
+    logo: 'svgs-icons-fw/vue.svg',
     description: 'Composition API, componentes, directivas',
   },
   {
     id: '4',
-    name: 'Svelte',
-    logo: 'svelte.svg',
+    name: FrameworkType.Svelte,
+    logo: 'svgs-icons-fw/svelte.svg',
     description: 'Componentes, directivas y más',
   },
 ];
 
 export const popularSnippetList: PopularSnippet[] = [
   {
-    icon: 'angular.svg',
+    icon: 'svgs-icons-fw/angular.svg',
     framework: 'Angular',
     code: [
       'ng generate component nombre-componente --skip-tests --inline-style',
@@ -41,13 +41,13 @@ export const popularSnippetList: PopularSnippet[] = [
     ],
   },
   {
-    icon: 'react.svg',
+    icon: 'svgs-icons-fw/react.svg',
     framework: 'React',
     code: ['npx create-react-app my-app --template typescript'],
     actions: ['Crea una nueva aplicación React con TypeScript configurado'],
   },
   {
-    icon: 'vue.svg',
+    icon: 'svgs-icons-fw/vue.svg',
     framework: 'Vue.js',
     code: [
       'npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init',
@@ -57,7 +57,7 @@ export const popularSnippetList: PopularSnippet[] = [
     ],
   },
   {
-    icon: 'svelte.svg',
+    icon: 'svgs-icons-fw/svelte.svg',
     framework: 'Svelte',
     code: [
       'npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init',

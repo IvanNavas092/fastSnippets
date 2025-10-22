@@ -61,6 +61,7 @@ export class Snippets implements OnInit {
         this.isLoading = false;
         this.onFrameworkFilter('Todos');
         this.cdr.markForCheck();
+
       },
       error: (err) => {
         console.error('Error al cargar snippets:', err);
@@ -78,7 +79,7 @@ export class Snippets implements OnInit {
       console.log(this.AuxSnippetList);
     } else {
       this.AuxSnippetList = this.allSnippets.filter(
-        (snippet) => snippet.framework.toLowerCase() === framework.toLowerCase()
+        (snippet) => snippet.framework.name.toLowerCase() === framework.toLowerCase()
       );
     }
   }
