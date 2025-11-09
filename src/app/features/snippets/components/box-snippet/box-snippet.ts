@@ -17,25 +17,14 @@ export class BoxSnippet {
   @Output() favourite = new EventEmitter<Snippet>();
   @Output() showModal = new EventEmitter<Snippet>();
 
+
   emitFavourite(snippet: Snippet) {
     this.favourite.emit(snippet);
   }
 
-  detectIcon(icon: number): string {
-    if (icon === 1) {
-      return 'svgs-icons-fw/angular.svg';
-    } else if (icon === 2) {
-      return 'svgs-icons-fw/react.svg';
-    } else if (icon === 3) {
-      return 'svgs-icons-fw/vue.svg';
-    } else if (icon === 4) {
-      return 'svgs-icons-fw/svelte.svg';
-    } else {
-      return 'unkown.svg';
-    }
-  }
+ 
 
-  
+
 
   openModal() {
     this.showModal.emit(this.snippet);

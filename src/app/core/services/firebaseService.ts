@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 // interfaces
-import { Snippet, UserSnippet } from '../interfaces/Snippet';
+import { Snippet, SnippetData, UserSnippet } from '../interfaces/Snippet';
 // firebase
 import {
   Firestore,
@@ -26,11 +26,11 @@ export class FirebaseService {
   private snippetsCollection: CollectionReference<DocumentData>;
   private userSnippetsCollection: CollectionReference<DocumentData>;
 
-  countsSnippets = new BehaviorSubject<{ angular: number; react: number; vue: number; svelte: number }>({
-    angular: 0,
-    react: 0,
-    vue: 0,
-    svelte: 0,
+  countsSnippets = new BehaviorSubject<{ Angular: number; React: number; Vue: number; Svelte: number }>({
+    Angular: 0,
+    React: 0,
+    Vue: 0,
+    Svelte: 0,
   });
   countsSnippets$ = this.countsSnippets.asObservable();
 
@@ -39,7 +39,9 @@ export class FirebaseService {
     this.userSnippetsCollection = collection(this.fireStore, 'UsersSnippet');
   }
 
-  async createSnippet(snippet: Snippet) {
+  //   // --------- Crear snippet ----------
+
+  async createSnippet(snippet: SnippetData) {
   if (!snippet.framework) throw new Error('Framework no especificado');
 
   const docRef = await addDoc(this.snippetsCollection, snippet);
@@ -131,7 +133,7 @@ export class FirebaseService {
 
   updateCountsFromFirebase() {
     getDocs(this.snippetsCollection).then(snapshot => {
-      const counts = { angular: 0, react: 0, vue: 0, svelte: 0 };
+      const counts = { Angular: 0, React: 0, Vue: 0, Svelte: 0 };
       snapshot.forEach(doc => {
         const data = doc.data() as Snippet;
         if (data.framework && counts.hasOwnProperty(data.framework.name)) {
@@ -144,7 +146,7 @@ export class FirebaseService {
   }
 
 
-  incrementCounter(framework: 'angular' | 'react' | 'vue' | 'svelte') {
+  incrementCounter(framework: 'Angular' | 'React' | 'Vue' | 'Svelte') {
     const current = this.countsSnippets.value;
     this.countsSnippets.next({
       ...current,

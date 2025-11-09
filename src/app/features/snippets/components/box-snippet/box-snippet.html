@@ -5,13 +5,13 @@
   <header class="flex items-center justify-between">
     <div class="flex items-center gap-3">
       <img
-        src="./{{ detectIcon(snippet.icon) }}"
+        src="./{{ snippet.framework.logo }}"
         class="w-10 h-10 lg:w-12 lg:h-12 drop-shadow-xl/60"
         [ngClass]="{
-          'drop-shadow-angular': snippet.framework === 'Angular',
-          'drop-shadow-react': snippet.framework === 'React',
-          'drop-shadow-vue': snippet.framework === 'Vue',
-          'drop-shadow-svelte': snippet.framework === 'Svelte',
+          'drop-shadow-angular': snippet.framework.name === 'Angular',
+          'drop-shadow-react': snippet.framework.name === 'React',
+          'drop-shadow-vue': snippet.framework.name === 'Vue',
+          'drop-shadow-svelte': snippet.framework.name === 'Svelte',
         }"
         alt="snippet.framework"
       />
@@ -80,10 +80,10 @@
     class="flex items-center gap-2 justify-center text-white px-4 py-2 border-1 border-gray-500 rounded-lg transition-colors duration-200 cursor-pointer"
     (click)="openModal()"
     [ngClass]="{
-      'hover:bg-red-angular': snippet.framework === 'Angular',
-      'hover:bg-react': snippet.framework === 'React',
-      'hover:bg-vue': snippet.framework === 'Vue',
-      'hover:bg-svelte': snippet.framework === 'Svelte',
+      'hover:bg-red-angular': snippet.framework.name === 'Angular',
+      'hover:bg-react': snippet.framework.name === 'React',
+      'hover:bg-vue': snippet.framework.name === 'Vue',
+      'hover:bg-svelte': snippet.framework.name === 'Svelte',
     }"
   >
     <span class="text-sm">Ver más</span>

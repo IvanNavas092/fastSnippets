@@ -10,16 +10,15 @@ import { Component, Input, OnInit } from '@angular/core';
 export class CircleFrame implements OnInit {
   @Input() title!: FrameworkType;
   @Input() icon: string | undefined = undefined;
-  @Input() description: string = '';
+  @Input() description?: string = '';
   
-  counts: { angular: number; react: number; vue: number; svelte: number } = { angular: 0, react: 0, vue: 0, svelte: 0 };
+  counts: { Angular: number; React: number; Vue: number; Svelte: number } = { Angular: 0, React: 0, Vue: 0, Svelte: 0 };
   constructor(private firebaseService: FirebaseService) { }
 
   ngOnInit(): void {
   this.firebaseService.updateCountsFromFirebase();
   this.firebaseService.countsSnippets$.subscribe(counts => {
     this.counts = counts;
-    console.log('counts:', counts);
   })
   }
 

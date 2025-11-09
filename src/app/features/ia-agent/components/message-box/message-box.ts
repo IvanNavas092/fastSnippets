@@ -57,7 +57,6 @@ export class MessageBox implements OnInit {
         lang: lang || 'plaintext'
       });
 
-      console.log(this.parts);
 
       lastIndex = regex.lastIndex;
     }

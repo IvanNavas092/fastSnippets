@@ -8,6 +8,8 @@ export interface Snippet {
   framework: framework;
   code: string[];
   actions: string[];
+  tags?: string[];
+
 }
 
 export interface PopularSnippet {
@@ -26,9 +28,11 @@ export interface UserSnippet {
 
 export interface SnippetData {
   title: string;
-  framework: string;
+  icon?: number;
+  framework: framework;
   code: string[];
   actions: string[];
+  tags?: string[];
 }
 
 export interface SnippetCode {

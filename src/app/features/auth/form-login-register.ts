@@ -52,7 +52,6 @@ export class FormLoginRegisterComponent implements OnInit {
 
   async login() {
     if (this.form.valid) {
-      console.log('Login con:', this.form.value);
       try {
         await this.authService.signIn(
           this.form.value.email,
@@ -88,7 +87,6 @@ export class FormLoginRegisterComponent implements OnInit {
 
   signup() {
     if (this.form.valid) {
-      console.log('Registro con:', this.form.value);
       this.authService
         .signup(
           this.form.value.email,

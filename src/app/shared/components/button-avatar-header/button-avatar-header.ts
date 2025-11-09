@@ -43,7 +43,6 @@ export class ButtonAvatarHeader {
     {
       name: 'Settings',
       action: () => {
-        console.log('Abrir settings');
         // aquí iría tu lógica de abrir ajustes
         this.openMenu = false;
       },

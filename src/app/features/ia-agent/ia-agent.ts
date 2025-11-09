@@ -72,21 +72,19 @@ export class IaAgent implements OnInit {
 
   // initialize observables
   private initializeStreams() {
-    // conversations
-    this.conversations$ = this.iaAgentService.getConversations().pipe(
-      tap((conversations) => console.log('Loaded conversations:', conversations))
-    )
+    // // conversations
+    // this.conversations$ = this.iaAgentService.getConversations().pipe(
+    //   tap((conversations) => console.log('Loaded conversations:', conversations))
+    // )
 
     // messages
     this.messages$ = this.currentConversationId$.pipe(
       tap((convId) => {
-        console.log('Loading messages of conversation:', convId);
       }),
       switchMap((convId) => {
         if (!convId) return of([]) 
         return this.iaAgentService.getMessagesOfConv(convId).pipe(
           tap((messages) => {
-            console.log('Loaded messages:', messages);
           })
         );
       }),
@@ -155,9 +153,7 @@ export class IaAgent implements OnInit {
   }
 
   loadMessagesInConversation(conversationIdClicked?: string) {
-    console.log('Loading conversation:', conversationIdClicked);
     this.selectedConversationId$.next(conversationIdClicked);
-    console.log('Selected conversation:', this.selectedConversationId$.value);
   }
 
   goBack() {

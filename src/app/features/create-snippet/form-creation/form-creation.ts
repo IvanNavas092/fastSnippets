@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
   FormArray,
-  FormBuilder,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
@@ -44,7 +43,6 @@ export class FormCreation {
 
 
   hasCodes(): boolean {
-    console.log(this.form)
     return this.codes && this.codes.length > 0;
   }
 
@@ -96,7 +94,6 @@ export class FormCreation {
       // check if code has more than 1
       if (this.form.get('codes')?.value?.length > 1) {
         this.IsMoreThan1 = true;
-        console.log(this.IsMoreThan1)
       }
     }
   }
@@ -107,7 +104,6 @@ export class FormCreation {
       return;
     }
     const tag = this.tagsInput.value?.trim().toLowerCase();
-    console.log(tag);
     if (tag && !this.introducedTags.includes(tag)) {
       this.introducedTags.push(tag);
       this.tagsInput.reset();

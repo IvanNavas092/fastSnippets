@@ -31,19 +31,16 @@ export class Header {
   ) {
     this.authService.isAuthReady$.subscribe((isReady) => {
       this.authReady = isReady;
-      console.log('Auth ready:', isReady);
       this.cdr.markForCheck();
     });
 
     this.authService.currentUser$.subscribe((user) => {
       this.isLoggedIn = !!user;
-      console.log('User logged in:', user);
       this.cdr.markForCheck();
     });
   }
 
   async logout() {
-    console.log('Logout');
     try {
       await this.authService.logout();
       this.backToHome();

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FirebaseService } from '@/app/core/services/firebaseService';
-import { SnippetCode, SnippetData } from '@/app/core/interfaces/Snippet';
+import { SnippetCode } from '@/app/core/interfaces/Snippet';
 import { StepsForm } from "@/app/features/create-snippet/components/steps-form/steps-form";
 import { FormCreation } from "./form-creation/form-creation";
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -16,12 +16,13 @@ export class CreateSnippet {
   form: FormGroup;
 
   constructor(
-    private fb: FormBuilder,
+    private fb: FormBuilder, private firebaseService: FirebaseService
   ) {
     this.form = this.fb.group({
       title: ['', Validators.required],
-      tags: [this.fb.array([])],
-      framework: ['' , Validators.required],
+      actions: this.fb.array([]),
+      tags: this.fb.array([]),
+      framework: ['', Validators.required],
       codes: this.fb.array([]),
     });
   }
@@ -39,7 +40,9 @@ export class CreateSnippet {
       code: [data.code, Validators.required],
       action: [data.action, [Validators.required, Validators.maxLength(100)]],
     });
+    console.log(codeGroup);
     this.codes.push(codeGroup);
+    console.log(this.form.value);
   }
 
   addTags(tags: string[]): void {
@@ -53,11 +56,10 @@ export class CreateSnippet {
   }
 
   handleFrameworkSelected(framework: string): void {
-    console.log(framework);
     this.form.patchValue({ framework });
   }
 
-   handlePrevStep(): void {
+  handlePrevStep(): void {
     if (this.activeStep > 1) this.activeStep--;
   }
 
@@ -67,9 +69,17 @@ export class CreateSnippet {
 
   handleSubmit(): void {
     if (this.form.valid) {
-      const data = this.form.value as SnippetData;
-      console.log('✅ Datos finales:', data);
-      // this.firebaseService.saveSnippet(data);
+
+      const rawData = this.form.value;
+      const snippetData = {
+        title: rawData.title,
+        framework: {
+          name: rawData.framework,
+        },
+        actions: rawData.actions || [],
+        code: rawData.codes.map((c: any) => c.code),
+      };
+      this.firebaseService.createSnippet(snippetData);
       this.form.reset();
       this.codes.clear();
       this.activeStep = 1;
@@ -77,6 +87,4 @@ export class CreateSnippet {
       this.form.markAllAsTouched();
     }
   }
-
-
 }

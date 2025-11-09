@@ -76,7 +76,6 @@ export class Snippets implements OnInit {
 
     if (framework === 'Todos') {
       this.AuxSnippetList = [...this.allSnippets];
-      console.log(this.AuxSnippetList);
     } else {
       this.AuxSnippetList = this.allSnippets.filter(
         (snippet) => snippet.framework.name.toLowerCase() === framework.toLowerCase()
@@ -88,7 +87,6 @@ export class Snippets implements OnInit {
     if (!this.CurrentUser) return;
 
     const alreadySaved = this.detectIfUserSavedSnippet(snippet);
-    console.log('alreadySaved:', alreadySaved);
 
     if (alreadySaved) {
       this.firebaseService
@@ -127,7 +125,6 @@ export class Snippets implements OnInit {
     this.firebaseService.getSavedSnippetsByUser(userId).subscribe({
       next: (saved) => {
         this.auxSnippetUser$ = of(saved);
-        console.log('saved:', saved);
       },
       error: (err) => console.error('Error al cargar favoritos:', err),
     });

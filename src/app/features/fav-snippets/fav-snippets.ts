@@ -51,7 +51,6 @@ export class FavSnippets {
           this.snippetsUser = snippets; // snippets that user has saved
           this.isLoading = false;
           this.cdr.detectChanges();
-          console.log('snippetsUser:', this.snippetsUser);
         },
         error: (err) => {
           console.error('Error al cargar favoritos:', err),
