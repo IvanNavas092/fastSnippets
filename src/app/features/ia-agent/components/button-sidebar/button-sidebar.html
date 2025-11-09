@@ -1,0 +1,19 @@
+<div class="relative flex items-center text-sm">
+  @if (isInput()) {
+  <input
+    [type]="type()"
+    [placeholder]="placeholder()"
+    class="p-2 pl-8 w-full text-left rounded-lg border-b-1 border-[#282c34] cursor-text transition text-white "
+  />
+  } @else {
+  <button
+    class="p-2 w-full text-left cursor-pointer rounded-lg hover:bg-[#282c34] transition text-white"
+    (click)="openNewChat()"
+  >
+  <span class="px-6">
+      {{ text() }}
+    </span>
+  </button>
+  }
+  <img [src]="icon()" [alt]="text()" class="absolute left-2 inset-y-0 my-auto w-4" />
+</div>

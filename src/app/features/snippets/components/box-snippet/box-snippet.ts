@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CopyButton } from '@/app/shared/components/copy-button/copy-button';
 import { Highlight } from 'ngx-highlightjs';
+
 @Component({
   selector: 'app-box-snippet',
   imports: [CommonModule, CopyButton, Highlight],
@@ -33,6 +34,8 @@ export class BoxSnippet {
       return 'unkown.svg';
     }
   }
+
+  
 
   openModal() {
     this.showModal.emit(this.snippet);

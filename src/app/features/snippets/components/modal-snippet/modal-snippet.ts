@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import {
   Component,
   EventEmitter,
-  HostListener,
   Input,
   Output,
 } from '@angular/core';

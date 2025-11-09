@@ -1,0 +1,170 @@
+<section class="flex max-h-screen mx-auto">
+  <!-- Sidebar -->
+  <div
+    class="bg-[#18181b] p-4 w-60 border border-[#282c34] shadow-lg overflow-y-auto"
+  >
+    <button
+      type="button"
+      class="p-2 hover:bg-[#282c34] transition rounded-full cursor-pointer"
+      (click)="goBack()"
+    >
+      <svg
+        class="w-6 h-6 text-white"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M5 12h14M5 12l4-4m-4 4 4 4"
+        />
+      </svg>
+    </button>
+
+    <div class="flex flex-col space-y-2 mb-6">
+      <!-- header -->
+      <div class="gap-2 flex flex-col">
+        <app-button-sidebar
+          [text]="'Nuevo Chat'"
+          [icon]="'svgs-ia/new-chat.svg'"
+          (clicked)="openNewChat()"
+        ></app-button-sidebar>
+
+        <app-button-sidebar
+          [isInput]="true"
+          [text]="'Buscar'"
+          [type]="'text'"
+          [icon]="'svgs-ia/search.svg'"
+          [placeholder]="'Buscar...'"
+        ></app-button-sidebar>
+      </div>
+
+      <!-- Conversations-->
+      <div class="flex flex-col space-y-2 h-full mt-12">
+        <button
+          (click)="openHistory()"
+          class="flex items-center space-x-2 text-white justify-between cursor-pointer"
+        >
+          <span>Historial</span>
+          <svg
+            [ngClass]="{ 'rotate-180': clickedHistory }"
+            class="w-5 h-5 text-gray-800 dark:text-white"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m19 9-7 7-7-7"
+            />
+          </svg>
+        </button>
+
+        @if (clickedHistory) {
+          @if (conversations$ | async; as conversations) {
+            <div class="overflow-y-auto flex flex-col space-y-2 mt-1">
+              @for (conv of conversations | reverse; track conv.id) {
+                <app-conversation-box
+                  [conv]="conv"
+                  (idConversation)="loadMessagesInConversation($event)"
+                  [isActive]="conv.id === (currentConversationId$ | async)"
+                ></app-conversation-box>
+              }
+            </div>
+          } @else {
+            <p class="text-gray-400 text-sm">No hay conversaciones</p>
+          }
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- chat -->
+  <div
+    class="flex-1 flex flex-col h-screen bg-[#18181b] p-6 border border-[#282c34] shadow-lg"
+  >
+    <!-- header -->
+    <div class="pb-4 border-b border-[#282c34] mb-4">
+      <h1 class="text-2xl font-bold text-white">
+        Bienvenido a la IA de FastSnippets
+      </h1>
+      <p class="text-gray-400">Estoy aquí para ayudarte</p>
+    </div>
+
+    <!-- list of messages-->
+    <div #chatBox class="flex flex-col flex-1 overflow-y-auto pr-2 space-y-2">
+      @for (msg of messages$ | async; track msg.id) {
+      <div
+        class="max-w-[80%] rounded-2xl px-4 py-3 shadow-md"
+        [ngClass]="{
+          'self-end bg-[#9810fa] text-white': msg.sender === 'user',
+          'self-start bg-[#242323] text-white': msg.sender === 'bot'
+        }"
+      >
+        <app-message-box [msg]="msg"></app-message-box>
+        @if (messageError) {
+        <p class="text-red-500">{{ messageError }}</p>
+        }
+      </div>
+      }
+
+      <!-- Loader -->
+      @if (isLoading) {
+      <div
+        class="self-start bg-[#242323] rounded-2xl px-4 py-3 max-w-[80%] shadow-md animate-pulse"
+      >
+        <div class="flex items-center space-x-2 mb-1">
+          <div
+            class="h-6 w-6 rounded-full flex items-center justify-center text-xs font-bold bg-[#9810fa] text-white"
+          >
+            I
+          </div>
+          <span class="font-medium text-sm text-white">Asistente Ingrid</span>
+        </div>
+        <div class="flex mt-1 space-x-1">
+          <div class="h-2 w-2 bg-gray-400 rounded-full animate-bounce"></div>
+          <div
+            class="h-2 w-2 bg-gray-400 rounded-full animate-bounce"
+            style="animation-delay: 0.2s"
+          ></div>
+          <div
+            class="h-2 w-2 bg-gray-400 rounded-full animate-bounce"
+            style="animation-delay: 0.4s"
+          ></div>
+        </div>
+      </div>
+      }
+    </div>
+
+    <!-- Input -->
+    <div class="mt-6 flex gap-3">
+      <input
+        type="text"
+        placeholder="Escribe tu pregunta..."
+        class="flex-12/12 px-4 py-3 rounded-xl bg-[#18181b] border border-[#282c34] text-white focus:outline-none focus:ring-1 focus:ring-[#282c34] transition"
+        (keyup.enter)="submitMessage()"
+        [(ngModel)]="userInput"
+        [disabled]="isLoading"
+      />
+      <button
+        type="button"
+        (click)="submitMessage()"
+        class="flex-1 text-white font-semibold px-5 py-3 bg-[#9810fa] rounded-xl hover:bg-[#7a0dc7] transition flex items-center space-x-2"
+      >
+        {{ isLoading ? "enviando..." : "Enviar" }}
+      </button>
+    </div>
+  </div>
+</section>

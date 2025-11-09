@@ -12,6 +12,7 @@ import {
 } from '@angular/forms';
 import { inputList } from '@/app/utils/Lists';
 import { Router } from '@angular/router';
+import { IaAgentService } from '@/app/core/services/ia-agent-service';
 
 @Component({
   selector: 'app-auth',
@@ -29,8 +30,9 @@ export class FormLoginRegisterComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
+    private iaAgentService: IaAgentService,
     private router: Router,
-    private cdRef: ChangeDetectorRef // <<-- Inyectar aquí
+    private cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -49,9 +51,6 @@ export class FormLoginRegisterComponent implements OnInit {
   }
 
   async login() {
-    // Siempre marcar los campos como tocados para mostrar validaciones
-    this.markFormGroupTouched(this.form);
-
     if (this.form.valid) {
       console.log('Login con:', this.form.value);
       try {
@@ -88,29 +87,22 @@ export class FormLoginRegisterComponent implements OnInit {
   }
 
   signup() {
-    // Siempre marcar los campos como tocados para mostrar validaciones
-    this.markFormGroupTouched(this.form);
-
     if (this.form.valid) {
       console.log('Registro con:', this.form.value);
-      this.authService.signup(
-        this.form.value.email,
-        this.form.value.password,
-        this.form.value.username
-      );
+      this.authService
+        .signup(
+          this.form.value.email,
+          this.form.value.password,
+          this.form.value.username
+        )
+        .then(() => {
+          this.router.navigate(['/snippets']);
+          this.form.reset();
+        }),
+        () => {
+          console.error('Error al registrar usuario:');
+        };
     }
-  }
-
-  // Marcar todos los campos como tocados para mostrar validaciones
-  markFormGroupTouched(formGroup: FormGroup) {
-    Object.values(formGroup.controls).forEach((control) => {
-      control.markAsTouched();
-      control.markAsDirty();
-      control.updateValueAndValidity();
-      if ((control as any).controls) {
-        this.markFormGroupTouched(control as FormGroup);
-      }
-    });
   }
 
   changeMode(register: boolean) {
@@ -129,4 +121,8 @@ export class FormLoginRegisterComponent implements OnInit {
       }
     }
   }
+  goBack() {
+    window.history.back();  
+  }
+
 }

@@ -7,9 +7,7 @@ import { provideRouter, withInMemoryScrolling } from '@angular/router';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import {
   getAuth,
-  indexedDBLocalPersistence,
   provideAuth,
-  setPersistence,
 } from '@angular/fire/auth';
 
 import { routes } from './app.routes';
@@ -27,9 +25,17 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 // highlight
 import { provideHighlightOptions } from 'ngx-highlightjs';
 
+// http
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
+import { CsrfInterceptor } from './core/interceptors/CsrfInterceptor ';
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZonelessChangeDetection(),
+    provideHttpClient(
+      withInterceptors([CsrfInterceptor]),
+    ),
+     provideHttpClient(withFetch()),
     provideRouter(
       routes,
       // scroll
@@ -40,7 +46,7 @@ export const appConfig: ApplicationConfig = {
     ),
     provideClientHydration(withEventReplay()),
 
-    provideFirebaseApp(() => initializeApp(environment)),
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
 

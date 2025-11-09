@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FirebaseService } from '@/app/core/services/firebaseService';
 import { Snippet } from '@/app/core/interfaces/Snippet';
+
 @Component({
   selector: 'app-create-snippet',
   imports: [],

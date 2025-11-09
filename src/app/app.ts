@@ -1,7 +1,9 @@
-import { Component, signal } from '@angular/core';
+import { Component, Inject, PLATFORM_ID, signal } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import { Header } from "./shared/components/header/header";
+import { Header } from './shared/components/header/header';
 import { Footer } from './shared/components/footer/footer';
+import { IaAgentService } from './core/services/ia-agent-service';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -11,9 +13,24 @@ import { Footer } from './shared/components/footer/footer';
 })
 export class App {
   protected readonly title = signal('fastSnippets');
-  constructor(private router: Router) { }
 
+  constructor(
+    private router: Router,
+    private iaAgentService: IaAgentService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    this.getToken();
+  }
   get isLoginRoute(): boolean {
-    return this.router.url.startsWith('/login'); // ajusta según tu ruta real
+    const routes = ['/login', '/ia-agent'];
+    return routes.some(route => this.router.url.startsWith(route));
+  }
+
+  getToken() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.iaAgentService.getToken().subscribe((token) => {
+        console.log('token', token);
+      });
+    }
   }
 }

@@ -5,6 +5,7 @@ import { AuthService } from '@/app/core/services/authService';
 import { ButtonAvatarHeader } from '../button-avatar-header/button-avatar-header';
 import { CommonModule } from '@angular/common';
 import { SnippetLoading } from '../snippet-loading/snippet-loading';
+import { ButtonIa } from './button-ia/button-ia';
 
 @Component({
   selector: 'app-header',
@@ -15,9 +16,9 @@ import { SnippetLoading } from '../snippet-loading/snippet-loading';
     ButtonAvatarHeader,
     CommonModule,
     SnippetLoading,
+    ButtonIa,
   ],
   templateUrl: './header.html',
-  styleUrls: ['./header.css'],
 })
 export class Header {
   isLoggedIn: boolean = false;
