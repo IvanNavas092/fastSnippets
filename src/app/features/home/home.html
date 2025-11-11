@@ -17,12 +17,11 @@
     class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 items-stretch"
   >
     @for (item of frameworkList; track item.name) {
-
-    <app-circle-frame
-      [title]="item.name"
-      [icon]="item.logo"
-      [description]="item.description"
-    ></app-circle-frame>
+      <app-circle-frame
+        [title]="item.name"
+        [icon]="item.logo"
+        [description]="item.description"
+      ></app-circle-frame>
     }
   </div>
   <!-- popular snippet -->
@@ -35,7 +34,7 @@
       class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 items-stretch"
     >
       @for (item of popularSnippetList; track item.framework) {
-      <app-card-popular-snippet [item]="item"></app-card-popular-snippet>
+        <app-card-popular-snippet [item]="item"></app-card-popular-snippet>
       }
     </div>
     <button
@@ -64,7 +63,7 @@
   </div>
   <div class="grid grid-cols-1 lg:grid-cols-3 items-stretch gap-6 lg:gap-12">
     @for (item of aboutList; track item.title) {
-    <app-box-about [item]="item"></app-box-about>
+      <app-box-about [item]="item"></app-box-about>
     }
   </div>
   <div class="mt-20 mb-20">

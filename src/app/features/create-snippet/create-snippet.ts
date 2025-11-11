@@ -19,8 +19,7 @@ export class CreateSnippet {
     private fb: FormBuilder, private firebaseService: FirebaseService
   ) {
     this.form = this.fb.group({
-      title: ['', Validators.required],
-      actions: this.fb.array([]),
+      title: ['', Validators.required], 
       tags: this.fb.array([]),
       framework: ['', Validators.required],
       codes: this.fb.array([]),
@@ -47,8 +46,8 @@ export class CreateSnippet {
 
   addTags(tags: string[]): void {
     const tagsArray = this.form.get('tags') as FormArray;
-    tagsArray.clear();
     tags.forEach((tag) => tagsArray.push(this.fb.control(tag)));
+    tagsArray.clear();
   }
 
   removeCode(index: number): void {
@@ -76,9 +75,13 @@ export class CreateSnippet {
         framework: {
           name: rawData.framework,
         },
-        actions: rawData.actions || [],
-        code: rawData.codes.map((c: any) => c.code),
+        codes: rawData.codes.map((c: SnippetCode) => ({
+          code: c.code,
+          action: c.action,
+        })),
+        tags: rawData.tags,
       };
+      console.log(snippetData);
       this.firebaseService.createSnippet(snippetData);
       this.form.reset();
       this.codes.clear();

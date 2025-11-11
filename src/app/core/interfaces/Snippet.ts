@@ -6,8 +6,7 @@ export interface Snippet {
   title: string;
   icon: number;
   framework: framework;
-  code: string[];
-  actions: string[];
+  codes: SnippetCode[];
   tags?: string[];
 
 }
@@ -30,8 +29,7 @@ export interface SnippetData {
   title: string;
   icon?: number;
   framework: framework;
-  code: string[];
-  actions: string[];
+  codes: SnippetCode[];
   tags?: string[];
 }
 
