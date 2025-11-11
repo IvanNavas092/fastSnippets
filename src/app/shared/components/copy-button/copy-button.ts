@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
 })
 export class CopyButton {
   // code to copy
-  @Input() code!: string;
+  @Input() code: string | undefined;
   @Input() black: boolean = false;
   copied: boolean = false;
 
@@ -21,7 +21,8 @@ export class CopyButton {
     loop: false,
   };
 
-  copyCode(code: string): void {
+  copyCode(code: string | undefined): void {
+    if (!code) return;
     navigator.clipboard.writeText(code);
     this.copied = true;
 

@@ -5,13 +5,13 @@
   <header class="flex items-center justify-between">
     <div class="flex items-center gap-3">
       <img
-        src="./{{ snippet.framework.logo }}"
+        [src]="detectFrameworkIcon(snippet.framework)"
         class="w-10 h-10 lg:w-12 lg:h-12 drop-shadow-xl/60"
         [ngClass]="{
           'drop-shadow-angular': snippet.framework.name === 'Angular',
           'drop-shadow-react': snippet.framework.name === 'React',
           'drop-shadow-vue': snippet.framework.name === 'Vue',
-          'drop-shadow-svelte': snippet.framework.name === 'Svelte',
+          'drop-shadow-svelte': snippet.framework.name === 'Svelte'
         }"
         alt="snippet.framework"
       />
@@ -21,7 +21,7 @@
     </div>
     <div class="flex items-center gap-3">
       <app-copy-button
-        [code]="snippet.code[0]"
+        [code]="snippet.codes[0]?.code"
         [black]="false"
       ></app-copy-button>
 
@@ -52,10 +52,10 @@
 
   <!-- code -->
   <div class="rounded-lg overflow-x-hidden overflow-y-auto max-w-full my-4">
-    @if (snippet.code && snippet.code.length > 0) {
+    @if (snippet.codes && snippet.codes.length > 0) {
       <code
         class="block text-sm rounded-sm whitespace-pre-wrap p-4"
-        [highlight]="snippet.code[0]"
+        [highlight]="snippet.codes[0].code"
         [language]="'typescript'"
       ></code>
     } @else {
@@ -65,9 +65,9 @@
     }
 
     <!-- He movido la descripción fuera del contenedor principal del código para un mejor layout -->
-    @if (snippet.actions && snippet.actions.length > 0) {
+    @if (snippet.codes[0].action && snippet.codes[0].action.length > 0) {
       <p class="text-sm text-gray-400 mt-2 italic">
-        // {{ snippet.actions[0] }}
+        // {{ snippet.codes[0].action }}
       </p>
     } @else {
       <p class="text-sm text-gray-400 mt-2 italic">

@@ -6,25 +6,25 @@ export const frameworkList: framework[] = [
   {
     id: '1',
     name: FrameworkType.Angular,
-    logo: 'svgs-icons-fw/angular.svg',
+    logo: './svgs-icons-fw/angular.svg',
     description: 'Componentes, servicios, directivas y más',
   },
   {
     id: '2',
     name: FrameworkType.React,
-    logo: 'svgs-icons-fw/react.svg',
+    logo: './svgs-icons-fw/react.svg',
     description: 'Hooks, componentes, contextos y más',
   },
   {
     id: '3',
     name: FrameworkType.Vue,
-    logo: 'svgs-icons-fw/vue.svg',
+    logo: './svgs-icons-fw/vue.svg',
     description: 'Composition API, componentes, directivas',
   },
   {
     id: '4',
     name: FrameworkType.Svelte,
-    logo: 'svgs-icons-fw/svelte.svg',
+    logo: './svgs-icons-fw/svelte.svg',
     description: 'Componentes, directivas y más',
   },
 ];

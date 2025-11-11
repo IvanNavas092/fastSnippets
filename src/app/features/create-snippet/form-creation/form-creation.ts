@@ -11,6 +11,7 @@ import { OptionFramework } from '../components/option-framework/option-framework
 import { Highlight } from "ngx-highlightjs";
 import { SnippetCode } from '@/app/core/interfaces/Snippet';
 import { CommonModule } from '@angular/common';
+import { framework, FrameworkType } from '@/app/core/interfaces/Framework';
 
 @Component({
   selector: 'app-form-creation',
@@ -46,6 +47,11 @@ export class FormCreation {
     return this.codes && this.codes.length > 0;
   }
 
+  get currentFramework(): any {
+    return this.form.get('framework')?.value;
+  }
+
+
   nextStep() {
     if (this.currentStep === 1) {
       const titleValid = this.form.get('title')?.valid;
@@ -78,22 +84,24 @@ export class FormCreation {
   }
 
   handleAddCode() {
-    const data: SnippetCode = {
-      code: this.codeInput.value?.trim(),
-      action: this.actionInput.value?.trim(),
-    };
-    if (!data.code || !data.action) {
-      this.messageError = 'Agrega al menos un código';
-      return
-    } else {
-      this.messageError = '';
-      this.addCode.emit(data);
-      this.codeInput.reset();
-      this.actionInput.reset();
+    if (this.codeInput.value?.trim() && this.actionInput.value?.trim()) {
+      const data: SnippetCode = {
+        code: this.codeInput.value?.trim(),
+        action: this.actionInput.value?.trim(),
+      };
+      if (!data.code || !data.action) {
+        this.messageError = 'Agrega al menos un código';
+        return
+      } else {
+        this.messageError = '';
+        this.addCode.emit(data);
+        this.codeInput.reset();
+        this.actionInput.reset();
 
-      // check if code has more than 1
-      if (this.form.get('codes')?.value?.length > 1) {
-        this.IsMoreThan1 = true;
+        // check if code has more than 1
+        if (this.form.get('codes')?.value?.length > 1) {
+          this.IsMoreThan1 = true;
+        }
       }
     }
   }
@@ -116,18 +124,16 @@ export class FormCreation {
   }
 
   // detect icon from framework
-  detectIcon(icon: string): string {
-    if (icon === 'Angular') {
-      return 'svgs-icons-fw/angular.svg';
-    } else if (icon === 'React') {
-      return 'svgs-icons-fw/react.svg';
-    } else if (icon === 'Vue') {
-      return 'svgs-icons-fw/vue.svg';
-    } else if (icon === 'Svelte') {
-      return 'svgs-icons-fw/svelte.svg';
-    } else {
-      return 'unkown.svg';
+  detectFrameworkIcon(fw: any): string {
+    const name = fw?.name || fw;
+    switch (name) {
+      case 'Angular': return './svgs-icons-fw/angular.svg';
+      case 'React': return './svgs-icons-fw/react.svg';
+      case 'Vue': return './svgs-icons-fw/vue.svg';
+      case 'Svelte': return './svgs-icons-fw/svelte.svg';
+      default: return 'svgs-icons-fw/unknown.svg';
     }
   }
+
 
 }

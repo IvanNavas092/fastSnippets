@@ -4,7 +4,6 @@ import { framework } from "./Framework";
 export interface Snippet {
   uid: string;
   title: string;
-  icon: number;
   framework: framework;
   codes: SnippetCode[];
   tags?: string[];
@@ -34,6 +33,6 @@ export interface SnippetData {
 }
 
 export interface SnippetCode {
-  code?: string;
-  action?: string;
+  code: string;
+  action: string;
 }

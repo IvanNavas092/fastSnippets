@@ -74,6 +74,7 @@ export class CreateSnippet {
         title: rawData.title,
         framework: {
           name: rawData.framework,
+          logo: this.detectFrameworkIcon(rawData.framework),
         },
         codes: rawData.codes.map((c: SnippetCode) => ({
           code: c.code,
@@ -88,6 +89,21 @@ export class CreateSnippet {
       this.activeStep = 1;
     } else {
       this.form.markAllAsTouched();
+    }
+  }
+
+   // detect icon from framework
+  private detectFrameworkIcon(fw: string): string {
+    if (fw === 'Angular') {
+      return 'svgs-icons-fw/angular.svg';
+    } else if (fw === 'React') {
+      return 'svgs-icons-fw/react.svg';
+    } else if (fw === 'Vue') {
+      return 'svgs-icons-fw/vue.svg';
+    } else if (fw === 'Svelte') {
+      return 'svgs-icons-fw/svelte.svg';
+    } else {
+      return 'unkown.svg';
     }
   }
 }

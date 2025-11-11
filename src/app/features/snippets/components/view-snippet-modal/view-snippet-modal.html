@@ -1,5 +1,5 @@
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-  @for (code of snippet.code; track $index; let i = $index) {
+  @for (code of snippet.codes; track $index; let i = $index) {
   <div>
     <div class="flex justify-between">
       <span class="text-2xl font-semibold text-white">Paso: {{ i + 1 }}</span>
@@ -7,11 +7,11 @@
 
     <article class="relative bottom-3">
       <div class="absolute top-10 right-4">
-        <app-copy-button [code]="snippet.code[i]"></app-copy-button>
+        <app-copy-button [code]="snippet.codes[0].code[i]"></app-copy-button>
       </div>
       <pre>
-        <code [highlight]="code" [language]="'typescript'" class=" rounded-lg font-mono"
-        [innerHTML]="snippet.code[i] | highlight">
+        <code [highlight]="code.code" [language]="'typescript'" class=" rounded-lg font-mono"
+        [innerHTML]="snippet.codes[0].code[i] | highlight">
         </code>
       </pre>
       <div
@@ -19,7 +19,7 @@
       >
         <span class="px-2">
           //
-          {{ snippet.actions[i] }}
+          {{ snippet.codes[0].action[i] }}
         </span>
       </div>
     </article>
